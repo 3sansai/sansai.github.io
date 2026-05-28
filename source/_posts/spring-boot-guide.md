@@ -1,6 +1,6 @@
 ---
 title: Spring Boot 实战指南：快速开发与最佳实践
-date: 2026-05-28
+date: 2026-05-28 05:00:00
 tags:
   - Spring Boot
   - Java
