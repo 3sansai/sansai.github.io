@@ -8,22 +8,20 @@
   gap 8px
 
   .checkin-badge
-    background linear-gradient(135deg, #6366f1, #ec4899)
+    background var(--primary-color)
     color #fff
-    border-radius 14px
-    padding 10px 16px
+    border-radius 12px
+    padding 8px 14px
     font-size 13px
     cursor pointer
-    box-shadow 0 4px 16px rgba(99, 102, 241, 0.3)
-    transition all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    box-shadow 0 2px 12px rgba(0, 0, 0, 0.15)
+    transition all 0.3s ease
     text-align center
     line-height 1.4
     user-select none
-    animation badge-pulse 3s ease-in-out infinite
     &:hover
-      transform translateY(-3px) scale(1.05)
-      box-shadow 0 8px 28px rgba(99, 102, 241, 0.4)
-      animation none
+      transform translateY(-2px)
+      box-shadow 0 4px 20px rgba(0, 0, 0, 0.25)
     .badge-icon
       font-size 16px
       display block
@@ -33,13 +31,7 @@
       display block
     .badge-label
       font-size 11px
-      opacity 0.9
-
-@keyframes badge-pulse
-  0%, 100%
-    box-shadow 0 4px 16px rgba(99, 102, 241, 0.3)
-  50%
-    box-shadow 0 4px 24px rgba(236, 72, 153, 0.4)
+      opacity 0.85
 
 .checkin-modal-mask
   display none
@@ -122,29 +114,25 @@
 
 .checkin-hero
   text-align center
-  padding 24px 20px
-  border-radius 16px
+  padding 20px
+  border-radius 12px
   margin-bottom 20px
   &.weight-hero
-    background linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa)
-    box-shadow 0 8px 24px rgba(99, 102, 241, 0.25)
+    background linear-gradient(135deg, #005080, #0077b6)
   &.smoke-hero
-    background linear-gradient(135deg, #10b981, #34d399, #6ee7b7)
-    box-shadow 0 8px 24px rgba(16, 185, 129, 0.25)
+    background linear-gradient(135deg, #27ae60, #2ecc71)
   color #fff
   .hero-days
-    font-size 52px
+    font-size 48px
     font-weight 800
     line-height 1
-    text-shadow 0 2px 8px rgba(0, 0, 0, 0.15)
   .hero-label
-    font-size 15px
-    opacity 0.95
-    margin-top 6px
-    font-weight 500
+    font-size 14px
+    opacity 0.9
+    margin-top 4px
   .hero-sub
     font-size 12px
-    opacity 0.8
+    opacity 0.7
     margin-top 4px
 
 .checkin-stats
@@ -152,26 +140,18 @@
   grid-template-columns repeat(3, 1fr)
   gap 10px
   .stat-item
-    background linear-gradient(135deg, #f8f7ff, #f0f0ff)
-    border-radius 10px
+    background #f8f9fa
+    border-radius 8px
     padding 12px 8px
     text-align center
-    border 1px solid rgba(99, 102, 241, 0.08)
-    transition transform 0.2s ease
-    &:hover
-      transform scale(1.03)
     .stat-num
       font-size 20px
       font-weight 700
-      background linear-gradient(135deg, #6366f1, #ec4899)
-      -webkit-background-clip text
-      -webkit-text-fill-color transparent
-      background-clip text
+      color var(--primary-color)
     .stat-label
       font-size 11px
-      color #888
+      color #999
       margin-top 2px
-      font-weight 500
 
 .checkin-form-row
   display flex
@@ -203,26 +183,22 @@
 
 .checkin-btn
   border none
-  border-radius 10px
+  border-radius 8px
   padding 8px 20px
   font-size 14px
   cursor pointer
-  transition all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+  transition all 0.2s
   font-weight 500
   &.primary
-    background linear-gradient(135deg, #6366f1, #8b5cf6)
+    background var(--primary-color)
     color #fff
-    box-shadow 0 2px 8px rgba(99, 102, 241, 0.25)
     &:hover
-      box-shadow 0 4px 16px rgba(99, 102, 241, 0.35)
-      transform translateY(-1px)
+      opacity 0.85
   &.success
-    background linear-gradient(135deg, #10b981, #34d399)
+    background #27ae60
     color #fff
-    box-shadow 0 2px 8px rgba(16, 185, 129, 0.25)
     &:hover
-      box-shadow 0 4px 16px rgba(16, 185, 129, 0.35)
-      transform translateY(-1px)
+      background #219a52
   &.danger
     background #e74c3c
     color #fff
@@ -414,8 +390,7 @@
     &.active
       color #fff
   .checkin-stats .stat-item
-    background linear-gradient(135deg, #2a2a3a, #2a2a2a)
-    border-color rgba(99, 102, 241, 0.15)
+    background #2a2a2a
   .checkin-plan-card
     background #2a2a2a
     .plan-item
@@ -429,11 +404,6 @@
     color #aaa !important
     &:hover
       color #fff !important
-  .checkin-hero
-    &.weight-hero
-      box-shadow 0 8px 24px rgba(99, 102, 241, 0.15)
-    &.smoke-hero
-      box-shadow 0 8px 24px rgba(16, 185, 129, 0.15)
 
 @media (max-width: $media-max-width-mobile)
   .checkin-float

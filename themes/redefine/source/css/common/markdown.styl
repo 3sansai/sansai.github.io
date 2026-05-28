@@ -11,13 +11,10 @@
     }
 
     box-sizing border-box
-    border-left 4px solid var(--primary-color)
-    border-radius 0 12px 12px 0
+    border-left 5px solid var(--default-text-color)
     margin 20px 0
-    color var(--second-text-color)
-    background linear-gradient(135deg, var(--third-background-color), var(--second-background-color))
-    padding 16px 20px
-    box-shadow 0 2px 8px rgba(0, 0, 0, 0.04)
+    color var(--default-text-color)
+    background var(--third-background-color)
   }
 
 
@@ -137,7 +134,7 @@
   h1 {
     font-size 3.2rem
     font-weight 600
-    border-bottom solid 2px var(--primary-color)
+    border-bottom solid 2px var(--fourth-text-color)
     margin-top 5rem
 
     +redefine-tablet() {
@@ -150,7 +147,7 @@
     font-size 2.5rem
     font-weight 600
     padding 3px 0
-    border-bottom solid 2px var(--primary-color)
+    border-bottom solid 2px var(--fourth-text-color)
     margin-top 4rem
 
 
@@ -231,9 +228,6 @@
     border-collapse collapse
     width 100%
     overflow auto
-    border-radius 12px
-    overflow hidden
-    box-shadow 0 2px 8px rgba(0, 0, 0, 0.06)
 
     td,
     th {
@@ -242,28 +236,21 @@
 
     th {
       font-weight 600
-      background linear-gradient(135deg, var(--primary-color), #8b5cf6)
-      color #fff
-      padding 10px 14px
     }
 
     td,
     th {
-      padding 8px 14px
-      border 1px solid var(--third-background-color)
+      padding 6px 13px
+      border 1px solid var(--border-color)
     }
 
     tr {
       background-color var(--background-color)
-      transition background 0.2s ease
-    }
-
-    tr:hover {
-      background-color var(--third-background-color)
+      border 1px solid var(--fourth-text-color)
     }
 
     tr:nth-child(2n) {
-      background-color var(--second-background-color)
+      background-color var(--third-background-color)
     }
   }
 }
