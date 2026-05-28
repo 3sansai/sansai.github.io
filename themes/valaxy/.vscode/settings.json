@@ -1,0 +1,32 @@
+{
+  "cSpell.words": [
+    "algoliasearch",
+    "beian",
+    "codepen",
+    "defu",
+    "instantsearch",
+    "jiti",
+    "twikoo",
+    "unconfig",
+    "vala",
+    "valaxy",
+    "valaxyjs"
+  ],
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["packages/valaxy/src/client/locales"],
+  "i18n-ally.sortKeys": true,
+  "prettier.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "files.associations": {
+    "*.css": "postcss"
+  },
+  "editor.formatOnSave": false,
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "svg.preview.background": "editor",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
