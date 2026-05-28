@@ -1,6 +1,6 @@
 ---
 title: Spring 核心原理深度解析：IoC、AOP 与事务管理
-date: 2026-05-28 04:00:00
+date: 2026-05-28 05:00:00
 tags:
   - Spring
   - Java
