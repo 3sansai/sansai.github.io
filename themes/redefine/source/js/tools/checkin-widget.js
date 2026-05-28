@@ -190,7 +190,7 @@
       ctx.fillStyle = '#999'; ctx.textAlign = 'right'; ctx.font = '10px sans-serif';
       ctx.fillText((maxW - (maxW - minW) * i / 3).toFixed(1), pad.l - 4, y + 3);
     }
-    ctx.strokeStyle = '#005080'; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 2.5; ctx.beginPath();
     recent.forEach((r, i) => {
       const x = pad.l + w * i / (recent.length - 1);
       const y = pad.t + h * (1 - (r.weight - minW) / (maxW - minW));
@@ -200,7 +200,7 @@
     recent.forEach((r, i) => {
       const x = pad.l + w * i / (recent.length - 1);
       const y = pad.t + h * (1 - (r.weight - minW) / (maxW - minW));
-      ctx.fillStyle = '#005080'; ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#6366f1'; ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
       if (i % Math.max(1, Math.floor(recent.length / 6)) === 0 || i === recent.length - 1) {
         ctx.fillStyle = '#999'; ctx.textAlign = 'center'; ctx.font = '9px sans-serif';
         ctx.fillText(r.date.slice(5), x, canvas.height - 4);
@@ -378,11 +378,11 @@
     }
     // Zero line
     const zeroY = pad.t + h;
-    ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
     ctx.beginPath(); ctx.moveTo(pad.l, zeroY); ctx.lineTo(pad.l + w, zeroY); ctx.stroke();
     ctx.setLineDash([]);
     // Line
-    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.strokeStyle = '#f43f5e'; ctx.lineWidth = 2.5; ctx.beginPath();
     recent.forEach((r, i) => {
       const x = pad.l + w * i / (recent.length - 1);
       const y = pad.t + h * (1 - r.count / maxV);
@@ -393,7 +393,7 @@
     recent.forEach((r, i) => {
       const x = pad.l + w * i / (recent.length - 1);
       const y = pad.t + h * (1 - r.count / maxV);
-      ctx.fillStyle = r.count === 0 ? '#27ae60' : '#e74c3c';
+      ctx.fillStyle = r.count === 0 ? '#10b981' : '#f43f5e';
       ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
       if (i % Math.max(1, Math.floor(recent.length / 6)) === 0 || i === recent.length - 1) {
         ctx.fillStyle = '#999'; ctx.textAlign = 'center'; ctx.font = '9px sans-serif';

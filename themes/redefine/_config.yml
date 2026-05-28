@@ -13,7 +13,7 @@ base_info:
 # ---------------------------------------------------------------------------------------
 style:
   # Theme primary color
-  primary_color: "#005080"
+  primary_color: "#6366f1"
 
   # Avatar (You can use local image or image external link)
   avatar: /images/redefine-avatar.svg # avatar of the author
@@ -31,9 +31,9 @@ style:
   content_max_width: 1000px #content max width, for article
 
   #navigation bar background color (from left to right)
-  nav_color: 
-    left: "#f78736" #left side 
-    right: "#367df7"  #right side
+  nav_color:
+    left: "#6366f1" #left side
+    right: "#ec4899"  #right side
     transparency: 35 #percent (10-99)
 
   # Mouse hover
