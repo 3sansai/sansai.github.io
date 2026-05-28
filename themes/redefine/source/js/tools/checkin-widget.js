@@ -68,6 +68,10 @@
   }
 
   // ==================== WEIGHT ====================
+  function getTodayRecord(data) {
+    return data.find(r => r.date === today()) || {};
+  }
+
   function renderWeight(el) {
     const data = getW();
     const todayStr = today();
@@ -82,32 +86,73 @@
       minW = Math.min(...data.map(r => r.weight)).toFixed(1);
     }
     const hasToday = data.some(r => r.date === todayStr);
+    const tr = getTodayRecord(data);
 
     let html = '';
     html += '<div class="checkin-hero weight-hero">';
     html += '<div class="hero-days">' + heroDays + '</div><div class="hero-label">累计打卡天</div>';
     html += '<div class="hero-sub">连续 ' + streakNum + ' 天 | 目标 80kg → 70kg</div></div>';
 
+    // ---- 今日打卡表单 ----
     html += '<div class="checkin-section"><h4>今日打卡</h4>';
+    // 第一行：体重 + 日期
     html += '<div class="checkin-form-row">';
-    html += '<input type="number" class="checkin-input sm" id="ci-w-input" placeholder="体重kg" step="0.1" min="30" max="200">';
+    html += '<input type="number" class="checkin-input sm" id="ci-w-input" placeholder="体重kg" step="0.1" min="30" max="200" value="' + (tr.weight || '') + '">';
     html += '<input type="date" class="checkin-input md" id="ci-w-date" value="' + todayStr + '">';
-    html += '<button class="checkin-btn primary" onclick="CI.addWeight()">' + (hasToday ? '更新' : '打卡') + '</button>';
-    html += '</div></div>';
+    html += '</div>';
+    // 第二行：起床 + 睡觉
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">起床</label><input type="time" class="checkin-input sm" id="ci-w-wake" value="' + (tr.wake || '06:50') + '">';
+    html += '<label style="font-size:13px;color:#888">睡觉</label><input type="time" class="checkin-input sm" id="ci-w-sleep" value="' + (tr.sleep || '23:00') + '">';
+    html += '</div>';
+    // 第三行：蛋白质 + 运动
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">蛋白质g</label><input type="number" class="checkin-input sm" id="ci-w-prot" placeholder="目标>=160" min="0" max="500" value="' + (tr.protein || '') + '">';
+    html += '<label style="font-size:13px;color:#888">运动</label>';
+    html += '<select class="checkin-input sm" id="ci-w-exer" style="width:110px">';
+    ['无', '快走30分', '快走40分', '游泳', '椭圆机', '划船机'].forEach(opt => {
+      const sel = (tr.exercise || '无') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '</div>';
+    // 第四行：核心训练 + 吸烟
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">核心训练</label>';
+    html += '<select class="checkin-input sm" id="ci-w-core" style="width:110px">';
+    ['未做', 'A组(平板)', 'B组(举腿)', 'C组(卷腹)', '休息日'].forEach(opt => {
+      const sel = (tr.core || '未做') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '<label style="font-size:13px;color:#888">吸烟</label><input type="number" class="checkin-input" style="width:60px" id="ci-w-cig" placeholder="0" min="0" max="100" value="' + (tr.cigarettes != null ? tr.cigarettes : '') + '">';
+    html += '</div>';
+    // 第五行：饮食热量 + 备注
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">热量kcal</label><input type="number" class="checkin-input sm" id="ci-w-cal" placeholder="约1500" min="0" max="5000" value="' + (tr.calories || '') + '">';
+    html += '<input type="text" class="checkin-input" style="width:140px" id="ci-w-note" placeholder="备注(可选)" value="' + (tr.note || '') + '">';
+    html += '</div>';
+    // 打卡按钮
+    html += '<button class="checkin-btn primary" onclick="CI.addWeight()" style="width:100%;margin-top:4px">' + (hasToday ? '更新今日打卡' : '打卡') + '</button>';
+    html += '</div>';
 
+    // ---- 数据统计 ----
     html += '<div class="checkin-section"><h4>数据统计</h4><div class="checkin-stats">';
     html += sItem(heroDays, '打卡天数') + sItem(streakNum, '连续打卡') + sItem(curWeight, '当前kg');
     html += sItem(lost, '已减kg') + sItem(maxW, '最高kg') + sItem(minW, '最低kg');
     html += '</div></div>';
 
+    // ---- 体重趋势 ----
     html += '<div class="checkin-section"><h4>体重趋势</h4><div class="checkin-chart"><canvas id="ci-w-chart"></canvas></div></div>';
 
+    // ---- 打卡日历 ----
     html += '<div class="checkin-section"><h4>打卡日历</h4>';
     html += '<div class="checkin-cal-nav"><button class="cal-btn" onclick="CI.calNav(-1)">&lt;</button>';
     html += '<span class="cal-title" id="ci-cal-title"></span>';
     html += '<button class="cal-btn" onclick="CI.calNav(1)">&gt;</button></div>';
     html += '<div class="checkin-calendar" id="ci-calendar"></div></div>';
 
+    // ---- 记录列表 ----
     html += '<div class="checkin-section"><h4>记录</h4><div id="ci-w-records"></div>';
     html += '<div class="checkin-actions">';
     html += '<button class="checkin-btn ghost" onclick="CI.exportWeight()">导出CSV</button>';
@@ -193,7 +238,16 @@
         const d = (r.weight - next.weight).toFixed(1);
         diff = d > 0 ? '<span style="color:#e74c3c;font-size:11px">+' + d + '</span>' : '<span style="color:#27ae60;font-size:11px">' + d + '</span>';
       }
-      return '<div class="checkin-record"><span class="rec-date">' + r.date + '</span><span class="rec-val">' + r.weight.toFixed(1) + 'kg ' + diff + '</span><span class="rec-del" onclick="CI.delWeight(\'' + r.date + '\')">删除</span></div>';
+      let detail = [];
+      if (r.wake) detail.push(r.wake + '起');
+      if (r.sleep) detail.push(r.sleep + '睡');
+      if (r.protein) detail.push('蛋白' + r.protein + 'g');
+      if (r.exercise && r.exercise !== '无') detail.push(r.exercise);
+      if (r.core && r.core !== '未做') detail.push(r.core);
+      if (r.cigarettes != null && r.cigarettes > 0) detail.push('烟' + r.cigarettes + '支');
+      if (r.calories) detail.push(r.calories + 'kcal');
+      const detailStr = detail.length ? '<div style="font-size:11px;color:#999;margin-top:2px">' + detail.join(' | ') + '</div>' : '';
+      return '<div class="checkin-record" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:200px"><span class="rec-date">' + r.date + '</span><span class="rec-val">' + r.weight.toFixed(1) + 'kg ' + diff + '</span></div><span class="rec-del" onclick="CI.delWeight(\'' + r.date + '\')">删除</span>' + detailStr + '</div>';
     }).join('');
   }
 
@@ -297,9 +351,21 @@
       const d = document.getElementById('ci-w-date').value;
       if (!w || w < 30 || w > 200) { alert('请输入有效体重'); return; }
       if (!d) { alert('请选择日期'); return; }
+      const rec = {
+        date: d,
+        weight: w,
+        wake: document.getElementById('ci-w-wake').value || '',
+        sleep: document.getElementById('ci-w-sleep').value || '',
+        protein: parseInt(document.getElementById('ci-w-prot').value) || 0,
+        exercise: document.getElementById('ci-w-exer').value || '无',
+        core: document.getElementById('ci-w-core').value || '未做',
+        cigarettes: parseInt(document.getElementById('ci-w-cig').value) || 0,
+        calories: parseInt(document.getElementById('ci-w-cal').value) || 0,
+        note: document.getElementById('ci-w-note').value || ''
+      };
       const data = getW();
       const idx = data.findIndex(r => r.date === d);
-      if (idx >= 0) data[idx].weight = w; else data.push({ date: d, weight: w });
+      if (idx >= 0) Object.assign(data[idx], rec); else data.push(rec);
       data.sort((a, b) => a.date.localeCompare(b.date));
       saveW(data);
       renderTab();
@@ -323,9 +389,11 @@
     exportWeight: function () {
       const data = getW();
       if (!data.length) { alert('暂无数据'); return; }
-      const csv = '日期,体重(kg)\n' + data.map(r => r.date + ',' + r.weight).join('\n');
+      const header = '日期,体重(kg),起床,睡觉,蛋白质(g),运动,核心训练,吸烟(支),热量(kcal),备注';
+      const rows = data.map(r => [r.date, r.weight, r.wake||'', r.sleep||'', r.protein||'', r.exercise||'', r.core||'', r.cigarettes||0, r.calories||'', '"'+(r.note||'')+'"'].join(','));
+      const csv = header + '\n' + rows.join('\n');
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
       a.download = 'weight-records.csv';
       a.click();
     },
