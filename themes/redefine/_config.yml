@@ -85,11 +85,6 @@ menu: #you can customize, i18n files are in the theme's languages folder. fa-reg
   # Status: 
   #   path: https://status.evanluo.top/
   #   icon: fa-regular fa-chart-bar
-  打卡:
-    icon: fa-regular fa-calendar-check
-    submenus:
-      减肥打卡: /weight-checkin/
-      戒烟打卡: /smoke-checkin/
   About:
     icon: fa-regular fa-user
     submenus:

@@ -68,6 +68,26 @@
         <%- partial('_partials/tools/local-search') %>
     <% } %>
 
+    <!-- Check-in Widget -->
+    <div class="checkin-float">
+        <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+            <span class="badge-icon">&#128293;</span>
+            <span class="badge-days">0</span>
+            <span class="badge-label">打卡天</span>
+        </div>
+    </div>
+    <div class="checkin-modal-mask" id="ci-mask">
+        <div class="checkin-modal">
+            <div class="checkin-header">
+                <div class="checkin-tabs">
+                    <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+                    <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+                </div>
+                <button class="checkin-close" onclick="CI.close()">&times;</button>
+            </div>
+            <div class="checkin-body" id="ci-body"></div>
+        </div>
+    </div>
 
 </main>
 
