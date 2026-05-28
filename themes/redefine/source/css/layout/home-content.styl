@@ -25,9 +25,11 @@
       redefine-container(true, 1.015, 1.015, 28px, 38px)
       transition all 0.35s cubic-bezier(0.4, 0, 0.2, 1)
       border-left 3px solid transparent
-      &:hover
+
+      &:hover {
         border-left 3px solid var(--primary-color)
         transform translateY(-3px)
+      }
 
       .top-icon {
         position absolute
@@ -79,8 +81,10 @@
         line-height 1.5
         color var(--second-text-color)
         transition color 0.2s ease
-        &:hover
+
+        &:hover {
           color var(--primary-color)
+        }
 
 
         +redefine-tablet() {
