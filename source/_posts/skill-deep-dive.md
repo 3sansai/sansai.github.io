@@ -1,6 +1,6 @@
 ---
 title: Skill 是 Agent 的具体技能：模块化 AI 能力设计
-date: 2026-05-28 11:15:00
+date: 2026-05-28 14:00:00
 tags:
   - Skill
   - Agent

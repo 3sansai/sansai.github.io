@@ -1,6 +1,6 @@
 ---
 title: AI 大模型、Agent 与 Skill：从原理到实践的全面解读
-date: 2026-05-27
+date: 2026-05-28 10:00:00
 tags:
   - AI
   - 大模型
