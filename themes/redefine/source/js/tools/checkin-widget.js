@@ -274,7 +274,6 @@
     const todayStr = today();
     const todayRec = records.find(r => r.date === todayStr);
     const sorted = [...records].sort((a, b) => a.date.localeCompare(b.date));
-    const lastRec = sorted.length ? sorted[sorted.length - 1] : null;
     const yesterdayRec = records.find(r => r.date === new Date(Date.now() - 86400000).toISOString().slice(0, 10));
 
     const totalDays = records.length;
@@ -285,7 +284,6 @@
     const firstZero = firstZeroDate(records);
     const smokeFreeDays = firstZero ? daysBetween(firstZero, todayStr) + 1 : 0;
 
-    // Today comparison
     let compareHtml = '';
     if (todayRec && yesterdayRec) {
       const diff = todayRec.count - yesterdayRec.count;
@@ -312,13 +310,58 @@
     }
     html += '</div>';
 
-    // Today input
-    html += '<div class="checkin-section"><h4>今日记录</h4>';
+    // Today form
+    html += '<div class="checkin-section"><h4>今日打卡</h4>';
+    // Row 1: cigarettes + date
     html += '<div class="checkin-form-row">';
-    html += '<input type="number" class="checkin-input sm" id="ci-s-count" placeholder="支数" min="0" max="200" value="' + (todayRec ? todayRec.count : '') + '">';
+    html += '<label style="font-size:13px;color:#888">吸烟</label><input type="number" class="checkin-input sm" id="ci-s-count" placeholder="支" min="0" max="200" value="' + (todayRec ? todayRec.count : '') + '">';
     html += '<input type="date" class="checkin-input md" id="ci-s-date" value="' + todayStr + '">';
-    html += '<button class="checkin-btn primary" onclick="CI.addSmoke()">' + (todayRec ? '更新' : '打卡') + '</button>';
     html += '</div>';
+    // Row 2: wake + sleep
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">起床</label><input type="time" class="checkin-input sm" id="ci-s-wake" value="' + (todayRec ? todayRec.wake || '' : '06:50') + '">';
+    html += '<label style="font-size:13px;color:#888">睡觉</label><input type="time" class="checkin-input sm" id="ci-s-sleep" value="' + (todayRec ? todayRec.sleep || '' : '23:00') + '">';
+    html += '</div>';
+    // Row 3: craving + substitute
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">烟瘾</label>';
+    html += '<select class="checkin-input sm" id="ci-s-crave" style="width:90px">';
+    ['无', '轻度', '中度', '重度'].forEach(opt => {
+      const sel = (todayRec && todayRec.craving || '无') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '<label style="font-size:13px;color:#888">替代品</label>';
+    html += '<select class="checkin-input sm" id="ci-s-sub" style="width:110px">';
+    ['无', '口香糖', '气泡水', '小黄瓜', '芹菜条', '深呼吸', '喝水', '散步'].forEach(opt => {
+      const sel = (todayRec && todayRec.substitute || '无') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '</div>';
+    // Row 4: exercise + mood
+    html += '<div class="checkin-form-row">';
+    html += '<label style="font-size:13px;color:#888">运动</label>';
+    html += '<select class="checkin-input sm" id="ci-s-exer" style="width:110px">';
+    ['无', '快走30分', '快走40分', '游泳', '椭圆机', '划船机'].forEach(opt => {
+      const sel = (todayRec && todayRec.exercise || '无') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '<label style="font-size:13px;color:#888">心情</label>';
+    html += '<select class="checkin-input sm" id="ci-s-mood" style="width:90px">';
+    ['好', '一般', '差'].forEach(opt => {
+      const sel = (todayRec && todayRec.mood || '一般') === opt ? ' selected' : '';
+      html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
+    });
+    html += '</select>';
+    html += '</div>';
+    // Row 5: note
+    html += '<div class="checkin-form-row">';
+    html += '<input type="text" class="checkin-input" style="width:100%" id="ci-s-note" placeholder="备注（可选）" value="' + (todayRec ? todayRec.note || '' : '') + '">';
+    html += '</div>';
+    // Button
+    html += '<button class="checkin-btn primary" onclick="CI.addSmoke()" style="width:100%;margin-top:4px">' + (todayRec ? '更新今日打卡' : '打卡') + '</button>';
     if (todayRec && yesterdayRec) html += '<div style="font-size:13px;margin-top:6px">' + compareHtml + '</div>';
     html += '</div>';
 
@@ -439,7 +482,15 @@
         else diff = '<span style="color:#888;font-size:11px">=</span>';
       }
       const color = r.count === 0 ? '#27ae60' : '#e74c3c';
-      return '<div class="checkin-record"><span class="rec-date">' + r.date + '</span><span class="rec-val" style="color:' + color + '">' + r.count + ' 支 ' + diff + '</span><span class="rec-del" onclick="CI.delSmoke(\'' + r.date + '\')">删除</span></div>';
+      let detail = [];
+      if (r.wake) detail.push(r.wake + '起');
+      if (r.sleep) detail.push(r.sleep + '睡');
+      if (r.craving && r.craving !== '无') detail.push('烟瘾' + r.craving);
+      if (r.substitute && r.substitute !== '无') detail.push('替代' + r.substitute);
+      if (r.exercise && r.exercise !== '无') detail.push(r.exercise);
+      if (r.mood) detail.push('心情' + r.mood);
+      const detailStr = detail.length ? '<div style="font-size:11px;color:#999;margin-top:2px">' + detail.join(' | ') + '</div>' : '';
+      return '<div class="checkin-record" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:200px"><span class="rec-date">' + r.date + '</span><span class="rec-val" style="color:' + color + '">' + r.count + ' 支 ' + diff + '</span></div><span class="rec-del" onclick="CI.delSmoke(\'' + r.date + '\')">删除</span>' + detailStr + '</div>';
     }).join('');
   }
 
@@ -550,9 +601,20 @@
       const d = document.getElementById('ci-s-date').value;
       if (isNaN(count) || count < 0) { alert('请输入吸烟支数（0 或正数）'); return; }
       if (!d) { alert('请选择日期'); return; }
+      const rec = {
+        date: d,
+        count: count,
+        wake: document.getElementById('ci-s-wake').value || '',
+        sleep: document.getElementById('ci-s-sleep').value || '',
+        craving: document.getElementById('ci-s-crave').value || '无',
+        substitute: document.getElementById('ci-s-sub').value || '无',
+        exercise: document.getElementById('ci-s-exer').value || '无',
+        mood: document.getElementById('ci-s-mood').value || '一般',
+        note: document.getElementById('ci-s-note').value || ''
+      };
       const records = getSmokeRecords();
       const idx = records.findIndex(r => r.date === d);
-      if (idx >= 0) records[idx].count = count; else records.push({ date: d, count: count });
+      if (idx >= 0) Object.assign(records[idx], rec); else records.push(rec);
       records.sort((a, b) => a.date.localeCompare(b.date));
       saveSmokeRecords(records);
       renderTab();
@@ -569,7 +631,9 @@
     exportSmoke: function () {
       const records = getSmokeRecords();
       if (!records.length) { alert('暂无数据'); return; }
-      const csv = '日期,吸烟(支)\n' + records.map(r => r.date + ',' + r.count).join('\n');
+      const header = '日期,吸烟(支),起床,睡觉,烟瘾,替代品,运动,心情,备注';
+      const rows = records.map(r => [r.date, r.count, r.wake||'', r.sleep||'', r.craving||'', r.substitute||'', r.exercise||'', r.mood||'', '"'+(r.note||'')+'"'].join(','));
+      const csv = header + '\n' + rows.join('\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
       a.download = 'smoke-records.csv';
