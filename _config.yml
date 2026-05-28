@@ -92,11 +92,11 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: tranquility
+theme: redefine
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment.html
 deploy:
   type: git
-  repo: https://github.com/3sansai/sansai.github.io.git
+  repo: git@github.com:3sansai/sansai.github.io.git
   branch: master
