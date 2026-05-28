@@ -33,16 +33,16 @@
     const badge = document.getElementById('ci-badge');
     if (!badge) return;
     const wd = getW();
-    const sd = getS();
+    const sr = getSmokeRecords();
     const wDays = wd.length;
-    const sDays = sd ? daysBetween(sd.startDate, today()) : 0;
+    const sDays = sr.length;
     const wStreak = streak(wd.map(r => r.date));
-    const sStreak = sd ? streak(sd.checkins) : 0;
+    const sStreak = zeroStreak(sr);
     badge.innerHTML =
       '<span class="badge-icon">&#128293;</span>' +
       '<span class="badge-days">' + Math.max(wDays, sDays) + '</span>' +
       '<span class="badge-label">打卡天</span>';
-    badge.title = '减肥打卡' + wStreak + '天 | 戒烟' + sDays + '天';
+    badge.title = '减肥' + wDays + '天 | 戒烟连续0支' + sStreak + '天';
   }
 
   function openModal(tab) {
@@ -252,56 +252,195 @@
   }
 
   // ==================== SMOKE ====================
-  function renderSmoke(el) {
-    const data = getS();
-    const todayStr = today();
+  function getSmokeRecords() { try { return JSON.parse(localStorage.getItem(S_KEY)) || []; } catch (e) { return []; } }
+  function saveSmokeRecords(d) { localStorage.setItem(S_KEY, JSON.stringify(d)); }
 
-    if (!data) {
-      let html = '<div class="checkin-hero smoke-hero"><div class="hero-label">开始你的戒烟计划</div></div>';
-      html += '<div class="checkin-section"><h4>设置戒烟参数</h4>';
-      html += '<div class="checkin-form-row"><label>戒烟日期</label><input type="date" class="checkin-input md" id="ci-s-date" value="' + todayStr + '"></div>';
-      html += '<div class="checkin-form-row"><label>每天几支</label><input type="number" class="checkin-input sm" id="ci-s-perday" value="20" min="1"></div>';
-      html += '<div class="checkin-form-row"><label>每包价格</label><input type="number" class="checkin-input sm" id="ci-s-price" value="25" min="1"><span>元</span></div>';
-      html += '<div class="checkin-form-row"><label>每包支数</label><input type="number" class="checkin-input sm" id="ci-s-perpack" value="20" min="1"></div>';
-      html += '<button class="checkin-btn success" onclick="CI.startSmoke()" style="width:100%;margin-top:8px">开始戒烟</button></div>';
-      html += renderSmokeTimeline(0);
-      el.innerHTML = html;
-      return;
+  function zeroStreak(records) {
+    if (!records.length) return 0;
+    const sorted = [...records].sort((a, b) => b.date.localeCompare(a.date));
+    let s = 0;
+    for (const r of sorted) { if (r.count === 0) s++; else break; }
+    return s;
+  }
+
+  function firstZeroDate(records) {
+    const sorted = [...records].sort((a, b) => a.date.localeCompare(b.date));
+    const r = sorted.find(r => r.count === 0);
+    return r ? r.date : null;
+  }
+
+  function renderSmoke(el) {
+    const records = getSmokeRecords();
+    const todayStr = today();
+    const todayRec = records.find(r => r.date === todayStr);
+    const sorted = [...records].sort((a, b) => a.date.localeCompare(b.date));
+    const lastRec = sorted.length ? sorted[sorted.length - 1] : null;
+    const yesterdayRec = records.find(r => r.date === new Date(Date.now() - 86400000).toISOString().slice(0, 10));
+
+    const totalDays = records.length;
+    const zStreak = zeroStreak(records);
+    const totalCigs = records.reduce((s, r) => s + r.count, 0);
+    const avgCigs = totalDays ? (totalCigs / totalDays).toFixed(1) : '-';
+    const zeroDays = records.filter(r => r.count === 0).length;
+    const firstZero = firstZeroDate(records);
+    const smokeFreeDays = firstZero ? daysBetween(firstZero, todayStr) + 1 : 0;
+
+    // Today comparison
+    let compareHtml = '';
+    if (todayRec && yesterdayRec) {
+      const diff = todayRec.count - yesterdayRec.count;
+      if (diff < 0) compareHtml = '<span style="color:#27ae60">比昨天少 ' + Math.abs(diff) + ' 支</span>';
+      else if (diff > 0) compareHtml = '<span style="color:#e74c3c">比昨天多 ' + diff + ' 支</span>';
+      else compareHtml = '<span style="color:#888">和昨天一样</span>';
     }
 
-    const days = daysBetween(data.startDate, todayStr);
-    const isChecked = data.checkins.includes(todayStr);
-    const cigs = days * data.perDay;
-    const money = (cigs / data.perPack) * data.pricePerPack;
+    let html = '';
 
-    let html = '<div class="checkin-hero smoke-hero">';
-    html += '<div class="hero-days">' + days + '</div><div class="hero-label">已戒烟天数</div>';
-    html += '<div class="hero-sub">始于 ' + data.startDate + '</div></div>';
+    // Hero
+    html += '<div class="checkin-hero smoke-hero">';
+    if (todayRec) {
+      if (todayRec.count === 0) {
+        html += '<div class="hero-days">0</div><div class="hero-label">今日吸烟：0 支</div>';
+        html += '<div class="hero-sub">连续 ' + zStreak + ' 天未吸烟</div>';
+      } else {
+        html += '<div class="hero-days">' + todayRec.count + '</div><div class="hero-label">今日吸烟（支）</div>';
+        html += '<div class="hero-sub">目标：0 支 | ' + (compareHtml || '记录第一天') + '</div>';
+      }
+    } else {
+      html += '<div class="hero-label" style="font-size:20px">记录今天的吸烟量</div>';
+      html += '<div class="hero-sub">目标：每天 0 支</div>';
+    }
+    html += '</div>';
 
-    html += '<div class="checkin-section"><h4>今日打卡</h4>';
-    html += '<button class="checkin-btn ' + (isChecked ? 'disabled' : 'success') + '" onclick="CI.smokeCheckin()" style="width:100%">';
-    html += isChecked ? '今日已打卡' : '打卡';
-    html += '</button></div>';
+    // Today input
+    html += '<div class="checkin-section"><h4>今日记录</h4>';
+    html += '<div class="checkin-form-row">';
+    html += '<input type="number" class="checkin-input sm" id="ci-s-count" placeholder="支数" min="0" max="200" value="' + (todayRec ? todayRec.count : '') + '">';
+    html += '<input type="date" class="checkin-input md" id="ci-s-date" value="' + todayStr + '">';
+    html += '<button class="checkin-btn primary" onclick="CI.addSmoke()">' + (todayRec ? '更新' : '打卡') + '</button>';
+    html += '</div>';
+    if (todayRec && yesterdayRec) html += '<div style="font-size:13px;margin-top:6px">' + compareHtml + '</div>';
+    html += '</div>';
 
+    // Stats
     html += '<div class="checkin-section"><h4>数据统计</h4><div class="checkin-stats">';
-    html += sItem(days, '戒烟天数') + sItem(cigs, '少抽(支)') + sItem('¥' + money.toFixed(0), '已省');
-    html += sItem(data.checkins.length, '打卡次数') + sItem(streak(data.checkins), '连续打卡');
-    html += sItem(Math.floor(cigs * 11 / 1440), '延长寿命(天)');
+    html += sItem(totalDays, '记录天数') + sItem(zStreak, '连续0支') + sItem(zeroDays + '/' + totalDays, '0支天数');
+    html += sItem(avgCigs, '日均(支)') + sItem(totalCigs, '总吸烟(支)') + sItem(smokeFreeDays, '已戒烟(天)');
     html += '</div></div>';
 
+    // Trend chart
+    html += '<div class="checkin-section"><h4>吸烟趋势</h4><div class="checkin-chart"><canvas id="ci-s-chart"></canvas></div></div>';
+
+    // Health timeline
+    const days = firstZero ? daysBetween(firstZero, todayStr) : 0;
     html += renderSmokeTimeline(days);
 
+    // Calendar
     html += '<div class="checkin-section"><h4>打卡日历</h4>';
     html += '<div class="checkin-cal-nav"><button class="cal-btn" onclick="CI.calNav(-1)">&lt;</button>';
     html += '<span class="cal-title" id="ci-cal-title"></span>';
     html += '<button class="cal-btn" onclick="CI.calNav(1)">&gt;</button></div>';
     html += '<div class="checkin-calendar" id="ci-calendar"></div></div>';
 
+    // Records
+    html += '<div class="checkin-section"><h4>记录</h4><div id="ci-s-records"></div>';
     html += '<div class="checkin-actions">';
-    html += '<button class="checkin-btn danger" onclick="CI.clearSmoke()">清除数据</button></div>';
+    html += '<button class="checkin-btn ghost" onclick="CI.exportSmoke()">导出CSV</button>';
+    html += '<button class="checkin-btn danger" onclick="CI.clearSmoke()">清除数据</button>';
+    html += '</div></div>';
 
     el.innerHTML = html;
-    renderCalendar(data.checkins);
+    drawSmokeChart(records);
+    renderSmokeCalendar(records);
+    renderSmokeRecords(records);
+  }
+
+  function drawSmokeChart(records) {
+    const canvas = document.getElementById('ci-s-chart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 160;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const sorted = [...records].sort((a, b) => a.date.localeCompare(b.date));
+    if (sorted.length < 2) { ctx.fillStyle = '#aaa'; ctx.textAlign = 'center'; ctx.fillText('至少2条数据', canvas.width / 2, 80); return; }
+    const recent = sorted.slice(-30);
+    const vals = recent.map(r => r.count);
+    const maxV = Math.max(...vals, 5) + 1;
+    const pad = { t: 16, r: 16, b: 24, l: 36 };
+    const w = canvas.width - pad.l - pad.r, h = canvas.height - pad.t - pad.b;
+    ctx.strokeStyle = '#eee'; ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + h * i / 4;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + w, y); ctx.stroke();
+      ctx.fillStyle = '#999'; ctx.textAlign = 'right'; ctx.font = '10px sans-serif';
+      ctx.fillText(Math.round(maxV - maxV * i / 4), pad.l - 4, y + 3);
+    }
+    // Zero line
+    const zeroY = pad.t + h;
+    ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(pad.l, zeroY); ctx.lineTo(pad.l + w, zeroY); ctx.stroke();
+    ctx.setLineDash([]);
+    // Line
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.beginPath();
+    recent.forEach((r, i) => {
+      const x = pad.l + w * i / (recent.length - 1);
+      const y = pad.t + h * (1 - r.count / maxV);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    // Points
+    recent.forEach((r, i) => {
+      const x = pad.l + w * i / (recent.length - 1);
+      const y = pad.t + h * (1 - r.count / maxV);
+      ctx.fillStyle = r.count === 0 ? '#27ae60' : '#e74c3c';
+      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+      if (i % Math.max(1, Math.floor(recent.length / 6)) === 0 || i === recent.length - 1) {
+        ctx.fillStyle = '#999'; ctx.textAlign = 'center'; ctx.font = '9px sans-serif';
+        ctx.fillText(r.date.slice(5), x, canvas.height - 4);
+      }
+    });
+  }
+
+  function renderSmokeCalendar(records) {
+    const dateMap = {};
+    records.forEach(r => { dateMap[r.date] = r.count; });
+    const todayStr = today();
+    document.getElementById('ci-cal-title').textContent = calYear + '年' + (calMonth + 1) + '月';
+    const c = document.getElementById('ci-calendar');
+    c.innerHTML = '';
+    ['日', '一', '二', '三', '四', '五', '六'].forEach(d => {
+      c.innerHTML += '<div class="cal-head">' + d + '</div>';
+    });
+    const first = new Date(calYear, calMonth, 1);
+    const last = new Date(calYear, calMonth + 1, 0);
+    for (let i = 0; i < first.getDay(); i++) c.innerHTML += '<div class="cal-day other"></div>';
+    for (let d = 1; d <= last.getDate(); d++) {
+      const ds = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      let cls = 'cal-day';
+      if (ds in dateMap) cls += dateMap[ds] === 0 ? ' checked' : '';
+      if (ds === todayStr) cls += ' today';
+      const title = ds in dateMap ? dateMap[ds] + '支' : '';
+      c.innerHTML += '<div class="' + cls + '" title="' + title + '">' + d + '</div>';
+    }
+  }
+
+  function renderSmokeRecords(records) {
+    const sorted = [...records].sort((a, b) => b.date.localeCompare(a.date));
+    const c = document.getElementById('ci-s-records');
+    if (!sorted.length) { c.innerHTML = '<div style="text-align:center;color:#aaa;padding:12px">暂无记录</div>'; return; }
+    c.innerHTML = sorted.slice(0, 20).map((r, i) => {
+      const prev = sorted[i + 1];
+      let diff = '';
+      if (prev) {
+        const d = r.count - prev.count;
+        if (d < 0) diff = '<span style="color:#27ae60;font-size:11px">' + d + '</span>';
+        else if (d > 0) diff = '<span style="color:#e74c3c;font-size:11px">+' + d + '</span>';
+        else diff = '<span style="color:#888;font-size:11px">=</span>';
+      }
+      const color = r.count === 0 ? '#27ae60' : '#e74c3c';
+      return '<div class="checkin-record"><span class="rec-date">' + r.date + '</span><span class="rec-val" style="color:' + color + '">' + r.count + ' 支 ' + diff + '</span><span class="rec-del" onclick="CI.delSmoke(\'' + r.date + '\')">删除</span></div>';
+    }).join('');
   }
 
   function renderSmokeTimeline(days) {
@@ -321,7 +460,7 @@
       { t: '15年', d: '心脏病风险与从未吸烟者相同' }
     ];
     function done(t) {
-      if (t.includes('分钟')) return true;
+      if (t.includes('分钟')) return days >= 1;
       if (t.includes('小时')) return days >= 1;
       if (t.includes('天')) return days >= parseInt(t);
       if (t.includes('周')) return days >= parseInt(t) * 7;
@@ -330,7 +469,7 @@
       if (t.includes('年')) return days >= parseInt(t) * 365;
       return false;
     }
-    let html = '<div class="checkin-section"><h4>健康恢复时间线</h4><div class="checkin-timeline">';
+    let html = '<div class="checkin-section"><h4>健康恢复时间线（戒烟第 ' + days + ' 天）</h4><div class="checkin-timeline">';
     items.forEach(item => {
       html += '<div class="tl-item' + (done(item.t) ? ' done' : '') + '">';
       html += '<div class="tl-title">(' + item.t + ')</div>';
@@ -402,35 +541,39 @@
       calMonth += d;
       if (calMonth > 11) { calMonth = 0; calYear++; }
       if (calMonth < 0) { calMonth = 11; calYear--; }
-      const dates = currentTab === 'weight' ? getW().map(r => r.date) : (getS() ? getS().checkins : []);
-      renderCalendar(dates);
+      if (currentTab === 'weight') renderCalendar(getW().map(r => r.date));
+      else renderSmokeCalendar(getSmokeRecords());
     },
 
-    startSmoke: function () {
-      const sd = document.getElementById('ci-s-date').value;
-      if (!sd) { alert('请选择日期'); return; }
-      saveS({
-        startDate: sd,
-        perDay: parseInt(document.getElementById('ci-s-perday').value) || 20,
-        pricePerPack: parseFloat(document.getElementById('ci-s-price').value) || 25,
-        perPack: parseInt(document.getElementById('ci-s-perpack').value) || 20,
-        checkins: [sd]
-      });
+    addSmoke: function () {
+      const count = parseInt(document.getElementById('ci-s-count').value);
+      const d = document.getElementById('ci-s-date').value;
+      if (isNaN(count) || count < 0) { alert('请输入吸烟支数（0 或正数）'); return; }
+      if (!d) { alert('请选择日期'); return; }
+      const records = getSmokeRecords();
+      const idx = records.findIndex(r => r.date === d);
+      if (idx >= 0) records[idx].count = count; else records.push({ date: d, count: count });
+      records.sort((a, b) => a.date.localeCompare(b.date));
+      saveSmokeRecords(records);
       renderTab();
       updateBadge();
     },
 
-    smokeCheckin: function () {
-      const data = getS();
-      if (!data) return;
-      const t = today();
-      if (!data.checkins.includes(t)) {
-        data.checkins.push(t);
-        data.checkins.sort();
-        saveS(data);
-      }
+    delSmoke: function (d) {
+      if (!confirm('删除 ' + d + ' 的记录？')) return;
+      saveSmokeRecords(getSmokeRecords().filter(r => r.date !== d));
       renderTab();
       updateBadge();
+    },
+
+    exportSmoke: function () {
+      const records = getSmokeRecords();
+      if (!records.length) { alert('暂无数据'); return; }
+      const csv = '日期,吸烟(支)\n' + records.map(r => r.date + ',' + r.count).join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = 'smoke-records.csv';
+      a.click();
     },
 
     clearSmoke: function () {
