@@ -1,0 +1,355 @@
+.checkin-float
+  position fixed
+  top 90px
+  right 20px
+  z-index 999
+  display flex
+  flex-direction column
+  gap 8px
+
+  .checkin-badge
+    background var(--link, #FF3B00)
+    color #fff
+    border-radius 12px
+    padding 8px 14px
+    font-size 13px
+    cursor pointer
+    box-shadow 0 2px 12px rgba(0, 0, 0, 0.15)
+    transition all 0.3s ease
+    text-align center
+    line-height 1.4
+    user-select none
+    &:hover
+      transform translateY(-2px)
+      box-shadow 0 4px 20px rgba(0, 0, 0, 0.25)
+    .badge-icon
+      font-size 16px
+      display block
+    .badge-days
+      font-size 18px
+      font-weight 700
+      display block
+    .badge-label
+      font-size 11px
+      opacity 0.85
+
+.checkin-modal-mask
+  display none
+  position fixed
+  top 0
+  left 0
+  width 100%
+  height 100%
+  background rgba(0, 0, 0, 0.5)
+  z-index 1001
+  justify-content center
+  align-items center
+  &.active
+    display flex
+
+.checkin-modal
+  background var(--background, #fff)
+  border-radius 16px
+  width 90%
+  max-width 520px
+  max-height 85vh
+  overflow-y auto
+  box-shadow 0 20px 60px rgba(0, 0, 0, 0.3)
+  animation checkin-slide-up 0.3s ease
+
+@keyframes checkin-slide-up
+  from
+    transform translateY(30px)
+    opacity 0
+  to
+    transform translateY(0)
+    opacity 1
+
+.checkin-header
+  display flex
+  justify-content space-between
+  align-items center
+  padding 20px 24px 0
+  .checkin-tabs
+    display flex
+    gap 4px
+    background var(--background-secondary, #f6f8fa)
+    border-radius 10px
+    padding 3px
+  .checkin-tab
+    padding 8px 16px
+    border-radius 8px
+    font-size 14px
+    cursor pointer
+    border none
+    background transparent
+    color var(--text-third, #999)
+    transition all 0.2s
+    font-weight 500
+    &.active
+      background var(--link, #FF3B00)
+      color #fff
+  .checkin-close
+    background none
+    border none
+    font-size 24px
+    cursor pointer
+    color var(--text-third, #999)
+    padding 0 4px
+    line-height 1
+    &:hover
+      color var(--text, #333)
+
+.checkin-body
+  padding 20px 24px 24px
+
+.checkin-section
+  margin-bottom 20px
+  h4
+    font-size 15px
+    color var(--text, #333)
+    margin 0 0 12px
+    padding-bottom 8px
+    border-bottom 1px solid var(--border, #eee)
+
+.checkin-hero
+  text-align center
+  padding 20px
+  border-radius 12px
+  margin-bottom 20px
+  &.weight-hero
+    background linear-gradient(135deg, #FF3B00, #f09819)
+  &.smoke-hero
+    background linear-gradient(135deg, #27ae60, #2ecc71)
+  color #fff
+  .hero-days
+    font-size 48px
+    font-weight 800
+    line-height 1
+  .hero-label
+    font-size 14px
+    opacity 0.9
+    margin-top 4px
+  .hero-sub
+    font-size 12px
+    opacity 0.7
+    margin-top 4px
+
+.checkin-stats
+  display grid
+  grid-template-columns repeat(3, 1fr)
+  gap 10px
+  .stat-item
+    background var(--background-secondary, #f6f8fa)
+    border-radius 8px
+    padding 12px 8px
+    text-align center
+    .stat-num
+      font-size 20px
+      font-weight 700
+      color var(--link, #FF3B00)
+    .stat-label
+      font-size 11px
+      color var(--text-third, #999)
+      margin-top 2px
+
+.checkin-form-row
+  display flex
+  gap 10px
+  align-items center
+  margin-bottom 12px
+  flex-wrap wrap
+
+.checkin-input
+  border 2px solid var(--border, #eee)
+  border-radius 8px
+  padding 8px 12px
+  font-size 14px
+  outline none
+  transition border 0.2s
+  background var(--background, #fff)
+  color var(--text, #333)
+  &:focus
+    border-color var(--link, #FF3B00)
+  &.sm
+    width 90px
+  &.md
+    width 130px
+
+.checkin-modal select
+  border 2px solid var(--border, #eee)
+  border-radius 8px
+  padding 8px 12px
+  font-size 14px
+  outline none
+  transition border 0.2s
+  background var(--background, #fff)
+  color var(--text, #333)
+  cursor pointer
+  appearance auto
+  &:focus
+    border-color var(--link, #FF3B00)
+  &.sm
+    width 90px
+
+.checkin-btn
+  border none
+  border-radius 8px
+  padding 8px 20px
+  font-size 14px
+  cursor pointer
+  transition all 0.2s
+  font-weight 500
+  &.primary
+    background var(--link, #FF3B00)
+    color #fff
+    &:hover
+      opacity 0.85
+  &.success
+    background #27ae60
+    color #fff
+    &:hover
+      background #219a52
+  &.danger
+    background #e74c3c
+    color #fff
+    &:hover
+      background #c0392b
+  &.ghost
+    background transparent
+    color var(--text-third, #999)
+    border 1px solid var(--border, #ddd)
+    &:hover
+      color var(--text-secondary, #666)
+      border-color var(--text-third, #bbb)
+  &.disabled
+    background #ccc
+    cursor default
+    &:hover
+      opacity 1
+
+.checkin-calendar
+  display grid
+  grid-template-columns repeat(7, 1fr)
+  gap 3px
+  text-align center
+  .cal-head
+    font-weight 600
+    font-size 12px
+    color var(--text-third, #999)
+    padding 4px 0
+  .cal-day
+    padding 6px 2px
+    border-radius 5px
+    font-size 12px
+    color var(--text-secondary, #666)
+    &.checked
+      background var(--link, #FF3B00)
+      color #fff
+      font-weight 600
+    &.today
+      border 2px solid var(--link, #FF3B00)
+    &.other
+      color var(--border, #ddd)
+
+.checkin-cal-nav
+  display flex
+  justify-content space-between
+  align-items center
+  margin-bottom 10px
+  .cal-title
+    font-weight 600
+    font-size 14px
+  .cal-btn
+    background none
+    border 1px solid var(--border, #ddd)
+    border-radius 6px
+    padding 4px 10px
+    font-size 12px
+    cursor pointer
+    color var(--text-secondary, #666)
+    &:hover
+      border-color var(--text-third, #aaa)
+
+.checkin-chart
+  width 100%
+  height 160px
+  canvas
+    width 100% !important
+    height 100% !important
+
+.checkin-record
+  display flex
+  justify-content space-between
+  align-items center
+  padding 8px 0
+  border-bottom 1px solid var(--border, #f0f0f0)
+  font-size 13px
+  .rec-date
+    color var(--text-third, #999)
+  .rec-val
+    font-weight 600
+    color var(--link, #FF3B00)
+  .rec-del
+    color #e74c3c
+    cursor pointer
+    font-size 12px
+    &:hover
+      text-decoration underline
+
+.checkin-actions
+  display flex
+  gap 8px
+  margin-top 12px
+  flex-wrap wrap
+
+.checkin-timeline
+  position relative
+  padding-left 24px
+  &::before
+    content ''
+    position absolute
+    left 8px
+    top 0
+    bottom 0
+    width 2px
+    background var(--border, #e0e0e0)
+  .tl-item
+    position relative
+    margin-bottom 14px
+    &::before
+      content ''
+      position absolute
+      left -20px
+      top 4px
+      width 10px
+      height 10px
+      border-radius 50%
+      border 2px solid var(--border, #e0e0e0)
+      background var(--background, #fff)
+    &.done::before
+      background #27ae60
+      border-color #27ae60
+    .tl-title
+      font-weight 600
+      font-size 13px
+      color var(--text, #333)
+    .tl-desc
+      font-size 12px
+      color var(--text-third, #999)
+      margin-top 1px
+
+@media (max-width 500px)
+  .checkin-float
+    top auto
+    bottom 80px
+    right 16px
+  .checkin-modal
+    width 95%
+    max-height 90vh
+  .checkin-header
+    padding 16px 16px 0
+  .checkin-body
+    padding 16px
+  .checkin-stats
+    grid-template-columns repeat(2, 1fr)

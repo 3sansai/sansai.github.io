@@ -20,7 +20,7 @@
   <%- theme.vendors.qrcode_js ? js(theme.vendors.qrcode_js) : js('lib/qrcode/qrcode.js') %>
 <% } %>
 
-<%- js(['js/utils', 'js/script']) %>
+<%- js(['js/utils', 'js/script', 'js/checkin']) %>
 
 <% if (theme.leancloud.enable) { %>
   <%- partial('_partial/plugins/leancloud') %>
