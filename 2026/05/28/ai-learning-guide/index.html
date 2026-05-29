@@ -1,0 +1,701 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AI 学习路线图：从大模型到 Agent 的完整入门指南 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="前言AI 正在改变软件开发的方式。从简单的聊天机器人，...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">AI 学习路线图：从大模型到 Agent 的完整入门指南</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">AI 学习路线图：从大模型到 Agent 的完整入门指南</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>9644</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI 正在改变软件开发的方式。从简单的聊天机器人，到能自主完成复杂任务的智能体（Agent），再到能检索企业知识的 RAG 系统——AI 技术栈正在成为每个开发者的必修课。</p>
+<p>本文用<strong>通俗易懂的语言</strong>，带你从零理解 AI 技术的核心概念，适合没有 AI 背景的开发者阅读。</p>
+<hr>
+<h2 id="一、AI-大模型：AI-的”大脑”"><a href="#一、AI-大模型：AI-的”大脑”" class="headerlink" title="一、AI 大模型：AI 的”大脑”"></a>一、AI 大模型：AI 的”大脑”</h2><h3 id="1-1-什么是大模型"><a href="#1-1-什么是大模型" class="headerlink" title="1.1 什么是大模型"></a>1.1 什么是大模型</h3><p>大模型（LLM，Large Language Model）就是一个<strong>超级”文字接龙”程序</strong>。</p>
+<p>你给它一句话的开头，它根据学到的规律，一个字一个字地往下接，直到生成完整的回答。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你问：  &quot;中国的首都是&quot;</span><br><span class="line">它接：  &quot;北&quot; → &quot;京&quot; → &quot;。&quot;</span><br></pre></td></tr></table></figure>
+
+<p>听起来简单，但当模型有<strong>几千亿个参数</strong>、读过<strong>互联网上几乎所有的文字</strong>后，它就变得异常强大——能写代码、翻译、写文章、做数学题。</p>
+<h3 id="1-2-常见大模型"><a href="#1-2-常见大模型" class="headerlink" title="1.2 常见大模型"></a>1.2 常见大模型</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>公司</th>
+<th>特点</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GPT-4o</td>
+<td>OpenAI</td>
+<td>综合能力强</td>
+<td>通用场景</td>
+</tr>
+<tr>
+<td>Claude</td>
+<td>Anthropic</td>
+<td>长文本、代码能力强</td>
+<td>编程、文档分析</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>Google</td>
+<td>多模态（文字+图片+视频）</td>
+<td>多媒体处理</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>深度求索</td>
+<td>开源、性价比高</td>
+<td>国内项目</td>
+</tr>
+<tr>
+<td>Qwen（通义千问）</td>
+<td>阿里</td>
+<td>中文能力强</td>
+<td>中文场景</td>
+</tr>
+<tr>
+<td>Llama</td>
+<td>Meta</td>
+<td>开源、社区活跃</td>
+<td>私有化部署</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-关键概念"><a href="#1-3-关键概念" class="headerlink" title="1.3 关键概念"></a>1.3 关键概念</h3><p><strong>Token（词元）</strong></p>
+<p>模型不直接处理文字，而是把文字拆成 Token。一个中文字约 1-2 个 token，一个英文单词约 1-2 个 token。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;我爱编程&quot; → [&quot;我&quot;, &quot;爱&quot;, &quot;编程&quot;] → 3 个 token</span><br><span class="line">&quot;Hello World&quot; → [&quot;Hello&quot;, &quot; World&quot;] → 2 个 token</span><br></pre></td></tr></table></figure>
+
+<p><strong>上下文窗口（Context Window）</strong></p>
+<p>模型一次能”看到”的文字总量。就像人的短期记忆，有容量限制。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GPT-4o：     128K token ≈ 一本 300 页的书</span><br><span class="line">Claude：     200K token ≈ 一本 500 页的书</span><br><span class="line">Gemini：     1M token  ≈ 一整套百科全书</span><br></pre></td></tr></table></figure>
+
+<p><strong>Temperature（温度）</strong></p>
+<p>控制回答”随机性”的参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0：    每次回答几乎一样（适合代码、数学）</span><br><span class="line">Temperature = 0.7：  适度变化（适合日常对话）</span><br><span class="line">Temperature = 1.5：  非常随机（适合创意写作）</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-大模型的局限"><a href="#1-4-大模型的局限" class="headerlink" title="1.4 大模型的局限"></a>1.4 大模型的局限</h3><p>大模型不是万能的，它有明显的短板：</p>
+<ul>
+<li><strong>知识有截止日期</strong>：不知道今天发生了什么</li>
+<li>**会”一本正经地胡说八道”**：专业术语叫”幻觉”</li>
+<li><strong>无法访问外部系统</strong>：不能查数据库、不能调 API</li>
+<li><strong>推理能力有限</strong>：复杂逻辑推理容易出错</li>
+</ul>
+<p>这就引出了下一个概念——<strong>Agent</strong>。</p>
+<hr>
+<h2 id="二、Agent：给-AI-装上”手和脚”"><a href="#二、Agent：给-AI-装上”手和脚”" class="headerlink" title="二、Agent：给 AI 装上”手和脚”"></a>二、Agent：给 AI 装上”手和脚”</h2><h3 id="2-1-什么是-Agent"><a href="#2-1-什么是-Agent" class="headerlink" title="2.1 什么是 Agent"></a>2.1 什么是 Agent</h3><p>大模型只能”想”，不能”做”。Agent 就是让 AI 能<strong>自主行动</strong>的系统。</p>
+<p>打个比方：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">大模型 = 一个博学的大脑，只能坐在那里思考</span><br><span class="line">Agent  = 给大脑装上了手（工具）、脚（执行）、眼睛（感知）</span><br></pre></td></tr></table></figure>
+
+<p>一个完整的 Agent 循环：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用户需求</span><br><span class="line">  ↓</span><br><span class="line">感知 → &quot;用户要我做什么？&quot;</span><br><span class="line">  ↓</span><br><span class="line">推理 → &quot;我该怎么做？分几步？&quot;</span><br><span class="line">  ↓</span><br><span class="line">行动 → 调用工具执行操作</span><br><span class="line">  ↓</span><br><span class="line">观察 → &quot;结果对不对？&quot;</span><br><span class="line">  ↓</span><br><span class="line">反思 → &quot;需要调整吗？&quot;</span><br><span class="line">  ↓</span><br><span class="line">返回结果给用户</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Agent-的核心能力"><a href="#2-2-Agent-的核心能力" class="headerlink" title="2.2 Agent 的核心能力"></a>2.2 Agent 的核心能力</h3><p><strong>1. 工具调用（Tool Use）</strong></p>
+<p>Agent 能调用各种工具，就像人使用电脑一样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">工具列表：</span><br><span class="line">├── 读写文件      → read_file() / write_file()</span><br><span class="line">├── 执行命令      → run_command()</span><br><span class="line">├── 搜索网页      → web_search()</span><br><span class="line">├── 查询数据库    → query_database()</span><br><span class="line">├── 调用 API      → call_api()</span><br><span class="line">└── 发送消息      → send_message()</span><br></pre></td></tr></table></figure>
+
+<p>AI 根据任务自动决定用哪个工具：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用户：&quot;帮我查一下数据库里有多少用户&quot;</span><br><span class="line"></span><br><span class="line">AI 思考：需要查询数据库</span><br><span class="line">AI 行动：调用 query_database(&quot;SELECT COUNT(*) FROM users&quot;)</span><br><span class="line">AI 观察：返回结果 15234</span><br><span class="line">AI 回答：&quot;数据库中共有 15,234 个用户。&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 规划能力（Planning）</strong></p>
+<p>Agent 能把复杂任务拆成可执行的步骤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">用户：&quot;帮我搭建一个博客网站&quot;</span><br><span class="line"></span><br><span class="line">Agent 规划：</span><br><span class="line">  Step 1: 创建项目目录</span><br><span class="line">  Step 2: 初始化项目框架</span><br><span class="line">  Step 3: 编写首页代码</span><br><span class="line">  Step 4: 添加文章页面</span><br><span class="line">  Step 5: 配置样式</span><br><span class="line">  Step 6: 启动本地服务器验证</span><br><span class="line"></span><br><span class="line">Agent 执行：逐步完成每个步骤...</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 记忆系统（Memory）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">短期记忆：当前对话的内容（对话结束就消失）</span><br><span class="line">长期记忆：跨对话保存的知识（用户偏好、项目信息）</span><br><span class="line">工作记忆：当前任务的中间状态（待办列表、执行计划）</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-Agent-的应用场景"><a href="#2-3-Agent-的应用场景" class="headerlink" title="2.3 Agent 的应用场景"></a>2.3 Agent 的应用场景</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>Agent 能做什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代码开发</td>
+<td>写代码、修 bug、做代码审查</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>读数据、生成图表、写分析报告</td>
+</tr>
+<tr>
+<td>运维监控</td>
+<td>检查服务状态、自动修复故障</td>
+</tr>
+<tr>
+<td>文档处理</td>
+<td>读文档、提取信息、生成摘要</td>
+</tr>
+<tr>
+<td>客户服务</td>
+<td>回答问题、处理工单、转人工</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、Skill：Agent-的”技能包”"><a href="#三、Skill：Agent-的”技能包”" class="headerlink" title="三、Skill：Agent 的”技能包”"></a>三、Skill：Agent 的”技能包”</h2><h3 id="3-1-什么是-Skill"><a href="#3-1-什么是-Skill" class="headerlink" title="3.1 什么是 Skill"></a>3.1 什么是 Skill</h3><p>如果 Agent 是一个人，Skill 就是这个人掌握的<strong>具体技能</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Agent（人）</span><br><span class="line">├── Skill: 写代码        → 会用 IDE、知道编程规范</span><br><span class="line">├── Skill: 做代码审查     → 知道检查什么、怎么评价</span><br><span class="line">├── Skill: 部署应用       → 会用 Docker、了解 CI/CD</span><br><span class="line">└── Skill: 写文档         → 知道文档结构、写作技巧</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Skill-vs-Tool-的区别"><a href="#3-2-Skill-vs-Tool-的区别" class="headerlink" title="3.2 Skill vs Tool 的区别"></a>3.2 Skill vs Tool 的区别</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Tool（工具）= 锤子、螺丝刀、扳手（原子操作）</span><br><span class="line">Skill（技能）= 木工手艺、电路维修（组合多个工具的完整流程）</span><br><span class="line"></span><br><span class="line">一个 Skill 内部可能用到多个 Tool：</span><br><span class="line">  &quot;代码审查&quot; Skill</span><br><span class="line">    ├── Tool: 读取文件</span><br><span class="line">    ├── Tool: 搜索代码</span><br><span class="line">    ├── Tool: 分析依赖</span><br><span class="line">    └── Tool: 生成报告</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-Skill-的结构"><a href="#3-3-Skill-的结构" class="headerlink" title="3.3 Skill 的结构"></a>3.3 Skill 的结构</h3><p>一个 Skill 通常包含：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">代码审查</span></span><br><span class="line"><span class="string">触发条件:</span> <span class="string">用户说&quot;帮我看看代码&quot;</span> <span class="string">/</span> <span class="string">&quot;code review&quot;</span></span><br><span class="line"><span class="string">所需工具:</span> [<span class="string">读取文件</span>, <span class="string">搜索代码</span>, <span class="string">运行测试</span>]</span><br><span class="line"><span class="string">执行步骤:</span></span><br><span class="line">  <span class="number">1</span><span class="string">.</span> <span class="string">读取代码变更（diff）</span></span><br><span class="line">  <span class="number">2</span><span class="string">.</span> <span class="string">检查逻辑错误</span></span><br><span class="line">  <span class="number">3</span><span class="string">.</span> <span class="string">检查安全漏洞</span></span><br><span class="line">  <span class="number">4</span><span class="string">.</span> <span class="string">检查代码风格</span></span><br><span class="line">  <span class="number">5</span><span class="string">.</span> <span class="string">生成审查报告</span></span><br><span class="line"><span class="string">输出格式:</span> <span class="string">结构化的审查意见</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-Skill-的分类"><a href="#3-4-Skill-的分类" class="headerlink" title="3.4 Skill 的分类"></a>3.4 Skill 的分类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">通用 Skill：任何项目都能用</span><br><span class="line">  ├── 代码格式化</span><br><span class="line">  ├── 文件搜索</span><br><span class="line">  └── 终端操作</span><br><span class="line"></span><br><span class="line">领域 Skill：特定技术栈</span><br><span class="line">  ├── React 组件开发</span><br><span class="line">  ├── SQL 查询优化</span><br><span class="line">  └── Docker 配置</span><br><span class="line"></span><br><span class="line">项目 Skill：特定项目专用</span><br><span class="line">  ├── 部署到公司服务器</span><br><span class="line">  ├── 运行项目测试套件</span><br><span class="line">  └── 遵循团队编码规范</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、RAG：让-AI-学会”查资料”"><a href="#四、RAG：让-AI-学会”查资料”" class="headerlink" title="四、RAG：让 AI 学会”查资料”"></a>四、RAG：让 AI 学会”查资料”</h2><h3 id="4-1-为什么需要-RAG"><a href="#4-1-为什么需要-RAG" class="headerlink" title="4.1 为什么需要 RAG"></a>4.1 为什么需要 RAG</h3><p>大模型有两个致命问题：</p>
+<ol>
+<li><strong>知识有截止日期</strong>：不知道公司内部文档、不知道今天的新闻</li>
+<li><strong>会编造答案</strong>：遇到不知道的问题，可能一本正经地胡说</li>
+</ol>
+<p>RAG（Retrieval Augmented Generation，检索增强生成）就是解决这两个问题的。</p>
+<h3 id="4-2-RAG-的原理"><a href="#4-2-RAG-的原理" class="headerlink" title="4.2 RAG 的原理"></a>4.2 RAG 的原理</h3><p>RAG 的核心思路：<strong>先查资料，再回答问题</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">传统方式：</span><br><span class="line">  用户提问 → AI 直接回答（可能答错）</span><br><span class="line"></span><br><span class="line">RAG 方式：</span><br><span class="line">  用户提问 → 先从知识库检索相关资料 → 把资料给 AI → AI 根据资料回答</span><br></pre></td></tr></table></figure>
+
+<p>具体流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Step 1: 建立知识库</span><br><span class="line">  ┌─────────────────────────┐</span><br><span class="line">  │  公司文档               │</span><br><span class="line">  │  产品手册               │  → 切分成小段 → 转成向量 → 存入向量数据库</span><br><span class="line">  │  技术规范               │</span><br><span class="line">  │  历史工单               │</span><br><span class="line">  └─────────────────────────┘</span><br><span class="line"></span><br><span class="line">Step 2: 用户提问</span><br><span class="line">  &quot;我们的退款政策是什么？&quot;</span><br><span class="line"></span><br><span class="line">Step 3: 检索相关文档</span><br><span class="line">  从向量数据库中找到最相关的 3-5 段文档</span><br><span class="line"></span><br><span class="line">Step 4: AI 根据文档回答</span><br><span class="line">  输入：用户问题 + 检索到的文档</span><br><span class="line">  输出：&quot;根据公司退款政策，购买后 7 天内可无理由退款...&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-向量搜索：RAG-的核心技术"><a href="#4-3-向量搜索：RAG-的核心技术" class="headerlink" title="4.3 向量搜索：RAG 的核心技术"></a>4.3 向量搜索：RAG 的核心技术</h3><p>传统搜索是<strong>关键词匹配</strong>，向量搜索是<strong>语义匹配</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">关键词搜索：</span><br><span class="line">  搜索：&quot;退款&quot; → 只能找到包含&quot;退款&quot;两个字的文档</span><br><span class="line">  遗漏：&quot;退货返款&quot;、&quot;钱退回去了&quot; → 找不到</span><br><span class="line"></span><br><span class="line">向量搜索：</span><br><span class="line">  把文字转成一组数字（向量），比如：</span><br><span class="line">  &quot;退款&quot;    → [0.2, 0.8, 0.1, ...]</span><br><span class="line">  &quot;退货返款&quot; → [0.21, 0.79, 0.12, ...]  ← 向量很接近！</span><br><span class="line"></span><br><span class="line">  语义相近的文字，向量也相近 → 能找到语义相关的内容</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-RAG-实战架构"><a href="#4-4-RAG-实战架构" class="headerlink" title="4.4 RAG 实战架构"></a>4.4 RAG 实战架构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────┐</span><br><span class="line">│                RAG 系统                   │</span><br><span class="line">├─────────────────────────────────────────┤</span><br><span class="line">│                                         │</span><br><span class="line">│  ┌──────────┐    ┌──────────────────┐   │</span><br><span class="line">│  │ 知识库    │    │  向量数据库       │   │</span><br><span class="line">│  │ 文档上传  │ →  │  文本切片         │   │</span><br><span class="line">│  │ 文本切分  │    │  向量化存储       │   │</span><br><span class="line">│  │ 向量化    │    │  相似度检索       │   │</span><br><span class="line">│  └──────────┘    └────────┬─────────┘   │</span><br><span class="line">│                           │              │</span><br><span class="line">│  ┌──────────┐    ┌────────▼─────────┐   │</span><br><span class="line">│  │ 用户提问  │ →  │  检索 + 生成     │   │</span><br><span class="line">│  └──────────┘    │  相关文档 + 问题  │   │</span><br><span class="line">│                  │  → 大模型生成答案  │   │</span><br><span class="line">│                  └──────────────────┘   │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-RAG-适用场景"><a href="#4-5-RAG-适用场景" class="headerlink" title="4.5 RAG 适用场景"></a>4.5 RAG 适用场景</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>企业知识问答</td>
+<td>基于内部文档回答员工问题</td>
+</tr>
+<tr>
+<td>智能客服</td>
+<td>基于产品文档回答客户问题</td>
+</tr>
+<tr>
+<td>代码助手</td>
+<td>基于项目代码回答开发问题</td>
+</tr>
+<tr>
+<td>法律咨询</td>
+<td>基于法规条文回答法律问题</td>
+</tr>
+<tr>
+<td>医疗问答</td>
+<td>基于医学文献回答健康问题</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、工作流编排：让多个-Agent-协作"><a href="#五、工作流编排：让多个-Agent-协作" class="headerlink" title="五、工作流编排：让多个 Agent 协作"></a>五、工作流编排：让多个 Agent 协作</h2><h3 id="5-1-为什么需要编排"><a href="#5-1-为什么需要编排" class="headerlink" title="5.1 为什么需要编排"></a>5.1 为什么需要编排</h3><p>单个 Agent 能力有限，复杂任务需要<strong>多个 Agent 分工协作</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">场景：用户说&quot;帮我做一个完整的代码审查&quot;</span><br><span class="line"></span><br><span class="line">单 Agent：</span><br><span class="line">  一个 Agent 既读代码、又分析、又写报告 → 效果一般</span><br><span class="line"></span><br><span class="line">多 Agent 编排：</span><br><span class="line">  Planner Agent  → 制定审查计划</span><br><span class="line">  Reader Agent   → 读取和分析代码</span><br><span class="line">  Security Agent → 专注安全检查</span><br><span class="line">  Report Agent   → 汇总生成报告</span><br><span class="line">  → 各司其职，效果更好</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-常见编排模式"><a href="#5-2-常见编排模式" class="headerlink" title="5.2 常见编排模式"></a>5.2 常见编排模式</h3><p><strong>1. 顺序执行（Sequential）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">任务 A → 任务 B → 任务 C → 最终结果</span><br><span class="line"></span><br><span class="line">示例：数据处理流程</span><br><span class="line">  读取数据 → 清洗数据 → 分析数据 → 生成报告</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 并行执行（Parallel）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">         ┌→ 任务 A ─┐</span><br><span class="line">任务入口 →├→ 任务 B ─├→ 合并结果</span><br><span class="line">         └→ 任务 C ─┘</span><br><span class="line"></span><br><span class="line">示例：代码审查</span><br><span class="line">  同时进行：安全检查 + 性能分析 + 风格检查 → 汇总报告</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 条件分支（Conditional）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">判断条件</span><br><span class="line">  ├→ 条件1 → 执行方案 A</span><br><span class="line">  ├→ 条件2 → 执行方案 B</span><br><span class="line">  └→ 条件3 → 执行方案 C</span><br><span class="line"></span><br><span class="line">示例：客服分流</span><br><span class="line">  用户问题类型</span><br><span class="line">    ├→ 技术问题 → 技术支持 Agent</span><br><span class="line">    ├→ 退款问题 → 退款处理 Agent</span><br><span class="line">    └→ 其他     → 通用客服 Agent</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 循环执行（Loop）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">重复执行直到满足条件：</span><br><span class="line">  执行任务 → 检查结果 → 不满足 → 再次执行</span><br><span class="line">                              → 满足 → 返回结果</span><br><span class="line"></span><br><span class="line">示例：代码修复</span><br><span class="line">  写代码 → 运行测试 → 失败 → 分析错误 → 修改代码 → 再次运行</span><br><span class="line">                                              → 成功 → 完成</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-工作流编排工具"><a href="#5-3-工作流编排工具" class="headerlink" title="5.3 工作流编排工具"></a>5.3 工作流编排工具</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>特点</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LangChain</td>
+<td>灵活、生态丰富</td>
+<td>自定义复杂流程</td>
+</tr>
+<tr>
+<td>LangGraph</td>
+<td>图状工作流</td>
+<td>多 Agent 协作</td>
+</tr>
+<tr>
+<td>Dify</td>
+<td>可视化、低代码</td>
+<td>快速搭建 AI 应用</td>
+</tr>
+<tr>
+<td>Coze（扣子）</td>
+<td>字节出品、中文友好</td>
+<td>国内 AI 应用</td>
+</tr>
+<tr>
+<td>CrewAI</td>
+<td>角色分工明确</td>
+<td>多 Agent 场景</td>
+</tr>
+</tbody></table>
+<h3 id="5-4-编排示例：智能客服系统"><a href="#5-4-编排示例：智能客服系统" class="headerlink" title="5.4 编排示例：智能客服系统"></a>5.4 编排示例：智能客服系统</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">用户提问</span><br><span class="line">  ↓</span><br><span class="line">Router Agent（路由）</span><br><span class="line">  ├→ 技术问题 → 技术 Agent + RAG（技术文档）</span><br><span class="line">  ├→ 退款问题 → 退款 Agent + RAG（退款政策）</span><br><span class="line">  └→ 其他     → 通用 Agent</span><br><span class="line">  ↓</span><br><span class="line">Response Agent（优化回答）</span><br><span class="line">  ↓</span><br><span class="line">返回给用户</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、其他重要概念"><a href="#六、其他重要概念" class="headerlink" title="六、其他重要概念"></a>六、其他重要概念</h2><h3 id="6-1-Prompt-Engineering（提示词工程）"><a href="#6-1-Prompt-Engineering（提示词工程）" class="headerlink" title="6.1 Prompt Engineering（提示词工程）"></a>6.1 Prompt Engineering（提示词工程）</h3><p>和 AI 沟通的”话术”，好的提示词能让 AI 输出质量大幅提升。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">差的提示词：</span><br><span class="line">  &quot;帮我写个程序&quot;</span><br><span class="line"></span><br><span class="line">好的提示词：</span><br><span class="line">  &quot;请用 Python 写一个函数，功能是：</span><br><span class="line">  1. 接收一个列表作为参数</span><br><span class="line">  2. 去除列表中的重复元素</span><br><span class="line">  3. 按从小到大排序</span><br><span class="line">  4. 返回排序后的列表</span><br><span class="line">  请添加类型注解和 docstring。&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>常用技巧：</strong></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> 明确角色：你是一个资深 Java 开发工程师</span><br><span class="line"><span class="bullet">2.</span> 给出示例：参考这个格式...</span><br><span class="line"><span class="bullet">3.</span> 分步思考：请一步一步分析</span><br><span class="line"><span class="bullet">4.</span> 限制范围：只修改这个函数，不要改其他代码</span><br><span class="line"><span class="bullet">5.</span> 要求解释：请解释你的思路</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-Fine-tuning（微调）"><a href="#6-2-Fine-tuning（微调）" class="headerlink" title="6.2 Fine-tuning（微调）"></a>6.2 Fine-tuning（微调）</h3><p>用特定领域的数据”再训练”模型，让它更懂你的业务。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通用大模型：什么都知道一点，但不够专业</span><br><span class="line">  ↓ 微调（喂入医疗问答数据）</span><br><span class="line">医疗大模型：对医疗问题回答更准确</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>成本</th>
+<th>效果</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prompt Engineering</td>
+<td>零成本</td>
+<td>一般</td>
+<td>快速验证</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>低</td>
+<td>好</td>
+<td>知识问答</td>
+</tr>
+<tr>
+<td>Fine-tuning</td>
+<td>高</td>
+<td>很好</td>
+<td>专业领域</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-MCP（Model-Context-Protocol）"><a href="#6-3-MCP（Model-Context-Protocol）" class="headerlink" title="6.3 MCP（Model Context Protocol）"></a>6.3 MCP（Model Context Protocol）</h3><p>Anthropic 提出的开放标准，让 AI 能<strong>标准化地连接外部工具和数据源</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">传统方式：每个工具都要写专门的对接代码</span><br><span class="line">MCP 方式：统一协议，即插即用</span><br><span class="line"></span><br><span class="line">类比：</span><br><span class="line">  USB 接口出现之前 → 每种设备一种接口</span><br><span class="line">  USB 接口出现之后 → 统一接口，插上就能用</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-Function-Calling（函数调用）"><a href="#6-4-Function-Calling（函数调用）" class="headerlink" title="6.4 Function Calling（函数调用）"></a>6.4 Function Calling（函数调用）</h3><p>让大模型能<strong>结构化地调用函数</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 你告诉模型有哪些函数可用</span></span><br><span class="line">tools = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;get_weather&quot;</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;查询天气&quot;</span>,</span><br><span class="line">        <span class="string">&quot;parameters&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;city&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>, <span class="string">&quot;description&quot;</span>: <span class="string">&quot;城市名&quot;</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户问：&quot;北京今天天气怎么样？&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型返回：</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;function&quot;</span>: <span class="string">&quot;get_weather&quot;</span>,</span><br><span class="line">    <span class="string">&quot;arguments&quot;</span>: &#123;<span class="string">&quot;city&quot;</span>: <span class="string">&quot;北京&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你执行函数，把结果返回给模型</span></span><br><span class="line"><span class="comment"># 模型根据结果生成回答</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、学习路线建议"><a href="#七、学习路线建议" class="headerlink" title="七、学习路线建议"></a>七、学习路线建议</h2><h3 id="入门阶段（1-2-周）"><a href="#入门阶段（1-2-周）" class="headerlink" title="入门阶段（1-2 周）"></a>入门阶段（1-2 周）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 了解大模型基本概念（本文）</span><br><span class="line">2. 动手使用 AI 产品（ChatGPT / Claude / 通义千问）</span><br><span class="line">3. 学习 Prompt Engineering 基础</span><br><span class="line">4. 用 AI 辅助写代码、写文档</span><br></pre></td></tr></table></figure>
+
+<h3 id="进阶阶段（2-4-周）"><a href="#进阶阶段（2-4-周）" class="headerlink" title="进阶阶段（2-4 周）"></a>进阶阶段（2-4 周）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 了解 API 调用方式（OpenAI API / Claude API）</span><br><span class="line">2. 搭建一个简单的 RAG 应用</span><br><span class="line">3. 了解 Agent 框架（LangChain / Dify）</span><br><span class="line">4. 尝试搭建一个简单的 AI Agent</span><br></pre></td></tr></table></figure>
+
+<h3 id="实战阶段（1-3-月）"><a href="#实战阶段（1-3-月）" class="headerlink" title="实战阶段（1-3 月）"></a>实战阶段（1-3 月）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 搭建企业级 RAG 系统</span><br><span class="line">2. 开发多 Agent 协作应用</span><br><span class="line">3. 学习工作流编排（LangGraph / Dify）</span><br><span class="line">4. 了解 Fine-tuning 和模型部署</span><br><span class="line">5. 将 AI 能力集成到现有项目中</span><br></pre></td></tr></table></figure>
+
+<h3 id="推荐学习资源"><a href="#推荐学习资源" class="headerlink" title="推荐学习资源"></a>推荐学习资源</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">官方文档：</span><br><span class="line">  - OpenAI API 文档</span><br><span class="line">  - Anthropic Claude 文档</span><br><span class="line">  - LangChain 文档</span><br><span class="line"></span><br><span class="line">实战平台：</span><br><span class="line">  - Dify（可视化搭建 AI 应用）</span><br><span class="line">  - Coze / 扣子（字节跳动 AI 平台）</span><br><span class="line">  - Hugging Face（开源模型社区）</span><br><span class="line"></span><br><span class="line">社区：</span><br><span class="line">  - GitHub 上的 AI 开源项目</span><br><span class="line">  - 各大模型的开发者论坛</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、一张图总结"><a href="#八、一张图总结" class="headerlink" title="八、一张图总结"></a>八、一张图总结</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│                  AI 技术全景图                     │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│                                                 │</span><br><span class="line">│  ┌──────────────────────────────────────────┐   │</span><br><span class="line">│  │            应用层                         │   │</span><br><span class="line">│  │  智能客服 │ 代码助手 │ 数据分析 │ 内容生成  │   │</span><br><span class="line">│  └────────────────────┬─────────────────────┘   │</span><br><span class="line">│                       │                          │</span><br><span class="line">│  ┌────────────────────▼─────────────────────┐   │</span><br><span class="line">│  │          编排层                            │   │</span><br><span class="line">│  │  工作流编排 │ 多 Agent 协作 │ 条件分支     │   │</span><br><span class="line">│  └────────────────────┬─────────────────────┘   │</span><br><span class="line">│                       │                          │</span><br><span class="line">│  ┌────────────────────▼─────────────────────┐   │</span><br><span class="line">│  │          能力层                            │   │</span><br><span class="line">│  │  Agent │ Skill │ RAG │ Tool Use │ Memory  │   │</span><br><span class="line">│  └────────────────────┬─────────────────────┘   │</span><br><span class="line">│                       │                          │</span><br><span class="line">│  ┌────────────────────▼─────────────────────┐   │</span><br><span class="line">│  │          模型层                            │   │</span><br><span class="line">│  │  GPT │ Claude │ Gemini │ DeepSeek │ Qwen  │   │</span><br><span class="line">│  └──────────────────────────────────────────┘   │</span><br><span class="line">│                                                 │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>AI 技术的学习不需要高深的数学基础。作为开发者，你只需要理解：</p>
+<ol>
+<li><strong>大模型</strong>是 AI 的大脑，负责”想”</li>
+<li><strong>Agent</strong>让 AI 能”做”事情</li>
+<li><strong>Skill</strong>是 Agent 的具体技能</li>
+<li><strong>RAG</strong>让 AI 能”查资料”，减少胡说</li>
+<li><strong>工作流编排</strong>让多个 AI 协同工作</li>
+</ol>
+<p>从今天开始，用 AI 辅助你的日常工作，边用边学，是最快的学习方式。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/ai-learning-guide/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;ai-learning-guide&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;ai-learning-guide&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAG/" rel="tag">RAG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/29/ai-ppt-guide/"><i class="iconfont iconleft"></i>用 AI 写出专业级项目汇报 PPT：从零到高手的完整指南</a>
+    <a href="/2026/05/28/llm-deep-dive/">大模型是 AI 的大脑：深入理解 LLM 的原理与应用<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%EF%BC%9AAI-%E7%9A%84%E2%80%9D%E5%A4%A7%E8%84%91%E2%80%9D"><span class="toc-text">一、AI 大模型：AI 的”大脑”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%A7%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.1 什么是大模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%B8%B8%E8%A7%81%E5%A4%A7%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.2 常见大模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="toc-text">1.3 关键概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B1%80%E9%99%90"><span class="toc-text">1.4 大模型的局限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Agent%EF%BC%9A%E7%BB%99-AI-%E8%A3%85%E4%B8%8A%E2%80%9D%E6%89%8B%E5%92%8C%E8%84%9A%E2%80%9D"><span class="toc-text">二、Agent：给 AI 装上”手和脚”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%80%E4%B9%88%E6%98%AF-Agent"><span class="toc-text">2.1 什么是 Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Agent-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B"><span class="toc-text">2.2 Agent 的核心能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Agent-%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2.3 Agent 的应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Skill%EF%BC%9AAgent-%E7%9A%84%E2%80%9D%E6%8A%80%E8%83%BD%E5%8C%85%E2%80%9D"><span class="toc-text">三、Skill：Agent 的”技能包”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF-Skill"><span class="toc-text">3.1 什么是 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Skill-vs-Tool-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">3.2 Skill vs Tool 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Skill-%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-text">3.3 Skill 的结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Skill-%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">3.4 Skill 的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81RAG%EF%BC%9A%E8%AE%A9-AI-%E5%AD%A6%E4%BC%9A%E2%80%9D%E6%9F%A5%E8%B5%84%E6%96%99%E2%80%9D"><span class="toc-text">四、RAG：让 AI 学会”查资料”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-RAG"><span class="toc-text">4.1 为什么需要 RAG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-RAG-%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">4.2 RAG 的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%90%91%E9%87%8F%E6%90%9C%E7%B4%A2%EF%BC%9ARAG-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF"><span class="toc-text">4.3 向量搜索：RAG 的核心技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-RAG-%E5%AE%9E%E6%88%98%E6%9E%B6%E6%9E%84"><span class="toc-text">4.4 RAG 实战架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-RAG-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">4.5 RAG 适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%BC%96%E6%8E%92%EF%BC%9A%E8%AE%A9%E5%A4%9A%E4%B8%AA-Agent-%E5%8D%8F%E4%BD%9C"><span class="toc-text">五、工作流编排：让多个 Agent 协作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%BC%96%E6%8E%92"><span class="toc-text">5.1 为什么需要编排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%B8%B8%E8%A7%81%E7%BC%96%E6%8E%92%E6%A8%A1%E5%BC%8F"><span class="toc-text">5.2 常见编排模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%BC%96%E6%8E%92%E5%B7%A5%E5%85%B7"><span class="toc-text">5.3 工作流编排工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E7%BC%96%E6%8E%92%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%99%BA%E8%83%BD%E5%AE%A2%E6%9C%8D%E7%B3%BB%E7%BB%9F"><span class="toc-text">5.4 编排示例：智能客服系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%85%B6%E4%BB%96%E9%87%8D%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="toc-text">六、其他重要概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89"><span class="toc-text">6.1 Prompt Engineering（提示词工程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Fine-tuning%EF%BC%88%E5%BE%AE%E8%B0%83%EF%BC%89"><span class="toc-text">6.2 Fine-tuning（微调）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-MCP%EF%BC%88Model-Context-Protocol%EF%BC%89"><span class="toc-text">6.3 MCP（Model Context Protocol）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-Function-Calling%EF%BC%88%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%EF%BC%89"><span class="toc-text">6.4 Function Calling（函数调用）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%BB%BA%E8%AE%AE"><span class="toc-text">七、学习路线建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E9%98%B6%E6%AE%B5%EF%BC%881-2-%E5%91%A8%EF%BC%89"><span class="toc-text">入门阶段（1-2 周）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E9%98%B6%E6%AE%B5%EF%BC%882-4-%E5%91%A8%EF%BC%89"><span class="toc-text">进阶阶段（2-4 周）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E9%98%B6%E6%AE%B5%EF%BC%881-3-%E6%9C%88%EF%BC%89"><span class="toc-text">实战阶段（1-3 月）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="toc-text">推荐学习资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E4%B8%80%E5%BC%A0%E5%9B%BE%E6%80%BB%E7%BB%93"><span class="toc-text">八、一张图总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

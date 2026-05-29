@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RAG 让 AI 能&#34;查资料&#34;：检索增强生成完全指南 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="前言大模型有两个致命缺陷：知识有截止日期和会编造答案。...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">RAG 让 AI 能&#34;查资料&#34;：检索增强生成完全指南</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">RAG 让 AI 能"查资料"：检索增强生成完全指南</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>6893</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>大模型有两个致命缺陷：<strong>知识有截止日期</strong>和<strong>会编造答案</strong>。你问它公司内部的退款政策，它不知道；你问它一个不确定的事实，它可能一本正经地胡说。RAG（Retrieval Augmented Generation，检索增强生成）就是为了解决这两个问题而生的。</p>
+<hr>
+<h2 id="一、RAG-的核心思想"><a href="#一、RAG-的核心思想" class="headerlink" title="一、RAG 的核心思想"></a>一、RAG 的核心思想</h2><p>RAG 的思路很简单：<strong>先查资料，再回答问题</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">没有 RAG：</span><br><span class="line">  用户：&quot;公司的年假政策是什么？&quot;</span><br><span class="line">  AI：&quot;根据一般企业规定...&quot;  ← 在瞎猜</span><br><span class="line"></span><br><span class="line">有了 RAG：</span><br><span class="line">  用户：&quot;公司的年假政策是什么？&quot;</span><br><span class="line">  系统：（先从知识库检索到《员工手册》相关段落）</span><br><span class="line">  AI：&quot;根据《员工手册》第 3.2 节，入职满 1 年有 5 天年假...&quot;  ← 有据可依</span><br></pre></td></tr></table></figure>
+
+<p>就像一个学生考试：</p>
+<ul>
+<li>没有 RAG &#x3D; 闭卷考试（全靠记忆，容易错）</li>
+<li>有了 RAG &#x3D; 开卷考试（可以翻书，答案更准确）</li>
+</ul>
+<hr>
+<h2 id="二、RAG-完整流程"><a href="#二、RAG-完整流程" class="headerlink" title="二、RAG 完整流程"></a>二、RAG 完整流程</h2><h3 id="2-1-离线阶段：建立知识库"><a href="#2-1-离线阶段：建立知识库" class="headerlink" title="2.1 离线阶段：建立知识库"></a>2.1 离线阶段：建立知识库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">文档（PDF/Word/网页）</span><br><span class="line">    ↓</span><br><span class="line">文本切分（Chunking）</span><br><span class="line">    ↓</span><br><span class="line">向量化（Embedding）</span><br><span class="line">    ↓</span><br><span class="line">存入向量数据库</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 1：文档加载</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> PyPDFLoader, TextLoader</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载 PDF</span></span><br><span class="line">loader = PyPDFLoader(<span class="string">&quot;employee_handbook.pdf&quot;</span>)</span><br><span class="line">docs = loader.load()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载文本</span></span><br><span class="line">loader = TextLoader(<span class="string">&quot;faq.txt&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">docs = loader.load()</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 2：文本切分</strong></p>
+<p>为什么要切分？因为：</p>
+<ul>
+<li>大模型有上下文限制，不能把整本书塞进去</li>
+<li>检索需要精确匹配，段落太大会包含无关信息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"></span><br><span class="line">splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">500</span>,       <span class="comment"># 每块 500 字符</span></span><br><span class="line">    chunk_overlap=<span class="number">50</span>,     <span class="comment"># 相邻块重叠 50 字符</span></span><br><span class="line">    separators=[<span class="string">&quot;\n\n&quot;</span>, <span class="string">&quot;\n&quot;</span>, <span class="string">&quot;。&quot;</span>, <span class="string">&quot;！&quot;</span>, <span class="string">&quot;？&quot;</span>, <span class="string">&quot; &quot;</span>],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">chunks = splitter.split_documents(docs)</span><br></pre></td></tr></table></figure>
+
+<p>切分策略很重要：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">切太大（chunk_size=5000）：</span><br><span class="line">  → 检索不精确，大量无关信息干扰 AI</span><br><span class="line">  → 但上下文完整，AI 理解更好</span><br><span class="line"></span><br><span class="line">切太小（chunk_size=100）：</span><br><span class="line">  → 检索精确，但信息碎片化</span><br><span class="line">  → AI 缺乏上下文，理解困难</span><br><span class="line"></span><br><span class="line">推荐：300-1000 字符，根据文档特点调整</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 3：向量化（Embedding）</strong></p>
+<p>把文字转换成一组数字（向量），语义相近的文字向量也相近。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"></span><br><span class="line">embeddings = OpenAIEmbeddings(model=<span class="string">&quot;text-embedding-3-small&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将文本转为向量</span></span><br><span class="line">vector = embeddings.embed_query(<span class="string">&quot;公司的年假政策&quot;</span>)</span><br><span class="line"><span class="comment"># 返回：[0.023, -0.156, 0.089, ...]  （1536 维的浮点数数组）</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么语义相近的文字向量也相近？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;退款政策&quot;  → [0.2, 0.8, 0.1, 0.3, ...]</span><br><span class="line">&quot;退货返款&quot;  → [0.21, 0.79, 0.12, 0.28, ...]  ← 向量很接近！</span><br><span class="line"></span><br><span class="line">&quot;退款政策&quot;  → [0.2, 0.8, 0.1, 0.3, ...]</span><br><span class="line">&quot;今天天气&quot;  → [0.7, 0.1, 0.5, 0.9, ...]  ← 向量差很远</span><br><span class="line"></span><br><span class="line">通过计算向量之间的距离，就能判断两段文字是否&quot;语义相关&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 4：存入向量数据库</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"></span><br><span class="line">vectorstore = Chroma.from_documents(</span><br><span class="line">    documents=chunks,</span><br><span class="line">    embedding=embeddings,</span><br><span class="line">    persist_directory=<span class="string">&quot;./chroma_db&quot;</span>,  <span class="comment"># 持久化到磁盘</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-在线阶段：检索-生成"><a href="#2-2-在线阶段：检索-生成" class="headerlink" title="2.2 在线阶段：检索 + 生成"></a>2.2 在线阶段：检索 + 生成</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">用户提问</span><br><span class="line">    ↓</span><br><span class="line">问题向量化</span><br><span class="line">    ↓</span><br><span class="line">从向量数据库检索相似文档</span><br><span class="line">    ↓</span><br><span class="line">将检索到的文档 + 用户问题 → 发给大模型</span><br><span class="line">    ↓</span><br><span class="line">大模型根据文档生成回答</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检索</span></span><br><span class="line">retriever = vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line">relevant_docs = retriever.invoke(<span class="string">&quot;年假政策是什么&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成</span></span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line"></span><br><span class="line">llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>)</span><br><span class="line">qa_chain = RetrievalQA.from_chain_type(</span><br><span class="line">    llm=llm,</span><br><span class="line">    retriever=retriever,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">result = qa_chain.invoke(<span class="string">&quot;年假政策是什么&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result[<span class="string">&quot;result&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、向量数据库深度解析"><a href="#三、向量数据库深度解析" class="headerlink" title="三、向量数据库深度解析"></a>三、向量数据库深度解析</h2><h3 id="3-1-什么是向量数据库"><a href="#3-1-什么是向量数据库" class="headerlink" title="3.1 什么是向量数据库"></a>3.1 什么是向量数据库</h3><p>传统数据库存的是结构化数据（数字、字符串），向量数据库存的是<strong>高维向量</strong>，并支持<strong>相似度搜索</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">传统数据库查询：</span><br><span class="line">  SELECT * FROM users WHERE age &gt; 25   → 精确匹配</span><br><span class="line"></span><br><span class="line">向量数据库查询：</span><br><span class="line">  &quot;找和&#x27;退款政策&#x27;最相似的 5 段文字&quot;     → 语义匹配</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-主流向量数据库对比"><a href="#3-2-主流向量数据库对比" class="headerlink" title="3.2 主流向量数据库对比"></a>3.2 主流向量数据库对比</h3><table>
+<thead>
+<tr>
+<th>数据库</th>
+<th>类型</th>
+<th>特点</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ChromaDB</td>
+<td>嵌入式</td>
+<td>轻量、Python 原生</td>
+<td>原型开发、小项目</td>
+</tr>
+<tr>
+<td>FAISS</td>
+<td>库</td>
+<td>Facebook 开源、速度快</td>
+<td>本地开发</td>
+</tr>
+<tr>
+<td>Milvus</td>
+<td>分布式</td>
+<td>高性能、可扩展</td>
+<td>生产环境</td>
+</tr>
+<tr>
+<td>Weaviate</td>
+<td>服务</td>
+<td>GraphQL API、功能丰富</td>
+<td>中大型项目</td>
+</tr>
+<tr>
+<td>Pinecone</td>
+<td>云服务</td>
+<td>全托管、零运维</td>
+<td>快速上线</td>
+</tr>
+<tr>
+<td>pgvector</td>
+<td>扩展</td>
+<td>PostgreSQL 插件</td>
+<td>已有 PG 的项目</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-相似度计算方法"><a href="#3-3-相似度计算方法" class="headerlink" title="3.3 相似度计算方法"></a>3.3 相似度计算方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 余弦相似度（最常用）</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cosine_similarity</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 欧氏距离</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">euclidean_distance</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(np.array(a) - np.array(b))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 余弦相似度范围：[-1, 1]</span></span><br><span class="line"><span class="comment"># 1 = 完全相同</span></span><br><span class="line"><span class="comment"># 0 = 无关</span></span><br><span class="line"><span class="comment"># -1 = 完全相反</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、RAG-优化技巧"><a href="#四、RAG-优化技巧" class="headerlink" title="四、RAG 优化技巧"></a>四、RAG 优化技巧</h2><h3 id="4-1-分块策略优化"><a href="#4-1-分块策略优化" class="headerlink" title="4.1 分块策略优化"></a>4.1 分块策略优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案 1：按语义切分（而非固定长度）</span></span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> MarkdownTextSplitter</span><br><span class="line"></span><br><span class="line">splitter = MarkdownTextSplitter(chunk_size=<span class="number">500</span>, chunk_overlap=<span class="number">50</span>)</span><br><span class="line"><span class="comment"># 按 Markdown 标题切分，保持语义完整性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 2：递归切分（推荐）</span></span><br><span class="line">splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">500</span>,</span><br><span class="line">    chunk_overlap=<span class="number">50</span>,</span><br><span class="line">    separators=[<span class="string">&quot;\n\n&quot;</span>, <span class="string">&quot;\n&quot;</span>, <span class="string">&quot;。&quot;</span>, <span class="string">&quot;！&quot;</span>, <span class="string">&quot;？&quot;</span>, <span class="string">&quot;.&quot;</span>, <span class="string">&quot; &quot;</span>],</span><br><span class="line">    <span class="comment"># 先尝试按段落切，不行再按句子切，最后按词切</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 3：父子块策略</span></span><br><span class="line"><span class="comment"># 小块用于检索（精确匹配），大块用于生成（完整上下文）</span></span><br><span class="line">small_splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="number">200</span>)</span><br><span class="line">large_splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-检索优化"><a href="#4-2-检索优化" class="headerlink" title="4.2 检索优化"></a>4.2 检索优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案 1：混合检索（关键词 + 语义）</span></span><br><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> EnsembleRetriever</span><br><span class="line"><span class="keyword">from</span> langchain_community.retrievers <span class="keyword">import</span> BM25Retriever</span><br><span class="line"></span><br><span class="line">bm25 = BM25Retriever.from_documents(chunks)</span><br><span class="line">bm25.k = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">semantic = vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"></span><br><span class="line">hybrid = EnsembleRetriever(</span><br><span class="line">    retrievers=[bm25, semantic],</span><br><span class="line">    weights=[<span class="number">0.3</span>, <span class="number">0.7</span>],  <span class="comment"># 语义检索权重更高</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 2：重排序（Reranking）</span></span><br><span class="line"><span class="comment"># 先粗检索 top 20，再用模型精排取 top 4</span></span><br><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> ContextualCompressionRetriever</span><br><span class="line"><span class="keyword">from</span> langchain_cohere <span class="keyword">import</span> CohereRerank</span><br><span class="line"></span><br><span class="line">reranker = CohereRerank(model=<span class="string">&quot;rerank-v3.5&quot;</span>, top_n=<span class="number">4</span>)</span><br><span class="line">compression_retriever = ContextualCompressionRetriever(</span><br><span class="line">    base_compressor=reranker,</span><br><span class="line">    base_retriever=vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">20</span>&#125;),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 3：查询改写</span></span><br><span class="line"><span class="comment"># 用 LLM 改写用户问题，提高检索效果</span></span><br><span class="line">rewrite_prompt = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">请将以下用户问题改写为更适合搜索的形式，</span></span><br><span class="line"><span class="string">保留关键信息，去除口语化表达：</span></span><br><span class="line"><span class="string">用户问题：&#123;question&#125;</span></span><br><span class="line"><span class="string">改写后的搜索词：</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-生成优化"><a href="#4-3-生成优化" class="headerlink" title="4.3 生成优化"></a>4.3 生成优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案 1：引用来源</span></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">请根据以下参考资料回答问题。</span></span><br><span class="line"><span class="string">回答时必须引用信息来源（文档名和段落编号）。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">参考资料：</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答格式：</span></span><br><span class="line"><span class="string">回答内容...</span></span><br><span class="line"><span class="string">来源：《文档名》第 X 段</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 2：限制范围</span></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你是一个知识库助手。请严格遵守以下规则：</span></span><br><span class="line"><span class="string">1. 只根据提供的参考资料回答</span></span><br><span class="line"><span class="string">2. 如果参考资料中没有相关信息，回答&quot;根据现有资料，无法回答&quot;</span></span><br><span class="line"><span class="string">3. 不要编造任何信息</span></span><br><span class="line"><span class="string">4. 回答要简洁准确</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">参考资料：&#123;context&#125;</span></span><br><span class="line"><span class="string">问题：&#123;question&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案 3：多轮追问</span></span><br><span class="line"><span class="comment"># 第一轮：检索相关文档</span></span><br><span class="line"><span class="comment"># 第二轮：让 AI 评估文档是否足够回答问题</span></span><br><span class="line"><span class="comment"># 第三轮：如果不够，让 AI 提出需要补充的信息</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-Embedding-模型选择"><a href="#4-4-Embedding-模型选择" class="headerlink" title="4.4 Embedding 模型选择"></a>4.4 Embedding 模型选择</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>维度</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text-embedding-3-small</td>
+<td>1536</td>
+<td>OpenAI，性价比高</td>
+</tr>
+<tr>
+<td>text-embedding-3-large</td>
+<td>3072</td>
+<td>OpenAI，效果最好</td>
+</tr>
+<tr>
+<td>bge-large-zh</td>
+<td>1024</td>
+<td>中文效果好，开源</td>
+</tr>
+<tr>
+<td>nomic-embed-text</td>
+<td>768</td>
+<td>Ollama 可用，本地部署</td>
+</tr>
+<tr>
+<td>m3e-base</td>
+<td>768</td>
+<td>中文，轻量</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、RAG-vs-微调-vs-长上下文"><a href="#五、RAG-vs-微调-vs-长上下文" class="headerlink" title="五、RAG vs 微调 vs 长上下文"></a>五、RAG vs 微调 vs 长上下文</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>RAG</th>
+<th>微调（Fine-tuning）</th>
+<th>长上下文</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>成本</td>
+<td>低</td>
+<td>高</td>
+<td>中</td>
+</tr>
+<tr>
+<td>知识更新</td>
+<td>实时</td>
+<td>需要重新训练</td>
+<td>每次重新输入</td>
+</tr>
+<tr>
+<td>幻觉</td>
+<td>少</td>
+<td>较少</td>
+<td>较少</td>
+</tr>
+<tr>
+<td>私有数据</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>适合场景</td>
+<td>知识问答</td>
+<td>专业风格&#x2F;格式</td>
+<td>长文档分析</td>
+</tr>
+<tr>
+<td>实现难度</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<p><strong>选择建议：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">刚开始 → 先用 RAG（成本低、效果好）</span><br><span class="line">需要特定风格 → 考虑微调（如法律文书风格）</span><br><span class="line">需要分析超长文档 → 用长上下文模型</span><br><span class="line">最佳方案 → RAG + 长上下文结合</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、常见问题与解决方案"><a href="#六、常见问题与解决方案" class="headerlink" title="六、常见问题与解决方案"></a>六、常见问题与解决方案</h2><h3 id="Q1：检索到的内容不相关"><a href="#Q1：检索到的内容不相关" class="headerlink" title="Q1：检索到的内容不相关"></a>Q1：检索到的内容不相关</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">原因：</span><br><span class="line">  - 切分太大或太小</span><br><span class="line">  - Embedding 模型不适合</span><br><span class="line">  - 用户问题太模糊</span><br><span class="line"></span><br><span class="line">解决：</span><br><span class="line">  1. 调整 chunk_size</span><br><span class="line">  2. 换用更好的 Embedding 模型</span><br><span class="line">  3. 用 LLM 改写用户问题</span><br><span class="line">  4. 增加检索数量（top_k）</span><br><span class="line">  5. 使用混合检索</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q2：回答引用了错误的文档"><a href="#Q2：回答引用了错误的文档" class="headerlink" title="Q2：回答引用了错误的文档"></a>Q2：回答引用了错误的文档</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">原因：</span><br><span class="line">  - 文档内容相似但含义不同</span><br><span class="line">  - 切分破坏了上下文</span><br><span class="line"></span><br><span class="line">解决：</span><br><span class="line">  1. 增加 chunk_overlap</span><br><span class="line">  2. 在 chunk 中添加元数据（标题、章节）</span><br><span class="line">  3. 使用 Reranking 重排序</span><br><span class="line">  4. 在 prompt 中强调引用要求</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q3：文档太多，检索太慢"><a href="#Q3：文档太多，检索太慢" class="headerlink" title="Q3：文档太多，检索太慢"></a>Q3：文档太多，检索太慢</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">原因：</span><br><span class="line">  - 向量数据库数据量大</span><br><span class="line">  - Embedding 计算耗时</span><br><span class="line"></span><br><span class="line">解决：</span><br><span class="line">  1. 使用 ANN（近似最近邻）索引</span><br><span class="line">  2. 分库分表（按文档类型分）</span><br><span class="line">  3. 使用更快的向量数据库（Milvus）</span><br><span class="line">  4. 缓存常见查询结果</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q4：多语言文档处理"><a href="#Q4：多语言文档处理" class="headerlink" title="Q4：多语言文档处理"></a>Q4：多语言文档处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">方案：</span><br><span class="line">  1. 使用多语言 Embedding 模型</span><br><span class="line">  2. 检索时用相同语言查询</span><br><span class="line">  3. 用 LLM 翻译后再检索</span><br><span class="line">  4. 为不同语言建立不同的向量库</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、RAG-的未来趋势"><a href="#七、RAG-的未来趋势" class="headerlink" title="七、RAG 的未来趋势"></a>七、RAG 的未来趋势</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">当前：基础 RAG</span><br><span class="line">  文档 → 切分 → 向量化 → 检索 → 生成</span><br><span class="line"></span><br><span class="line">近期：高级 RAG</span><br><span class="line">  ├── 查询改写（让搜索词更精准）</span><br><span class="line">  ├── 混合检索（关键词 + 语义）</span><br><span class="line">  ├── 重排序（精排检索结果）</span><br><span class="line">  ├── 上下文压缩（去除无关信息）</span><br><span class="line">  └── 自适应检索（判断是否需要检索）</span><br><span class="line"></span><br><span class="line">未来：Agentic RAG</span><br><span class="line">  ├── Agent 自主决定检索策略</span><br><span class="line">  ├── 多轮检索（不够就再搜）</span><br><span class="line">  ├── 跨知识库联合检索</span><br><span class="line">  └── 检索结果自动验证</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>RAG 是目前最实用的 AI 增强技术。它通过”先检索、再生成”的方式，让 AI 能基于真实文档回答问题，大幅减少幻觉。核心流程是：文档加载 → 文本切分 → 向量化 → 存储 → 检索 → 生成。优化的关键在于分块策略、检索方法和提示词设计。对于大多数知识问答场景，RAG 是成本最低、效果最好的方案。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/rag-deep-dive/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;rag-deep-dive&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;rag-deep-dive&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAG/" rel="tag">RAG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">向量数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/" rel="tag">知识库</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/skill-deep-dive/"><i class="iconfont iconleft"></i>Skill 是 Agent 的具体技能：模块化 AI 能力设计</a>
+    <a href="/2026/05/28/workflow-orchestration/">工作流编排让多个 AI 协同工作：架构与实战<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RAG-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-text">一、RAG 的核心思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81RAG-%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">二、RAG 完整流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%A6%BB%E7%BA%BF%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BB%BA%E7%AB%8B%E7%9F%A5%E8%AF%86%E5%BA%93"><span class="toc-text">2.1 离线阶段：建立知识库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9C%A8%E7%BA%BF%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%A3%80%E7%B4%A2-%E7%94%9F%E6%88%90"><span class="toc-text">2.2 在线阶段：检索 + 生成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90"><span class="toc-text">三、向量数据库深度解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">3.1 什么是向量数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%B8%BB%E6%B5%81%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E6%AF%94"><span class="toc-text">3.2 主流向量数据库对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-text">3.3 相似度计算方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81RAG-%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="toc-text">四、RAG 优化技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%88%86%E5%9D%97%E7%AD%96%E7%95%A5%E4%BC%98%E5%8C%96"><span class="toc-text">4.1 分块策略优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%A3%80%E7%B4%A2%E4%BC%98%E5%8C%96"><span class="toc-text">4.2 检索优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%94%9F%E6%88%90%E4%BC%98%E5%8C%96"><span class="toc-text">4.3 生成优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Embedding-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9"><span class="toc-text">4.4 Embedding 模型选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81RAG-vs-%E5%BE%AE%E8%B0%83-vs-%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">五、RAG vs 微调 vs 长上下文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">六、常见问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q1%EF%BC%9A%E6%A3%80%E7%B4%A2%E5%88%B0%E7%9A%84%E5%86%85%E5%AE%B9%E4%B8%8D%E7%9B%B8%E5%85%B3"><span class="toc-text">Q1：检索到的内容不相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q2%EF%BC%9A%E5%9B%9E%E7%AD%94%E5%BC%95%E7%94%A8%E4%BA%86%E9%94%99%E8%AF%AF%E7%9A%84%E6%96%87%E6%A1%A3"><span class="toc-text">Q2：回答引用了错误的文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q3%EF%BC%9A%E6%96%87%E6%A1%A3%E5%A4%AA%E5%A4%9A%EF%BC%8C%E6%A3%80%E7%B4%A2%E5%A4%AA%E6%85%A2"><span class="toc-text">Q3：文档太多，检索太慢</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q4%EF%BC%9A%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86"><span class="toc-text">Q4：多语言文档处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81RAG-%E7%9A%84%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="toc-text">七、RAG 的未来趋势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

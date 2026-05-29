@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Spring Cloud 微服务架构实战：核心组件与实践 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="一、微服务架构概述微服务架构是一种将单体应用拆分为多个...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">Spring Cloud 微服务架构实战：核心组件与实践</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Spring Cloud 微服务架构实战：核心组件与实践</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>11240</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="一、微服务架构概述"><a href="#一、微服务架构概述" class="headerlink" title="一、微服务架构概述"></a>一、微服务架构概述</h2><p>微服务架构是一种将单体应用拆分为多个小型、独立服务的架构风格。每个服务围绕业务能力构建，独立开发、部署和扩展。</p>
+<h3 id="单体-vs-微服务"><a href="#单体-vs-微服务" class="headerlink" title="单体 vs 微服务"></a>单体 vs 微服务</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>单体架构</th>
+<th>微服务架构</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部署</td>
+<td>整体部署</td>
+<td>独立部署</td>
+</tr>
+<tr>
+<td>扩展</td>
+<td>整体扩展</td>
+<td>按需扩展</td>
+</tr>
+<tr>
+<td>技术栈</td>
+<td>统一</td>
+<td>可多样化</td>
+</tr>
+<tr>
+<td>复杂度</td>
+<td>代码复杂</td>
+<td>运维复杂</td>
+</tr>
+<tr>
+<td>故障隔离</td>
+<td>差</td>
+<td>好</td>
+</tr>
+<tr>
+<td>团队协作</td>
+<td>冲突多</td>
+<td>独立开发</td>
+</tr>
+</tbody></table>
+<h3 id="微服务核心问题"><a href="#微服务核心问题" class="headerlink" title="微服务核心问题"></a>微服务核心问题</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">服务拆分 → 服务通信 → 服务注册发现 → 负载均衡</span><br><span class="line">    ↓           ↓           ↓            ↓</span><br><span class="line">服务配置 → 网关路由 → 熔断限流 → 链路追踪</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、Spring-Cloud-体系"><a href="#二、Spring-Cloud-体系" class="headerlink" title="二、Spring Cloud 体系"></a>二、Spring Cloud 体系</h2><h3 id="技术选型对比"><a href="#技术选型对比" class="headerlink" title="技术选型对比"></a>技术选型对比</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>Spring Cloud Netflix</th>
+<th>Spring Cloud Alibaba</th>
+<th>替代方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>注册中心</td>
+<td>Eureka</td>
+<td>Nacos</td>
+<td>Consul, ZooKeeper</td>
+</tr>
+<tr>
+<td>配置中心</td>
+<td>Spring Cloud Config</td>
+<td>Nacos Config</td>
+<td>Apollo</td>
+</tr>
+<tr>
+<td>网关</td>
+<td>Zuul</td>
+<td>-</td>
+<td>Spring Cloud Gateway</td>
+</tr>
+<tr>
+<td>负载均衡</td>
+<td>Ribbon</td>
+<td>-</td>
+<td>Spring Cloud LoadBalancer</td>
+</tr>
+<tr>
+<td>熔断器</td>
+<td>Hystrix</td>
+<td>Sentinel</td>
+<td>Resilience4j</td>
+</tr>
+<tr>
+<td>远程调用</td>
+<td>Feign</td>
+<td>OpenFeign</td>
+<td>RestTemplate</td>
+</tr>
+<tr>
+<td>消息驱动</td>
+<td>-</td>
+<td>RocketMQ</td>
+<td>Spring Cloud Stream</td>
+</tr>
+</tbody></table>
+<h3 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2023.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud Alibaba --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2023.0.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、服务注册与发现（Nacos）"><a href="#三、服务注册与发现（Nacos）" class="headerlink" title="三、服务注册与发现（Nacos）"></a>三、服务注册与发现（Nacos）</h2><h3 id="Nacos-简介"><a href="#Nacos-简介" class="headerlink" title="Nacos 简介"></a>Nacos 简介</h3><p>Nacos 是阿里巴巴开源的服务注册中心和配置中心，同时支持 CP（配置中心）和 AP（服务发现）模式。</p>
+<h3 id="服务端安装"><a href="#服务端安装" class="headerlink" title="服务端安装"></a>服务端安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Docker 方式</span></span><br><span class="line">docker run -d --name nacos -e MODE=standalone -p 8848:8848 nacos/nacos-server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问控制台</span></span><br><span class="line"><span class="comment"># http://localhost:8848/nacos  （默认账号 nacos/nacos）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="客户端接入"><a href="#客户端接入" class="headerlink" title="客户端接入"></a>客户端接入</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">user-service</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">        <span class="attr">namespace:</span> <span class="string">dev</span>          <span class="comment"># 命名空间</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span>    <span class="comment"># 分组</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="服务发现原理"><a href="#服务发现原理" class="headerlink" title="服务发现原理"></a>服务发现原理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 服务启动时向 Nacos 注册（IP + 端口 + 元数据）</span><br><span class="line">2. Nacos 通过心跳检测服务健康状态</span><br><span class="line">3. 消费者从 Nacos 获取服务列表</span><br><span class="line">4. 消费者通过负载均衡选择一个实例调用</span><br><span class="line">5. 服务下线时自动注销</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、远程调用（OpenFeign）"><a href="#四、远程调用（OpenFeign）" class="headerlink" title="四、远程调用（OpenFeign）"></a>四、远程调用（OpenFeign）</h2><h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启动类</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderApplication</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Feign 客户端</span></span><br><span class="line"><span class="meta">@FeignClient(name = &quot;user-service&quot;, fallbackFactory = UserClientFallback.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/api/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    Result&lt;User&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/api/users/batch&quot;)</span></span><br><span class="line">    Result&lt;List&lt;User&gt;&gt; <span class="title function_">getUsersByIds</span><span class="params">(<span class="meta">@RequestBody</span> List&lt;Long&gt; ids)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 降级处理</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserClientFallback</span> <span class="keyword">implements</span> <span class="title class_">FallbackFactory</span>&lt;UserClient&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> UserClient <span class="title function_">create</span><span class="params">(Throwable cause)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UserClient</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> Result&lt;User&gt; <span class="title function_">getUserById</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> Result.fail(<span class="number">500</span>, <span class="string">&quot;用户服务不可用&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> Result&lt;List&lt;User&gt;&gt; <span class="title function_">getUsersByIds</span><span class="params">(List&lt;Long&gt; ids)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> Result.fail(<span class="number">500</span>, <span class="string">&quot;用户服务不可用&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求拦截器"><a href="#请求拦截器" class="headerlink" title="请求拦截器"></a>请求拦截器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FeignConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RequestInterceptor <span class="title function_">requestInterceptor</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> template -&gt; &#123;</span><br><span class="line">            <span class="comment">// 传递请求头（如认证信息）</span></span><br><span class="line">            <span class="type">ServletRequestAttributes</span> <span class="variable">attributes</span> <span class="operator">=</span></span><br><span class="line">                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">            <span class="keyword">if</span> (attributes != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> attributes.getRequest().getHeader(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">                template.header(<span class="string">&quot;Authorization&quot;</span>, token);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、API-网关（Spring-Cloud-Gateway）"><a href="#五、API-网关（Spring-Cloud-Gateway）" class="headerlink" title="五、API 网关（Spring Cloud Gateway）"></a>五、API 网关（Spring Cloud Gateway）</h2><h3 id="网关作用"><a href="#网关作用" class="headerlink" title="网关作用"></a>网关作用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端 → 网关 → 认证鉴权 → 路由转发 → 限流熔断 → 后端服务</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://user-service</span>          <span class="comment"># 负载均衡</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/users/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span>               <span class="comment"># 去掉前缀</span></span><br><span class="line"></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">order-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://order-service</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/orders/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">RequestRateLimiter</span>     <span class="comment"># 限流</span></span><br><span class="line">              <span class="attr">args:</span></span><br><span class="line">                <span class="attr">redis-rate-limiter.replenishRate:</span> <span class="number">10</span></span><br><span class="line">                <span class="attr">redis-rate-limiter.burstCapacity:</span> <span class="number">20</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># 全局跨域</span></span><br><span class="line">      <span class="attr">globalcors:</span></span><br><span class="line">        <span class="attr">cors-configurations:</span></span><br><span class="line">          <span class="string">&#x27;[/**]&#x27;</span><span class="string">:</span></span><br><span class="line">            <span class="attr">allowedOrigins:</span> <span class="string">&quot;*&quot;</span></span><br><span class="line">            <span class="attr">allowedMethods:</span> <span class="string">&quot;*&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="全局过滤器"><a href="#全局过滤器" class="headerlink" title="全局过滤器"></a>全局过滤器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AuthGlobalFilter</span> <span class="keyword">implements</span> <span class="title class_">GlobalFilter</span>, Ordered &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> exchange.getRequest().getHeaders().getFirst(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 白名单</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> exchange.getRequest().getURI().getPath();</span><br><span class="line">        <span class="keyword">if</span> (path.startsWith(<span class="string">&quot;/api/auth/&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 验证 token</span></span><br><span class="line">        <span class="keyword">if</span> (token == <span class="literal">null</span> || !JwtUtils.validate(token)) &#123;</span><br><span class="line">            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);</span><br><span class="line">            <span class="keyword">return</span> exchange.getResponse().setComplete();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 优先级</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、配置中心（Nacos-Config）"><a href="#六、配置中心（Nacos-Config）" class="headerlink" title="六、配置中心（Nacos Config）"></a>六、配置中心（Nacos Config）</h2><h3 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bootstrap.yml</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">user-service</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yml</span></span><br><span class="line">        <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span></span><br><span class="line">        <span class="attr">shared-configs:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">data-id:</span> <span class="string">common.yml</span></span><br><span class="line">            <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span></span><br><span class="line">            <span class="attr">refresh:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="动态刷新"><a href="#动态刷新" class="headerlink" title="动态刷新"></a>动态刷新</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RefreshScope</span>  <span class="comment">// 支持动态刷新</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;app.custom.value&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String customValue;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/config&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getConfig</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> customValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、服务熔断与限流（Sentinel）"><a href="#七、服务熔断与限流（Sentinel）" class="headerlink" title="七、服务熔断与限流（Sentinel）"></a>七、服务熔断与限流（Sentinel）</h2><h3 id="Sentinel-简介"><a href="#Sentinel-简介" class="headerlink" title="Sentinel 简介"></a>Sentinel 简介</h3><p>Sentinel 是阿里巴巴开源的流量治理组件，提供熔断降级、流量控制、系统负载保护等功能。</p>
+<h3 id="基本使用-1"><a href="#基本使用-1" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-sentinel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">sentinel:</span></span><br><span class="line">      <span class="attr">transport:</span></span><br><span class="line">        <span class="attr">dashboard:</span> <span class="string">localhost:8080</span>  <span class="comment"># Sentinel 控制台</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="熔断规则"><a href="#熔断规则" class="headerlink" title="熔断规则"></a>熔断规则</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注解方式</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SentinelResource(</span></span><br><span class="line"><span class="meta">        value = &quot;getProduct&quot;,</span></span><br><span class="line"><span class="meta">        fallback = &quot;getProductFallback&quot;,</span></span><br><span class="line"><span class="meta">        blockHandler = &quot;getProductBlock&quot;</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getProduct</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        <span class="comment">// 远程调用可能失败</span></span><br><span class="line">        <span class="keyword">return</span> productClient.getById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 降级方法</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getProductFallback</span><span class="params">(Long id, Throwable e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(id, <span class="string">&quot;默认商品&quot;</span>, BigDecimal.ZERO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 限流方法</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getProductBlock</span><span class="params">(Long id, BlockException e)</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;服务限流，请稍后重试&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="熔断策略"><a href="#熔断策略" class="headerlink" title="熔断策略"></a>熔断策略</h3><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>说明</th>
+<th>阈值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>慢调用比例</td>
+<td>响应时间超过阈值的比例</td>
+<td>最大 RT + 比例</td>
+</tr>
+<tr>
+<td>异常比例</td>
+<td>异常请求的比例</td>
+<td>比例阈值</td>
+</tr>
+<tr>
+<td>异常数</td>
+<td>异常请求的数量</td>
+<td>数量阈值</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="八、分布式事务（Seata）"><a href="#八、分布式事务（Seata）" class="headerlink" title="八、分布式事务（Seata）"></a>八、分布式事务（Seata）</h2><h3 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">下单流程：</span><br><span class="line">  订单服务：创建订单     ← 本地事务</span><br><span class="line">  库存服务：扣减库存     ← 远程调用（独立事务）</span><br><span class="line">  账户服务：扣减余额     ← 远程调用（独立事务）</span><br><span class="line"></span><br><span class="line">如果账户扣减失败，订单和库存如何回滚？</span><br></pre></td></tr></table></figure>
+
+<h3 id="Seata-模式"><a href="#Seata-模式" class="headerlink" title="Seata 模式"></a>Seata 模式</h3><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>原理</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AT</td>
+<td>自动生成逆向 SQL 回滚</td>
+<td>大多数场景</td>
+</tr>
+<tr>
+<td>TCC</td>
+<td>手动编写 Try&#x2F;Confirm&#x2F;Cancel</td>
+<td>高性能场景</td>
+</tr>
+<tr>
+<td>Saga</td>
+<td>长事务，正向操作 + 补偿操作</td>
+<td>长流程业务</td>
+</tr>
+</tbody></table>
+<h3 id="AT-模式使用"><a href="#AT-模式使用" class="headerlink" title="AT 模式使用"></a>AT 模式使用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-seata<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GlobalTransactional</span>  <span class="comment">// 开启全局事务</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createOrder</span><span class="params">(OrderDTO dto)</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 创建订单（本地事务）</span></span><br><span class="line">        orderMapper.insert(order);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 扣减库存（远程调用）</span></span><br><span class="line">        inventoryClient.deduct(dto.getProductId(), dto.getCount());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3. 扣减余额（远程调用）</span></span><br><span class="line">        accountClient.debit(dto.getUserId(), dto.getTotalAmount());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 任一环节失败，全局回滚</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="九、消息驱动（RocketMQ）"><a href="#九、消息驱动（RocketMQ）" class="headerlink" title="九、消息驱动（RocketMQ）"></a>九、消息驱动（RocketMQ）</h2><h3 id="基本使用-2"><a href="#基本使用-2" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-stream-rocketmq<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生产者</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderMessageProducer</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StreamBridge streamBridge;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendOrderCreated</span><span class="params">(Long orderId)</span> &#123;</span><br><span class="line">        streamBridge.send(<span class="string">&quot;order-created-out-0&quot;</span>,</span><br><span class="line">            MessageBuilder.withPayload(orderId).build());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 消费者</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderMessageConsumer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Consumer&lt;Message&lt;Long&gt;&gt; <span class="title function_">orderCreated</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> message -&gt; &#123;</span><br><span class="line">            <span class="type">Long</span> <span class="variable">orderId</span> <span class="operator">=</span> message.getPayload();</span><br><span class="line">            System.out.println(<span class="string">&quot;收到订单消息: &quot;</span> + orderId);</span><br><span class="line">            <span class="comment">// 处理业务逻辑</span></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="延迟消息"><a href="#延迟消息" class="headerlink" title="延迟消息"></a>延迟消息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 延迟消息（如订单超时取消）</span></span><br><span class="line">Message&lt;Long&gt; message = MessageBuilder</span><br><span class="line">    .withPayload(orderId)</span><br><span class="line">    .setHeader(<span class="string">&quot;DELAY&quot;</span>, <span class="number">18</span>)  <span class="comment">// 延迟级别</span></span><br><span class="line">    .build();</span><br><span class="line">streamBridge.send(<span class="string">&quot;order-timeout-out-0&quot;</span>, message);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="十、链路追踪（SkyWalking）"><a href="#十、链路追踪（SkyWalking）" class="headerlink" title="十、链路追踪（SkyWalking）"></a>十、链路追踪（SkyWalking）</h2><h3 id="为什么需要链路追踪"><a href="#为什么需要链路追踪" class="headerlink" title="为什么需要链路追踪"></a>为什么需要链路追踪</h3><p>微服务架构中，一个请求可能经过多个服务，出了问题很难定位。链路追踪可以：</p>
+<ul>
+<li>可视化请求的完整调用链</li>
+<li>快速定位性能瓶颈和异常节点</li>
+<li>分析服务间的依赖关系</li>
+</ul>
+<h3 id="接入方式"><a href="#接入方式" class="headerlink" title="接入方式"></a>接入方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载 SkyWalking Agent</span></span><br><span class="line"><span class="comment"># https://skywalking.apache.org/downloads/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动时加入 Agent</span></span><br><span class="line">java -javaagent:/path/to/skywalking-agent.jar \</span><br><span class="line">     -Dskywalking.agent.service_name=my-service \</span><br><span class="line">     -Dskywalking.collector.backend_service=localhost:11800 \</span><br><span class="line">     -jar app.jar</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="十一、微服务最佳实践"><a href="#十一、微服务最佳实践" class="headerlink" title="十一、微服务最佳实践"></a>十一、微服务最佳实践</h2><h3 id="服务拆分原则"><a href="#服务拆分原则" class="headerlink" title="服务拆分原则"></a>服务拆分原则</h3><ol>
+<li><strong>单一职责</strong>：每个服务只负责一个业务领域</li>
+<li><strong>高内聚低耦合</strong>：服务内部紧密相关，服务之间松散依赖</li>
+<li><strong>按业务能力拆分</strong>：而非按技术层拆分</li>
+<li><strong>数据自治</strong>：每个服务拥有自己的数据库</li>
+</ol>
+<h3 id="服务通信选择"><a href="#服务通信选择" class="headerlink" title="服务通信选择"></a>服务通信选择</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同步调用</td>
+<td>实时查询</td>
+<td>OpenFeign, RestTemplate</td>
+</tr>
+<tr>
+<td>异步消息</td>
+<td>解耦、削峰</td>
+<td>RocketMQ, RabbitMQ</td>
+</tr>
+<tr>
+<td>事件驱动</td>
+<td>最终一致性</td>
+<td>Domain Event</td>
+</tr>
+</tbody></table>
+<h3 id="容错策略"><a href="#容错策略" class="headerlink" title="容错策略"></a>容错策略</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 超时控制</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">config:</span></span><br><span class="line">      <span class="attr">default:</span></span><br><span class="line">        <span class="attr">connectTimeout:</span> <span class="number">5000</span></span><br><span class="line">        <span class="attr">readTimeout:</span> <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 重试机制</span></span><br><span class="line"><span class="attr">ribbon:</span></span><br><span class="line">  <span class="attr">MaxAutoRetries:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">MaxAutoRetriesNextServer:</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 熔断降级</span></span><br><span class="line"><span class="comment"># Sentinel / Resilience4j</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 限流</span></span><br><span class="line"><span class="comment"># Sentinel / Gateway 限流</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置管理建议"><a href="#配置管理建议" class="headerlink" title="配置管理建议"></a>配置管理建议</h3><ul>
+<li>公共配置抽取到 <code>shared-configs</code></li>
+<li>敏感配置使用加密或环境变量</li>
+<li>不同环境使用不同命名空间</li>
+<li>配置变更使用灰度发布</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spring Cloud 为微服务架构提供了完整的解决方案。核心组件包括服务注册发现（Nacos）、远程调用（OpenFeign）、API 网关（Gateway）、配置中心（Nacos Config）、熔断限流（Sentinel）和分布式事务（Seata）。在实际项目中，应根据业务规模和技术团队选择合适的组件，避免过度设计。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/spring-cloud-guide/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;spring-cloud-guide&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;spring-cloud-guide&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/spring-boot-guide/"><i class="iconfont iconleft"></i>Spring Boot 实战指南：快速开发与最佳实践</a>
+    <a href="/2026/05/28/docker-guide/">Docker 容器技术实战：从基础到编排<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0"><span class="toc-text">一、微服务架构概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BD%93-vs-%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">单体 vs 微服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98"><span class="toc-text">微服务核心问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Spring-Cloud-%E4%BD%93%E7%B3%BB"><span class="toc-text">二、Spring Cloud 体系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94"><span class="toc-text">技术选型对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="toc-text">依赖管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%88Nacos%EF%BC%89"><span class="toc-text">三、服务注册与发现（Nacos）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nacos-%E7%AE%80%E4%BB%8B"><span class="toc-text">Nacos 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85"><span class="toc-text">服务端安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5"><span class="toc-text">客户端接入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">服务发现原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%EF%BC%88OpenFeign%EF%BC%89"><span class="toc-text">四、远程调用（OpenFeign）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">请求拦截器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81API-%E7%BD%91%E5%85%B3%EF%BC%88Spring-Cloud-Gateway%EF%BC%89"><span class="toc-text">五、API 网关（Spring Cloud Gateway）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E5%85%B3%E4%BD%9C%E7%94%A8"><span class="toc-text">网关作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-text">基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">全局过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%EF%BC%88Nacos-Config%EF%BC%89"><span class="toc-text">六、配置中心（Nacos Config）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="toc-text">配置管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%88%B7%E6%96%B0"><span class="toc-text">动态刷新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%E4%B8%8E%E9%99%90%E6%B5%81%EF%BC%88Sentinel%EF%BC%89"><span class="toc-text">七、服务熔断与限流（Sentinel）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sentinel-%E7%AE%80%E4%BB%8B"><span class="toc-text">Sentinel 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-1"><span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%94%E6%96%AD%E8%A7%84%E5%88%99"><span class="toc-text">熔断规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%94%E6%96%AD%E7%AD%96%E7%95%A5"><span class="toc-text">熔断策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%88Seata%EF%BC%89"><span class="toc-text">八、分布式事务（Seata）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%9C%BA%E6%99%AF"><span class="toc-text">问题场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-%E6%A8%A1%E5%BC%8F"><span class="toc-text">Seata 模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AT-%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8"><span class="toc-text">AT 模式使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8%EF%BC%88RocketMQ%EF%BC%89"><span class="toc-text">九、消息驱动（RocketMQ）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-2"><span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF"><span class="toc-text">延迟消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA%EF%BC%88SkyWalking%EF%BC%89"><span class="toc-text">十、链路追踪（SkyWalking）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA"><span class="toc-text">为什么需要链路追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-text">接入方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">十一、微服务最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E5%8E%9F%E5%88%99"><span class="toc-text">服务拆分原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1%E9%80%89%E6%8B%A9"><span class="toc-text">服务通信选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E9%94%99%E7%AD%96%E7%95%A5"><span class="toc-text">容错策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86%E5%BB%BA%E8%AE%AE"><span class="toc-text">配置管理建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

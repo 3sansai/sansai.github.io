@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MySQL 数据库开发实战指南：从设计到优化 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="一、MySQL 概述MySQL 是全球最流行的开源关系...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">MySQL 数据库开发实战指南：从设计到优化</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">MySQL 数据库开发实战指南：从设计到优化</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>6239</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="一、MySQL-概述"><a href="#一、MySQL-概述" class="headerlink" title="一、MySQL 概述"></a>一、MySQL 概述</h2><p>MySQL 是全球最流行的开源关系型数据库管理系统，由 Oracle 公司维护。它以<strong>高性能、高可靠性、易用性</strong>著称，是 Web 应用的首选数据库。</p>
+<h3 id="存储引擎对比"><a href="#存储引擎对比" class="headerlink" title="存储引擎对比"></a>存储引擎对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>事务支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>行级锁</td>
+<td>支持</td>
+<td>仅表锁</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>崩溃恢复</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>支持（5.6+）</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>OLTP（推荐）</td>
+<td>读密集、无事务</td>
+</tr>
+</tbody></table>
+<p><strong>日常开发统一使用 InnoDB。</strong></p>
+<hr>
+<h2 id="二、表设计规范"><a href="#二、表设计规范" class="headerlink" title="二、表设计规范"></a>二、表设计规范</h2><h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 表名：小写 + 下划线，名词复数或业务含义</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> user_orders (</span><br><span class="line">    id <span class="type">BIGINT</span> UNSIGNED <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT COMMENT <span class="string">&#x27;主键&#x27;</span>,</span><br><span class="line">    user_id <span class="type">BIGINT</span> UNSIGNED <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;用户ID&#x27;</span>,</span><br><span class="line">    order_no <span class="type">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;订单号&#x27;</span>,</span><br><span class="line">    amount <span class="type">DECIMAL</span>(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;金额&#x27;</span>,</span><br><span class="line">    status TINYINT <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="number">0</span> COMMENT <span class="string">&#x27;状态: 0待支付 1已支付 2已取消&#x27;</span>,</span><br><span class="line">    created_at DATETIME <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span> COMMENT <span class="string">&#x27;创建时间&#x27;</span>,</span><br><span class="line">    updated_at DATETIME <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="built_in">CURRENT_TIMESTAMP</span> COMMENT <span class="string">&#x27;更新时间&#x27;</span>,</span><br><span class="line">    <span class="keyword">PRIMARY</span> KEY (id),</span><br><span class="line">    <span class="keyword">UNIQUE</span> KEY uk_order_no (order_no),</span><br><span class="line">    KEY idx_user_id (user_id),</span><br><span class="line">    KEY idx_status_created (status, created_at)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4 COMMENT<span class="operator">=</span><span class="string">&#x27;订单表&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字段设计原则"><a href="#字段设计原则" class="headerlink" title="字段设计原则"></a>字段设计原则</h3><table>
+<thead>
+<tr>
+<th>规则</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主键用 BIGINT</td>
+<td>自增或雪花算法，不用 UUID</td>
+</tr>
+<tr>
+<td>金额用 DECIMAL</td>
+<td>不用 FLOAT&#x2F;DOUBLE，避免精度丢失</td>
+</tr>
+<tr>
+<td>时间用 DATETIME</td>
+<td>不用 TIMESTAMP（2038 年问题）</td>
+</tr>
+<tr>
+<td>字符串用 VARCHAR</td>
+<td>长度按需分配，不滥用 TEXT</td>
+</tr>
+<tr>
+<td>状态用 TINYINT</td>
+<td>配合注释说明含义</td>
+</tr>
+<tr>
+<td>必须有注释</td>
+<td>字段和表都要有 COMMENT</td>
+</tr>
+<tr>
+<td>必须有主键</td>
+<td>每张表都要有自增主键</td>
+</tr>
+<tr>
+<td>NOT NULL</td>
+<td>尽量避免 NULL，设默认值</td>
+</tr>
+</tbody></table>
+<h3 id="三大范式"><a href="#三大范式" class="headerlink" title="三大范式"></a>三大范式</h3><ul>
+<li><strong>第一范式（1NF）</strong>：字段不可再分（原子性）</li>
+<li><strong>第二范式（2NF）</strong>：非主键字段完全依赖主键</li>
+<li><strong>第三范式（3NF）</strong>：非主键字段不传递依赖</li>
+</ul>
+<p>实际开发中允许适当反范式化（冗余字段）以提升查询性能。</p>
+<hr>
+<h2 id="三、SQL-编写技巧"><a href="#三、SQL-编写技巧" class="headerlink" title="三、SQL 编写技巧"></a>三、SQL 编写技巧</h2><h3 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 避免 SELECT *</span></span><br><span class="line"><span class="keyword">SELECT</span> id, username, email <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> status <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 分页优化（大偏移量）</span></span><br><span class="line"><span class="comment">-- 慢：SELECT * FROM orders LIMIT 100000, 10;</span></span><br><span class="line"><span class="comment">-- 快：</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> id <span class="operator">&gt;</span> <span class="number">100000</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> id LIMIT <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 批量插入</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> users (name, email) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;alice@example.com&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;bob@example.com&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;Charlie&#x27;</span>, <span class="string">&#x27;charlie@example.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- EXISTS vs IN（子查询大表用 EXISTS）</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users u</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> orders o <span class="keyword">WHERE</span> o.user_id <span class="operator">=</span> u.id);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口函数（MySQL 8.0+）</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    user_id,</span><br><span class="line">    amount,</span><br><span class="line">    <span class="built_in">ROW_NUMBER</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION</span> <span class="keyword">BY</span> user_id <span class="keyword">ORDER</span> <span class="keyword">BY</span> amount <span class="keyword">DESC</span>) <span class="keyword">AS</span> rn</span><br><span class="line"><span class="keyword">FROM</span> orders;</span><br></pre></td></tr></table></figure>
+
+<h3 id="聚合与分组"><a href="#聚合与分组" class="headerlink" title="聚合与分组"></a>聚合与分组</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 常用聚合函数</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> total,</span><br><span class="line">    <span class="built_in">SUM</span>(amount) <span class="keyword">AS</span> sum_amount,</span><br><span class="line">    <span class="built_in">AVG</span>(amount) <span class="keyword">AS</span> avg_amount,</span><br><span class="line">    <span class="built_in">MAX</span>(amount) <span class="keyword">AS</span> max_amount,</span><br><span class="line">    <span class="built_in">MIN</span>(amount) <span class="keyword">AS</span> min_amount</span><br><span class="line"><span class="keyword">FROM</span> orders</span><br><span class="line"><span class="keyword">WHERE</span> status <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- HAVING 过滤分组结果</span></span><br><span class="line"><span class="keyword">SELECT</span> user_id, <span class="built_in">SUM</span>(amount) <span class="keyword">AS</span> total</span><br><span class="line"><span class="keyword">FROM</span> orders</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> user_id</span><br><span class="line"><span class="keyword">HAVING</span> total <span class="operator">&gt;</span> <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- GROUP_CONCAT</span></span><br><span class="line"><span class="keyword">SELECT</span> user_id, GROUP_CONCAT(order_no SEPARATOR <span class="string">&#x27;, &#x27;</span>) <span class="keyword">AS</span> order_nos</span><br><span class="line"><span class="keyword">FROM</span> orders</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> user_id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JOIN-操作"><a href="#JOIN-操作" class="headerlink" title="JOIN 操作"></a>JOIN 操作</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 内连接：两边都匹配</span></span><br><span class="line"><span class="keyword">SELECT</span> u.name, o.order_no</span><br><span class="line"><span class="keyword">FROM</span> users u</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> orders o <span class="keyword">ON</span> u.id <span class="operator">=</span> o.user_id;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 左连接：保留左表全部</span></span><br><span class="line"><span class="keyword">SELECT</span> u.name, <span class="built_in">COUNT</span>(o.id) <span class="keyword">AS</span> order_count</span><br><span class="line"><span class="keyword">FROM</span> users u</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> orders o <span class="keyword">ON</span> u.id <span class="operator">=</span> o.user_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> u.id;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 自连接</span></span><br><span class="line"><span class="keyword">SELECT</span> e.name <span class="keyword">AS</span> employee, m.name <span class="keyword">AS</span> manager</span><br><span class="line"><span class="keyword">FROM</span> employees e</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> employees m <span class="keyword">ON</span> e.manager_id <span class="operator">=</span> m.id;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、索引深入"><a href="#四、索引深入" class="headerlink" title="四、索引深入"></a>四、索引深入</h2><h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 主键索引</span></span><br><span class="line"><span class="keyword">PRIMARY</span> KEY (id)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 唯一索引</span></span><br><span class="line"><span class="keyword">UNIQUE</span> KEY uk_email (email)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 普通索引</span></span><br><span class="line">KEY idx_name (name)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 联合索引（最左前缀原则）</span></span><br><span class="line">KEY idx_status_time (status, created_at)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 全文索引</span></span><br><span class="line">FULLTEXT INDEX ft_content (content)</span><br></pre></td></tr></table></figure>
+
+<h3 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 联合索引 (a, b, c)</span></span><br><span class="line"><span class="comment">-- 以下查询能命中索引：</span></span><br><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> b <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> b <span class="operator">=</span> <span class="number">2</span> <span class="keyword">AND</span> c <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> c <span class="operator">=</span> <span class="number">3</span>        <span class="comment">-- 只用到 a</span></span><br><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> b       <span class="comment">-- a 等值 + b 排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 以下不能命中：</span></span><br><span class="line"><span class="keyword">WHERE</span> b <span class="operator">=</span> <span class="number">2</span>                   <span class="comment">-- 跳过了 a</span></span><br><span class="line"><span class="keyword">WHERE</span> b <span class="operator">=</span> <span class="number">2</span> <span class="keyword">AND</span> c <span class="operator">=</span> <span class="number">3</span>        <span class="comment">-- 跳过了 a</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="索引失效场景"><a href="#索引失效场景" class="headerlink" title="索引失效场景"></a>索引失效场景</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1. 对索引列使用函数</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">YEAR</span>(created_at) <span class="operator">=</span> <span class="number">2026</span>     <span class="comment">-- 失效</span></span><br><span class="line"><span class="keyword">WHERE</span> created_at <span class="operator">&gt;=</span> <span class="string">&#x27;2026-01-01&#x27;</span>  <span class="comment">-- 生效</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 隐式类型转换</span></span><br><span class="line"><span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="number">13800138000</span>         <span class="comment">-- 失效（phone 是 VARCHAR）</span></span><br><span class="line"><span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="string">&#x27;13800138000&#x27;</span>      <span class="comment">-- 生效</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. LIKE 左模糊</span></span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;%张&#x27;</span>             <span class="comment">-- 失效</span></span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;张%&#x27;</span>            <span class="comment">-- 生效</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4. OR 条件中有非索引列</span></span><br><span class="line"><span class="keyword">WHERE</span> indexed_col <span class="operator">=</span> <span class="number">1</span> <span class="keyword">OR</span> non_indexed_col <span class="operator">=</span> <span class="number">2</span>  <span class="comment">-- 失效</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 5. 不等于（!= 或 &lt;&gt;）</span></span><br><span class="line"><span class="keyword">WHERE</span> status <span class="operator">!=</span> <span class="number">1</span>                 <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="EXPLAIN-分析"><a href="#EXPLAIN-分析" class="headerlink" title="EXPLAIN 分析"></a>EXPLAIN 分析</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> user_id <span class="operator">=</span> <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>访问类型：ALL &lt; index &lt; range &lt; ref &lt; eq_ref &lt; const</td>
+</tr>
+<tr>
+<td>key</td>
+<td>实际使用的索引</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>预估扫描行数</td>
+</tr>
+<tr>
+<td>Extra</td>
+<td>Using index（覆盖索引）、Using filesort（需优化）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、事务与锁"><a href="#五、事务与锁" class="headerlink" title="五、事务与锁"></a>五、事务与锁</h2><h3 id="事务-ACID"><a href="#事务-ACID" class="headerlink" title="事务 ACID"></a>事务 ACID</h3><ul>
+<li><strong>A（原子性）</strong>：要么全做，要么全不做</li>
+<li><strong>C（一致性）</strong>：事务前后数据一致</li>
+<li><strong>I（隔离性）</strong>：事务间互不干扰</li>
+<li><strong>D（持久性）</strong>：提交后永久生效</li>
+</ul>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看当前隔离级别</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@transaction</span>_isolation;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置隔离级别</span></span><br><span class="line"><span class="keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ UNCOMMITTED</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>READ COMMITTED</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>REPEATABLE READ（默认）</td>
+<td>无</td>
+<td>无</td>
+<td>有*</td>
+</tr>
+<tr>
+<td>SERIALIZABLE</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<p>*InnoDB 在 RR 级别通过 MVCC + Gap Lock 解决了大部分幻读问题。</p>
+<h3 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 行锁（InnoDB）</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;  <span class="comment">-- 排他锁</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span> LOCK <span class="keyword">IN</span> SHARE MODE;  <span class="comment">-- 共享锁</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 间隙锁（防止幻读）</span></span><br><span class="line"><span class="comment">-- 锁定范围，防止其他事务在间隙中插入数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 死锁排查</span></span><br><span class="line"><span class="keyword">SHOW</span> ENGINE INNODB STATUS;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、慢查询优化"><a href="#六、慢查询优化" class="headerlink" title="六、慢查询优化"></a>六、慢查询优化</h2><h3 id="开启慢查询日志"><a href="#开启慢查询日志" class="headerlink" title="开启慢查询日志"></a>开启慢查询日志</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看配置</span></span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;slow_query%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启</span></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> slow_query_log <span class="operator">=</span> <span class="keyword">ON</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> long_query_time <span class="operator">=</span> <span class="number">1</span>;  <span class="comment">-- 超过1秒记录</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="优化步骤"><a href="#优化步骤" class="headerlink" title="优化步骤"></a>优化步骤</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 开启慢查询日志，找出慢 SQL</span><br><span class="line">2. EXPLAIN 分析执行计划</span><br><span class="line">3. 检查是否命中索引</span><br><span class="line">4. 优化 SQL 或添加合适索引</span><br><span class="line">5. 必要时拆分大查询</span><br></pre></td></tr></table></figure>
+
+<h3 id="常见优化手段"><a href="#常见优化手段" class="headerlink" title="常见优化手段"></a>常见优化手段</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1. 避免回表（覆盖索引）</span></span><br><span class="line"><span class="comment">-- 如果索引已包含查询字段，无需回表</span></span><br><span class="line"><span class="keyword">SELECT</span> user_id, status <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> user_id <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line"><span class="comment">-- 索引：KEY idx_user_status (user_id, status)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 批量操作代替循环</span></span><br><span class="line"><span class="comment">-- 慢：1000 次 INSERT</span></span><br><span class="line"><span class="comment">-- 快：一次批量 INSERT 1000 条</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. 合理使用临时表</span></span><br><span class="line"><span class="keyword">CREATE</span> TEMPORARY <span class="keyword">TABLE</span> tmp_user_ids (user_id <span class="type">BIGINT</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tmp_user_ids <span class="keyword">VALUES</span> (<span class="number">1</span>), (<span class="number">2</span>), (<span class="number">3</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> user_id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> user_id <span class="keyword">FROM</span> tmp_user_ids);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4. 大表分批处理</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> logs <span class="keyword">WHERE</span> created_at <span class="operator">&lt;</span> <span class="string">&#x27;2025-01-01&#x27;</span> LIMIT <span class="number">1000</span>;</span><br><span class="line"><span class="comment">-- 循环执行直到影响行数为 0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、数据安全"><a href="#七、数据安全" class="headerlink" title="七、数据安全"></a>七、数据安全</h2><h3 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全量备份</span></span><br><span class="line">mysqldump -u root -p --all-databases &gt; backup.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单库备份</span></span><br><span class="line">mysqldump -u root -p mydb &gt; mydb.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复</span></span><br><span class="line">mysql -u root -p mydb &lt; mydb.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增量备份（基于 binlog）</span></span><br><span class="line">mysqlbinlog binlog.000001 | mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<h3 id="SQL-注入防护"><a href="#SQL-注入防护" class="headerlink" title="SQL 注入防护"></a>SQL 注入防护</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用参数化查询，禁止字符串拼接</span></span><br><span class="line"><span class="comment">// 错误</span></span><br><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM users WHERE name = &#x27;&quot;</span> + name + <span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确（PreparedStatement）</span></span><br><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM users WHERE name = ?&quot;</span>;</span><br><span class="line"><span class="type">PreparedStatement</span> <span class="variable">ps</span> <span class="operator">=</span> conn.prepareStatement(sql);</span><br><span class="line">ps.setString(<span class="number">1</span>, name);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、分库分表"><a href="#八、分库分表" class="headerlink" title="八、分库分表"></a>八、分库分表</h2><h3 id="何时需要"><a href="#何时需要" class="headerlink" title="何时需要"></a>何时需要</h3><ul>
+<li>单表数据超过 1000 万行</li>
+<li>单库写入 QPS 超过 5000</li>
+<li>磁盘容量不足</li>
+</ul>
+<h3 id="分表策略"><a href="#分表策略" class="headerlink" title="分表策略"></a>分表策略</h3><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>范围分表</td>
+<td>按 ID 或时间范围</td>
+<td>数据增长均匀</td>
+</tr>
+<tr>
+<td>Hash 分表</td>
+<td>按 ID 取模</td>
+<td>数据分布均匀</td>
+</tr>
+<tr>
+<td>日期分表</td>
+<td>按月&#x2F;年分表</td>
+<td>日志、流水类数据</td>
+</tr>
+</tbody></table>
+<h3 id="常用中间件"><a href="#常用中间件" class="headerlink" title="常用中间件"></a>常用中间件</h3><ul>
+<li><strong>ShardingSphere</strong>：Apache 开源，支持分库分表、读写分离</li>
+<li><strong>MyCat</strong>：数据库中间件</li>
+<li><strong>Vitess</strong>：YouTube 开源，适合大规模场景</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MySQL 是后端开发的必备技能。表设计要规范，索引要合理，SQL 要优化。通过 EXPLAIN 分析执行计划，通过慢查询日志发现问题，通过分库分表应对大数据量。掌握这些核心知识，能应对绝大多数业务场景。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/mysql-guide/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;mysql-guide&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;mysql-guide&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/nginx-guide/"><i class="iconfont iconleft"></i>Nginx 从入门到实战：核心概念与配置指南</a>
+    <a href="/2026/05/28/java-basics/">Java 基础知识全面梳理：从语法到核心机制<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81MySQL-%E6%A6%82%E8%BF%B0"><span class="toc-text">一、MySQL 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E5%AF%B9%E6%AF%94"><span class="toc-text">存储引擎对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%A1%A8%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="toc-text">二、表设计规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="toc-text">命名规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">字段设计原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E8%8C%83%E5%BC%8F"><span class="toc-text">三大范式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81SQL-%E7%BC%96%E5%86%99%E6%8A%80%E5%B7%A7"><span class="toc-text">三、SQL 编写技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="toc-text">查询优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E4%B8%8E%E5%88%86%E7%BB%84"><span class="toc-text">聚合与分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JOIN-%E6%93%8D%E4%BD%9C"><span class="toc-text">JOIN 操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%B4%A2%E5%BC%95%E6%B7%B1%E5%85%A5"><span class="toc-text">四、索引深入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B"><span class="toc-text">索引类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80%E5%8E%9F%E5%88%99"><span class="toc-text">最左前缀原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E5%9C%BA%E6%99%AF"><span class="toc-text">索引失效场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EXPLAIN-%E5%88%86%E6%9E%90"><span class="toc-text">EXPLAIN 分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%94%81"><span class="toc-text">五、事务与锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1-ACID"><span class="toc-text">事务 ACID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">隔离级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E6%9C%BA%E5%88%B6"><span class="toc-text">锁机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%85%A2%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="toc-text">六、慢查询优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-text">开启慢查询日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%AD%A5%E9%AA%A4"><span class="toc-text">优化步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E4%BC%98%E5%8C%96%E6%89%8B%E6%AE%B5"><span class="toc-text">常见优化手段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8"><span class="toc-text">七、数据安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-text">备份与恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL-%E6%B3%A8%E5%85%A5%E9%98%B2%E6%8A%A4"><span class="toc-text">SQL 注入防护</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="toc-text">八、分库分表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%95%E6%97%B6%E9%9C%80%E8%A6%81"><span class="toc-text">何时需要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A1%A8%E7%AD%96%E7%95%A5"><span class="toc-text">分表策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-text">常用中间件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

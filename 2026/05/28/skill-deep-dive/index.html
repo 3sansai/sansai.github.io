@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Skill 是 Agent 的具体技能：模块化 AI 能力设计 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="前言如果 Agent 是一个人，Skill 就是这个人...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">Skill 是 Agent 的具体技能：模块化 AI 能力设计</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Skill 是 Agent 的具体技能：模块化 AI 能力设计</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>9141</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果 Agent 是一个人，Skill 就是这个人掌握的具体技能。一个人会”做饭”，不是因为天生就会，而是掌握了”切菜”、”炒菜”、”调味”等一系列技能，并能根据情况灵活组合。Agent 的 Skill 也是同样的道理。</p>
+<hr>
+<h2 id="一、Skill-vs-Tool：搞清楚区别"><a href="#一、Skill-vs-Tool：搞清楚区别" class="headerlink" title="一、Skill vs Tool：搞清楚区别"></a>一、Skill vs Tool：搞清楚区别</h2><p>很多人把 Skill 和 Tool 搞混，它们的本质区别：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Tool（工具）= 原子操作，被动执行</span><br><span class="line">  read_file()     → 只读文件，不做判断</span><br><span class="line">  execute_command() → 只执行命令，不管结果</span><br><span class="line">  search()         → 只搜索，不分析</span><br><span class="line"></span><br><span class="line">Skill（技能）= 组合多个工具，包含判断逻辑</span><br><span class="line">  &quot;代码审查&quot; Skill：</span><br><span class="line">    1. 调用 read_file() 读取代码</span><br><span class="line">    2. 分析代码逻辑（AI 推理）</span><br><span class="line">    3. 调用 search() 检查依赖</span><br><span class="line">    4. 判断是否有安全问题（AI 推理）</span><br><span class="line">    5. 生成审查报告（AI 生成）</span><br><span class="line"></span><br><span class="line">  &quot;部署应用&quot; Skill：</span><br><span class="line">    1. 调用 execute_command() 运行测试</span><br><span class="line">    2. 判断测试是否通过（条件判断）</span><br><span class="line">    3. 调用 execute_command() 构建镜像</span><br><span class="line">    4. 调用 execute_command() 推送到仓库</span><br><span class="line">    5. 调用 execute_command() 更新 K8s 部署</span><br><span class="line">    6. 调用 execute_command() 检查部署状态</span><br></pre></td></tr></table></figure>
+
+<p>类比：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Tool = 锤子、螺丝刀、扳手</span><br><span class="line">Skill = 木工手艺（知道什么时候用锤子、什么时候用螺丝刀）</span><br><span class="line"></span><br><span class="line">Tool = 食材、调料、锅碗瓢盆</span><br><span class="line">Skill = 做菜的本事（知道怎么搭配、怎么调味、怎么控火候）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、Skill-的设计模式"><a href="#二、Skill-的设计模式" class="headerlink" title="二、Skill 的设计模式"></a>二、Skill 的设计模式</h2><h3 id="2-1-单步-Skill"><a href="#2-1-单步-Skill" class="headerlink" title="2.1 单步 Skill"></a>2.1 单步 Skill</h3><p>最简单的 Skill，执行单一明确的任务。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">格式化代码</span></span><br><span class="line"><span class="string">输入:</span> <span class="string">文件路径</span></span><br><span class="line"><span class="string">流程:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">检测文件语言类型</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">调用对应的</span> <span class="string">formatter</span></span><br><span class="line"><span class="string">输出:</span> <span class="string">格式化后的代码</span></span><br><span class="line"><span class="string">复杂度:</span> <span class="string">低</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-顺序-Skill"><a href="#2-2-顺序-Skill" class="headerlink" title="2.2 顺序 Skill"></a>2.2 顺序 Skill</h3><p>多个步骤按顺序执行，每步依赖上一步的结果。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">创建</span> <span class="string">REST</span> <span class="string">API</span></span><br><span class="line"><span class="string">输入:</span> <span class="string">需求描述</span></span><br><span class="line"><span class="string">流程:</span></span><br><span class="line">  <span class="attr">Step 1:</span> <span class="string">解析需求，确定实体和接口</span></span><br><span class="line">  <span class="attr">Step 2:</span> <span class="string">创建项目目录结构</span></span><br><span class="line">  <span class="attr">Step 3:</span> <span class="string">定义数据模型</span></span><br><span class="line">  <span class="attr">Step 4:</span> <span class="string">实现业务逻辑</span></span><br><span class="line">  <span class="attr">Step 5:</span> <span class="string">编写路由和控制器</span></span><br><span class="line">  <span class="attr">Step 6:</span> <span class="string">添加输入验证</span></span><br><span class="line">  <span class="attr">Step 7:</span> <span class="string">编写测试</span></span><br><span class="line">  <span class="attr">Step 8:</span> <span class="string">运行测试验证</span></span><br><span class="line"><span class="string">输出:</span> <span class="string">可运行的</span> <span class="string">API</span> <span class="string">代码</span></span><br><span class="line"><span class="string">复杂度:</span> <span class="string">高</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-条件-Skill"><a href="#2-3-条件-Skill" class="headerlink" title="2.3 条件 Skill"></a>2.3 条件 Skill</h3><p>根据中间结果动态调整流程。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">修复构建错误</span></span><br><span class="line"><span class="string">输入:</span> <span class="string">错误日志</span></span><br><span class="line"><span class="string">流程:</span></span><br><span class="line">  <span class="attr">Step 1:</span> <span class="string">分析错误类型</span></span><br><span class="line">  <span class="attr">Step 2:</span> <span class="string">根据错误类型分支</span></span><br><span class="line">    <span class="string">IF</span> <span class="string">语法错误:</span></span><br><span class="line">      <span class="string">→</span> <span class="string">定位错误文件和行号</span></span><br><span class="line">      <span class="string">→</span> <span class="string">修复语法问题</span></span><br><span class="line">    <span class="string">IF</span> <span class="string">依赖错误:</span></span><br><span class="line">      <span class="string">→</span> <span class="string">检查</span> <span class="string">package.json</span> <span class="string">/</span> <span class="string">pom.xml</span></span><br><span class="line">      <span class="string">→</span> <span class="string">更新或安装缺失依赖</span></span><br><span class="line">    <span class="string">IF</span> <span class="string">类型错误:</span></span><br><span class="line">      <span class="string">→</span> <span class="string">分析类型定义</span></span><br><span class="line">      <span class="string">→</span> <span class="string">修复类型不匹配</span></span><br><span class="line">    <span class="string">IF</span> <span class="string">未知错误:</span></span><br><span class="line">      <span class="string">→</span> <span class="string">搜索类似问题</span></span><br><span class="line">      <span class="string">→</span> <span class="string">尝试常见解决方案</span></span><br><span class="line">  <span class="attr">Step 3:</span> <span class="string">重新构建验证</span></span><br><span class="line"><span class="string">输出:</span> <span class="string">修复结果</span></span><br><span class="line"><span class="string">复杂度:</span> <span class="string">中</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-循环-Skill"><a href="#2-4-循环-Skill" class="headerlink" title="2.4 循环 Skill"></a>2.4 循环 Skill</h3><p>反复执行直到满足条件。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">测试驱动修复</span></span><br><span class="line"><span class="string">输入:</span> <span class="string">测试文件路径</span></span><br><span class="line"><span class="string">流程:</span></span><br><span class="line">  <span class="string">循环（最多</span> <span class="number">5</span> <span class="string">次）:</span></span><br><span class="line">    <span class="attr">Step 1:</span> <span class="string">运行测试</span></span><br><span class="line">    <span class="attr">Step 2:</span> <span class="string">IF</span> <span class="string">所有通过</span> <span class="string">→</span> <span class="string">退出循环</span></span><br><span class="line">    <span class="attr">Step 3:</span> <span class="string">分析失败的测试</span></span><br><span class="line">    <span class="attr">Step 4:</span> <span class="string">定位相关源码</span></span><br><span class="line">    <span class="attr">Step 5:</span> <span class="string">修复代码</span></span><br><span class="line">  <span class="string">END</span> <span class="string">循环</span></span><br><span class="line"><span class="string">输出:</span> <span class="string">修复结果</span> <span class="string">+</span> <span class="string">测试报告</span></span><br><span class="line"><span class="string">复杂度:</span> <span class="string">高</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-并行-Skill"><a href="#2-5-并行-Skill" class="headerlink" title="2.5 并行 Skill"></a>2.5 并行 Skill</h3><p>多个独立步骤同时执行。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">名称:</span> <span class="string">全面代码审查</span></span><br><span class="line"><span class="string">输入:</span> <span class="string">代码变更（diff）</span></span><br><span class="line"><span class="string">流程:</span></span><br><span class="line">  <span class="string">并行执行:</span></span><br><span class="line">    <span class="string">├──</span> <span class="attr">Skill A:</span> <span class="string">逻辑分析</span></span><br><span class="line">    <span class="string">│</span>   <span class="string">→</span> <span class="string">检查业务逻辑正确性</span></span><br><span class="line">    <span class="string">├──</span> <span class="attr">Skill B:</span> <span class="string">安全检查</span></span><br><span class="line">    <span class="string">│</span>   <span class="string">→</span> <span class="string">扫描</span> <span class="string">OWASP</span> <span class="string">Top</span> <span class="number">10</span></span><br><span class="line">    <span class="string">├──</span> <span class="attr">Skill C:</span> <span class="string">性能分析</span></span><br><span class="line">    <span class="string">│</span>   <span class="string">→</span> <span class="string">检查时间/空间复杂度</span></span><br><span class="line">    <span class="string">└──</span> <span class="attr">Skill D:</span> <span class="string">风格检查</span></span><br><span class="line">        <span class="string">→</span> <span class="string">检查编码规范</span></span><br><span class="line">  <span class="string">等待全部完成</span></span><br><span class="line">  <span class="string">汇总结果</span></span><br><span class="line"><span class="string">输出:</span> <span class="string">结构化审查报告</span></span><br><span class="line"><span class="string">复杂度:</span> <span class="string">高</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、Skill-的标准化定义"><a href="#三、Skill-的标准化定义" class="headerlink" title="三、Skill 的标准化定义"></a>三、Skill 的标准化定义</h2><h3 id="3-1-Skill-接口规范"><a href="#3-1-Skill-接口规范" class="headerlink" title="3.1 Skill 接口规范"></a>3.1 Skill 接口规范</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Any</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Skill</span>(<span class="title class_ inherited__">ABC</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Skill 基类&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">name</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;技能名称&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">description</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;技能描述（给 AI 看的）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">triggers</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;触发条件（用户说什么时激活）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">tools_required</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;需要的工具列表&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">execute</span>(<span class="params">self, context: <span class="built_in">dict</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;执行技能，返回结果&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Skill-注册机制"><a href="#3-2-Skill-注册机制" class="headerlink" title="3.2 Skill 注册机制"></a>3.2 Skill 注册机制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SkillRegistry</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;技能注册中心&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.skills: <span class="built_in">dict</span>[<span class="built_in">str</span>, Skill] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">self, skill: Skill</span>):</span><br><span class="line">        self.skills[skill.name] = skill</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find_by_trigger</span>(<span class="params">self, user_message: <span class="built_in">str</span></span>) -&gt; Skill | <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;根据用户消息找到匹配的技能&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> skill <span class="keyword">in</span> self.skills.values():</span><br><span class="line">            <span class="keyword">for</span> trigger <span class="keyword">in</span> skill.triggers:</span><br><span class="line">                <span class="keyword">if</span> trigger <span class="keyword">in</span> user_message:</span><br><span class="line">                    <span class="keyword">return</span> skill</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">list_skills</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;列出所有可用技能&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: s.name,</span><br><span class="line">                <span class="string">&quot;description&quot;</span>: s.description,</span><br><span class="line">                <span class="string">&quot;triggers&quot;</span>: s.triggers,</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> self.skills.values()</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-具体-Skill-实现示例"><a href="#3-3-具体-Skill-实现示例" class="headerlink" title="3.3 具体 Skill 实现示例"></a>3.3 具体 Skill 实现示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CodeReviewSkill</span>(<span class="title class_ inherited__">Skill</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;代码审查技能&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">name</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;code_review&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">description</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;对代码变更进行全面审查，包括逻辑、安全、性能和风格&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">triggers</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">&quot;代码审查&quot;</span>, <span class="string">&quot;code review&quot;</span>, <span class="string">&quot;帮我看看代码&quot;</span>, <span class="string">&quot;review&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">tools_required</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">&quot;read_file&quot;</span>, <span class="string">&quot;search_code&quot;</span>, <span class="string">&quot;run_command&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">execute</span>(<span class="params">self, context: <span class="built_in">dict</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        diff = context.get(<span class="string">&quot;diff&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1. 读取相关代码</span></span><br><span class="line">        files = self._extract_changed_files(diff)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 并行分析</span></span><br><span class="line">        results = &#123;</span><br><span class="line">            <span class="string">&quot;logic&quot;</span>: self._check_logic(files),</span><br><span class="line">            <span class="string">&quot;security&quot;</span>: self._check_security(files),</span><br><span class="line">            <span class="string">&quot;performance&quot;</span>: self._check_performance(files),</span><br><span class="line">            <span class="string">&quot;style&quot;</span>: self._check_style(files),</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 3. 生成报告</span></span><br><span class="line">        <span class="keyword">return</span> self._generate_report(results)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、Skill-在不同平台中的实现"><a href="#四、Skill-在不同平台中的实现" class="headerlink" title="四、Skill 在不同平台中的实现"></a>四、Skill 在不同平台中的实现</h2><h3 id="4-1-Claude-Code-中的-Skill"><a href="#4-1-Claude-Code-中的-Skill" class="headerlink" title="4.1 Claude Code 中的 Skill"></a>4.1 Claude Code 中的 Skill</h3><p>Claude Code 通过 CLAUDE.md 文件定义 Skill：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># CLAUDE.md</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 代码审查 Skill</span></span><br><span class="line">当用户请求代码审查时：</span><br><span class="line"><span class="bullet">1.</span> 运行 <span class="code">`git diff`</span> 获取变更</span><br><span class="line"><span class="bullet">2.</span> 逐文件分析变更内容</span><br><span class="line"><span class="bullet">3.</span> 检查：</span><br><span class="line"><span class="bullet">   -</span> 是否有逻辑错误</span><br><span class="line"><span class="bullet">   -</span> 是否有安全隐患</span><br><span class="line"><span class="bullet">   -</span> 是否有性能问题</span><br><span class="line"><span class="bullet">   -</span> 是否符合项目编码规范</span><br><span class="line"><span class="bullet">4.</span> 生成结构化的审查报告</span><br><span class="line"></span><br><span class="line"><span class="section">## 部署 Skill</span></span><br><span class="line">当用户请求部署时：</span><br><span class="line"><span class="bullet">1.</span> 运行测试 <span class="code">`npm test`</span></span><br><span class="line"><span class="bullet">2.</span> 如果通过，构建 <span class="code">`npm run build`</span></span><br><span class="line"><span class="bullet">3.</span> 提交代码 <span class="code">`git add -A &amp;&amp; git commit`</span></span><br><span class="line"><span class="bullet">4.</span> 推送 <span class="code">`git push`</span></span><br><span class="line"><span class="bullet">5.</span> 验证部署状态</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-Dify-中的-Skill"><a href="#4-2-Dify-中的-Skill" class="headerlink" title="4.2 Dify 中的 Skill"></a>4.2 Dify 中的 Skill</h3><p>在 Dify 平台中，Skill 通过 Workflow 实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──────────┐     ┌──────────┐     ┌──────────┐</span><br><span class="line">│  开始     │ →   │ LLM 节点  │ →   │ 工具节点  │</span><br><span class="line">│  输入参数  │     │ 分析需求  │     │ 执行操作  │</span><br><span class="line">└──────────┘     └──────────┘     └──────────┘</span><br><span class="line">                                       │</span><br><span class="line">                 ┌──────────┐     ┌────▼─────┐</span><br><span class="line">                 │  输出     │ ←   │ LLM 节点  │</span><br><span class="line">                 │  返回结果  │     │ 生成报告  │</span><br><span class="line">                 └──────────┘     └──────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-LangChain-中的-Skill"><a href="#4-3-LangChain-中的-Skill" class="headerlink" title="4.3 LangChain 中的 Skill"></a>4.3 LangChain 中的 Skill</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> AgentExecutor, create_react_agent</span><br><span class="line"><span class="keyword">from</span> langchain.tools <span class="keyword">import</span> Tool</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 Skill 为一组 Tool 的组合</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">code_review_skill</span>(<span class="params">inputs</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;代码审查 Skill&quot;&quot;&quot;</span></span><br><span class="line">    diff = inputs[<span class="string">&quot;diff&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 1: 分析</span></span><br><span class="line">    analysis = llm.invoke(<span class="string">f&quot;分析以下代码变更的潜在问题：\n<span class="subst">&#123;diff&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 2: 安全检查</span></span><br><span class="line">    security = llm.invoke(<span class="string">f&quot;检查以下代码的安全隐患：\n<span class="subst">&#123;diff&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 3: 生成报告</span></span><br><span class="line">    report = llm.invoke(<span class="string">f&quot;基于以下分析生成审查报告：\n分析：<span class="subst">&#123;analysis&#125;</span>\n安全：<span class="subst">&#123;security&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> report</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、Skill-的组合与编排"><a href="#五、Skill-的组合与编排" class="headerlink" title="五、Skill 的组合与编排"></a>五、Skill 的组合与编排</h2><h3 id="5-1-Skill-链（Chain）"><a href="#5-1-Skill-链（Chain）" class="headerlink" title="5.1 Skill 链（Chain）"></a>5.1 Skill 链（Chain）</h3><p>多个 Skill 串联执行，前一个的输出是后一个的输入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用户：&quot;帮我重构并测试这段代码&quot;</span><br><span class="line"></span><br><span class="line">Skill 链：</span><br><span class="line">  代码分析 Skill → 重构 Skill → 测试 Skill → 报告 Skill</span><br><span class="line"></span><br><span class="line">执行流程：</span><br><span class="line">  分析代码结构 → 制定重构方案 → 执行重构 → 运行测试 → 生成报告</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-Skill-路由（Router）"><a href="#5-2-Skill-路由（Router）" class="headerlink" title="5.2 Skill 路由（Router）"></a>5.2 Skill 路由（Router）</h3><p>根据用户意图，路由到不同的 Skill。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用户消息 → Router</span><br><span class="line">              ├→ &quot;部署&quot; → 部署 Skill</span><br><span class="line">              ├→ &quot;测试&quot; → 测试 Skill</span><br><span class="line">              ├→ &quot;审查&quot; → 审查 Skill</span><br><span class="line">              └→ &quot;其他&quot; → 通用对话</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-Skill-编排（Orchestration）"><a href="#5-3-Skill-编排（Orchestration）" class="headerlink" title="5.3 Skill 编排（Orchestration）"></a>5.3 Skill 编排（Orchestration）</h3><p>复杂的 Skill 组合，包含条件、循环、并行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">用户：&quot;帮我优化这个 API 的性能&quot;</span><br><span class="line"></span><br><span class="line">编排流程：</span><br><span class="line">  1. 性能分析 Skill（并行）</span><br><span class="line">     ├── 响应时间分析</span><br><span class="line">     ├── 内存使用分析</span><br><span class="line">     └── 数据库查询分析</span><br><span class="line"></span><br><span class="line">  2. 优化决策 Skill（条件）</span><br><span class="line">     IF 响应慢 → API 优化 Skill</span><br><span class="line">     IF 内存高 → 内存优化 Skill</span><br><span class="line">     IF 查询慢 → SQL 优化 Skill</span><br><span class="line"></span><br><span class="line">  3. 实施优化 Skill（顺序）</span><br><span class="line">     → 修改代码</span><br><span class="line">     → 运行测试</span><br><span class="line">     → 性能对比</span><br><span class="line"></span><br><span class="line">  4. 结果报告 Skill</span><br><span class="line">     → 生成优化前后对比报告</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、设计高质量-Skill-的原则"><a href="#六、设计高质量-Skill-的原则" class="headerlink" title="六、设计高质量 Skill 的原则"></a>六、设计高质量 Skill 的原则</h2><h3 id="6-1-单一职责"><a href="#6-1-单一职责" class="headerlink" title="6.1 单一职责"></a>6.1 单一职责</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">✅ 好的设计：</span><br><span class="line">  &quot;代码格式化&quot; Skill → 只做格式化</span><br><span class="line">  &quot;单元测试生成&quot; Skill → 只生成测试</span><br><span class="line"></span><br><span class="line">❌ 差的设计：</span><br><span class="line">  &quot;代码处理&quot; Skill → 又格式化、又测试、又审查</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-明确的输入输出"><a href="#6-2-明确的输入输出" class="headerlink" title="6.2 明确的输入输出"></a>6.2 明确的输入输出</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 好的定义</span></span><br><span class="line"><span class="string">名称:</span> <span class="string">SQL</span> <span class="string">查询优化</span></span><br><span class="line"><span class="string">输入:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">sql:</span> <span class="string">string</span>        <span class="comment"># 原始 SQL 语句</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">table_schema:</span> <span class="string">string</span>  <span class="comment"># 表结构</span></span><br><span class="line"><span class="string">输出:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">optimized_sql:</span> <span class="string">string</span>  <span class="comment"># 优化后的 SQL</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">explanation:</span> <span class="string">string</span>    <span class="comment"># 优化说明</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">index_suggestions:</span> <span class="string">list</span>  <span class="comment"># 索引建议</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-可组合性"><a href="#6-3-可组合性" class="headerlink" title="6.3 可组合性"></a>6.3 可组合性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">每个 Skill 应该像乐高积木一样，能和其他 Skill 灵活组合：</span><br><span class="line"></span><br><span class="line">Skill A（读取代码）+ Skill B（分析逻辑）+ Skill C（生成报告）</span><br><span class="line">= 代码审查流程</span><br><span class="line"></span><br><span class="line">Skill A（读取代码）+ Skill D（生成测试）+ Skill E（运行测试）</span><br><span class="line">= 测试生成流程</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-错误处理"><a href="#6-4-错误处理" class="headerlink" title="6.4 错误处理"></a>6.4 错误处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">execute</span>(<span class="params">self, context: <span class="built_in">dict</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 主逻辑</span></span><br><span class="line">        result = self._do_work(context)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;success&quot;</span>, <span class="string">&quot;result&quot;</span>: result&#125;</span><br><span class="line">    <span class="keyword">except</span> ToolTimeoutError:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;error&quot;</span>, <span class="string">&quot;message&quot;</span>: <span class="string">&quot;工具执行超时，请稍后重试&quot;</span>&#125;</span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;error&quot;</span>, <span class="string">&quot;message&quot;</span>: <span class="string">f&quot;文件不存在: <span class="subst">&#123;context[<span class="string">&#x27;file_path&#x27;</span>]&#125;</span>&quot;</span>&#125;</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;error&quot;</span>, <span class="string">&quot;message&quot;</span>: <span class="string">f&quot;未知错误: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-5-可测试性"><a href="#6-5-可测试性" class="headerlink" title="6.5 可测试性"></a>6.5 可测试性</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每个 Skill 都应该能独立测试</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_code_review_skill</span>():</span><br><span class="line">    skill = CodeReviewSkill()</span><br><span class="line">    context = &#123;</span><br><span class="line">        <span class="string">&quot;diff&quot;</span>: <span class="string">&quot;def add(a, b): return a + b  # 简单测试用例&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    result = skill.execute(context)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> result[<span class="string">&quot;status&quot;</span>] == <span class="string">&quot;success&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="string">&quot;review&quot;</span> <span class="keyword">in</span> result</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、常见-Skill-库"><a href="#七、常见-Skill-库" class="headerlink" title="七、常见 Skill 库"></a>七、常见 Skill 库</h2><h3 id="开发类-Skill"><a href="#开发类-Skill" class="headerlink" title="开发类 Skill"></a>开发类 Skill</h3><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代码生成</td>
+<td>根据需求生成代码</td>
+</tr>
+<tr>
+<td>代码审查</td>
+<td>分析代码质量</td>
+</tr>
+<tr>
+<td>代码重构</td>
+<td>优化代码结构</td>
+</tr>
+<tr>
+<td>测试生成</td>
+<td>自动生成测试用例</td>
+</tr>
+<tr>
+<td>Bug 修复</td>
+<td>分析并修复 bug</td>
+</tr>
+<tr>
+<td>文档生成</td>
+<td>自动生成 API 文档</td>
+</tr>
+</tbody></table>
+<h3 id="运维类-Skill"><a href="#运维类-Skill" class="headerlink" title="运维类 Skill"></a>运维类 Skill</h3><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部署</td>
+<td>自动化部署流程</td>
+</tr>
+<tr>
+<td>监控</td>
+<td>检查系统状态</td>
+</tr>
+<tr>
+<td>告警处理</td>
+<td>分析告警并修复</td>
+</tr>
+<tr>
+<td>日志分析</td>
+<td>从日志中提取信息</td>
+</tr>
+<tr>
+<td>容量规划</td>
+<td>预测资源需求</td>
+</tr>
+</tbody></table>
+<h3 id="数据类-Skill"><a href="#数据类-Skill" class="headerlink" title="数据类 Skill"></a>数据类 Skill</h3><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据清洗</td>
+<td>处理脏数据</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>统计和可视化</td>
+</tr>
+<tr>
+<td>报告生成</td>
+<td>自动生成报告</td>
+</tr>
+<tr>
+<td>ETL</td>
+<td>数据抽取转换加载</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Skill 是 Agent 能力的模块化封装。它不是简单的工具调用，而是包含<strong>推理、判断、组合工具</strong>的完整能力单元。设计好的 Skill 需要遵循单一职责、明确输入输出、可组合、可测试的原则。随着 AI 应用的发展，Skill 生态将像 App Store 一样丰富——Agent 可以按需安装技能，完成各种复杂任务。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/skill-deep-dive/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;skill-deep-dive&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;skill-deep-dive&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Skill/" rel="tag">Skill</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/agent-deep-dive/"><i class="iconfont iconleft"></i>Agent 让 AI 能"做"事情：智能体架构与实战</a>
+    <a href="/2026/05/28/rag-deep-dive/">RAG 让 AI 能"查资料"：检索增强生成完全指南<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Skill-vs-Tool%EF%BC%9A%E6%90%9E%E6%B8%85%E6%A5%9A%E5%8C%BA%E5%88%AB"><span class="toc-text">一、Skill vs Tool：搞清楚区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Skill-%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">二、Skill 的设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%8D%95%E6%AD%A5-Skill"><span class="toc-text">2.1 单步 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%A1%BA%E5%BA%8F-Skill"><span class="toc-text">2.2 顺序 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%9D%A1%E4%BB%B6-Skill"><span class="toc-text">2.3 条件 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%BE%AA%E7%8E%AF-Skill"><span class="toc-text">2.4 循环 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%B9%B6%E8%A1%8C-Skill"><span class="toc-text">2.5 并行 Skill</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Skill-%E7%9A%84%E6%A0%87%E5%87%86%E5%8C%96%E5%AE%9A%E4%B9%89"><span class="toc-text">三、Skill 的标准化定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Skill-%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83"><span class="toc-text">3.1 Skill 接口规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Skill-%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">3.2 Skill 注册机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%85%B7%E4%BD%93-Skill-%E5%AE%9E%E7%8E%B0%E7%A4%BA%E4%BE%8B"><span class="toc-text">3.3 具体 Skill 实现示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Skill-%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">四、Skill 在不同平台中的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Claude-Code-%E4%B8%AD%E7%9A%84-Skill"><span class="toc-text">4.1 Claude Code 中的 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Dify-%E4%B8%AD%E7%9A%84-Skill"><span class="toc-text">4.2 Dify 中的 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-LangChain-%E4%B8%AD%E7%9A%84-Skill"><span class="toc-text">4.3 LangChain 中的 Skill</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Skill-%E7%9A%84%E7%BB%84%E5%90%88%E4%B8%8E%E7%BC%96%E6%8E%92"><span class="toc-text">五、Skill 的组合与编排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Skill-%E9%93%BE%EF%BC%88Chain%EF%BC%89"><span class="toc-text">5.1 Skill 链（Chain）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Skill-%E8%B7%AF%E7%94%B1%EF%BC%88Router%EF%BC%89"><span class="toc-text">5.2 Skill 路由（Router）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Skill-%E7%BC%96%E6%8E%92%EF%BC%88Orchestration%EF%BC%89"><span class="toc-text">5.3 Skill 编排（Orchestration）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E8%AE%BE%E8%AE%A1%E9%AB%98%E8%B4%A8%E9%87%8F-Skill-%E7%9A%84%E5%8E%9F%E5%88%99"><span class="toc-text">六、设计高质量 Skill 的原则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3"><span class="toc-text">6.1 单一职责</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%98%8E%E7%A1%AE%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="toc-text">6.2 明确的输入输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%8F%AF%E7%BB%84%E5%90%88%E6%80%A7"><span class="toc-text">6.3 可组合性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">6.4 错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E5%8F%AF%E6%B5%8B%E8%AF%95%E6%80%A7"><span class="toc-text">6.5 可测试性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E8%A7%81-Skill-%E5%BA%93"><span class="toc-text">七、常见 Skill 库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%B1%BB-Skill"><span class="toc-text">开发类 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%BB%B4%E7%B1%BB-Skill"><span class="toc-text">运维类 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB-Skill"><span class="toc-text">数据类 Skill</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

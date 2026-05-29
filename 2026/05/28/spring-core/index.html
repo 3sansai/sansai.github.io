@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Spring 核心原理深度解析：IoC、AOP 与事务管理 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="一、Spring 框架概述Spring 是一个轻量级的...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">Spring 核心原理深度解析：IoC、AOP 与事务管理</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Spring 核心原理深度解析：IoC、AOP 与事务管理</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>9091</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="一、Spring-框架概述"><a href="#一、Spring-框架概述" class="headerlink" title="一、Spring 框架概述"></a>一、Spring 框架概述</h2><p>Spring 是一个轻量级的 Java 企业级开发框架，由 Rod Johnson 于 2003 年创建。它的核心使命是<strong>简化 Java 开发</strong>。</p>
+<h3 id="Spring-生态"><a href="#Spring-生态" class="headerlink" title="Spring 生态"></a>Spring 生态</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Spring Framework（核心）</span><br><span class="line">├── Spring Boot（快速开发）</span><br><span class="line">├── Spring Cloud（微服务）</span><br><span class="line">├── Spring Data（数据访问）</span><br><span class="line">├── Spring Security（安全）</span><br><span class="line">├── Spring Batch（批处理）</span><br><span class="line">└── Spring WebFlux（响应式）</span><br></pre></td></tr></table></figure>
+
+<h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Core Container</td>
+<td>IoC 容器、Bean 管理</td>
+</tr>
+<tr>
+<td>AOP</td>
+<td>面向切面编程</td>
+</tr>
+<tr>
+<td>Data Access</td>
+<td>JDBC、ORM、事务管理</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>Web MVC、WebSocket</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>单元测试、集成测试</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、IoC-容器"><a href="#二、IoC-容器" class="headerlink" title="二、IoC 容器"></a>二、IoC 容器</h2><h3 id="什么是-IoC"><a href="#什么是-IoC" class="headerlink" title="什么是 IoC"></a>什么是 IoC</h3><p><strong>IoC（Inversion of Control，控制反转）</strong> 是 Spring 的核心思想。传统开发中，对象的创建和依赖关系由开发者手动管理；IoC 将这个控制权交给 Spring 容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">传统方式：  对象A → 主动创建 → 对象B</span><br><span class="line">IoC方式：  对象A ← 容器注入 ← 对象B</span><br></pre></td></tr></table></figure>
+
+<h3 id="Bean-的定义"><a href="#Bean-的定义" class="headerlink" title="Bean 的定义"></a>Bean 的定义</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式1：注解（推荐）</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式2：Java 配置类</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HikariDataSource</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式3：XML 配置（旧方式）</span></span><br><span class="line"><span class="comment">// &lt;bean id=&quot;userService&quot; class=&quot;com.example.UserService&quot;/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@Component</code></td>
+<td>通用组件</td>
+</tr>
+<tr>
+<td><code>@Service</code></td>
+<td>业务层</td>
+</tr>
+<tr>
+<td><code>@Repository</code></td>
+<td>数据访问层</td>
+</tr>
+<tr>
+<td><code>@Controller</code></td>
+<td>控制层</td>
+</tr>
+<tr>
+<td><code>@Configuration</code></td>
+<td>配置类</td>
+</tr>
+<tr>
+<td><code>@Bean</code></td>
+<td>定义 Bean</td>
+</tr>
+<tr>
+<td><code>@Autowired</code></td>
+<td>自动注入</td>
+</tr>
+<tr>
+<td><code>@Qualifier</code></td>
+<td>按名称注入</td>
+</tr>
+<tr>
+<td><code>@Value</code></td>
+<td>注入配置值</td>
+</tr>
+</tbody></table>
+<h3 id="Bean-的作用域"><a href="#Bean-的作用域" class="headerlink" title="Bean 的作用域"></a>Bean 的作用域</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope(&quot;singleton&quot;)</span>   <span class="comment">// 默认：单例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyBean</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span>   <span class="comment">// 每次获取都是新实例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyPrototypeBean</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>singleton</code></td>
+<td>默认，整个容器一个实例</td>
+</tr>
+<tr>
+<td><code>prototype</code></td>
+<td>每次请求新实例</td>
+</tr>
+<tr>
+<td><code>request</code></td>
+<td>每次 HTTP 请求一个实例</td>
+</tr>
+<tr>
+<td><code>session</code></td>
+<td>每个 HTTP Session 一个实例</td>
+</tr>
+</tbody></table>
+<h3 id="Bean-的生命周期"><a href="#Bean-的生命周期" class="headerlink" title="Bean 的生命周期"></a>Bean 的生命周期</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 实例化（Instantiation）</span><br><span class="line">2. 属性赋值（Populate properties）</span><br><span class="line">3. BeanNameAware / BeanFactoryAware</span><br><span class="line">4. BeanPostProcessor.postProcessBeforeInitialization</span><br><span class="line">5. @PostConstruct / InitializingBean.afterPropertiesSet / init-method</span><br><span class="line">6. BeanPostProcessor.postProcessAfterInitialization</span><br><span class="line">7. 使用中...</span><br><span class="line">8. @PreDestroy / DisposableBean.destroy / destroy-method</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、依赖注入（DI）"><a href="#三、依赖注入（DI）" class="headerlink" title="三、依赖注入（DI）"></a>三、依赖注入（DI）</h2><h3 id="构造器注入（推荐）"><a href="#构造器注入（推荐）" class="headerlink" title="构造器注入（推荐）"></a>构造器注入（推荐）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PaymentService paymentService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Spring 4.3+ 单构造器可省略 @Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">OrderService</span><span class="params">(UserService userService, PaymentService paymentService)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userService = userService;</span><br><span class="line">        <span class="built_in">this</span>.paymentService = paymentService;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Setter-注入"><a href="#Setter-注入" class="headerlink" title="Setter 注入"></a>Setter 注入</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NotificationService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> EmailSender emailSender;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setEmailSender</span><span class="params">(EmailSender emailSender)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.emailSender = emailSender;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字段注入（不推荐）"><a href="#字段注入（不推荐）" class="headerlink" title="字段注入（不推荐）"></a>字段注入（不推荐）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BadExample</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SomeDependency dep;  <span class="comment">// 不利于测试，隐藏依赖</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="为什么推荐构造器注入"><a href="#为什么推荐构造器注入" class="headerlink" title="为什么推荐构造器注入"></a>为什么推荐构造器注入</h3><ul>
+<li><strong>不可变性</strong>：字段可以声明为 <code>final</code></li>
+<li><strong>完整性</strong>：保证依赖不为空</li>
+<li><strong>可测试性</strong>：方便单元测试，不需要反射</li>
+<li><strong>明确性</strong>：依赖一目了然</li>
+</ul>
+<hr>
+<h2 id="四、AOP（面向切面编程）"><a href="#四、AOP（面向切面编程）" class="headerlink" title="四、AOP（面向切面编程）"></a>四、AOP（面向切面编程）</h2><h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">切面（Aspect）     = 切入点 + 通知</span><br><span class="line">切入点（Pointcut） = 在哪里执行</span><br><span class="line">通知（Advice）     = 执行什么</span><br><span class="line">连接点（JoinPoint）= 可能被拦截的点</span><br></pre></td></tr></table></figure>
+
+<h3 id="通知类型"><a href="#通知类型" class="headerlink" title="通知类型"></a>通知类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogAspect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前置通知：方法执行前</span></span><br><span class="line">    <span class="meta">@Before(&quot;execution(* com.example.service.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint jp)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Before: &quot;</span> + jp.getSignature().getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后置通知：方法执行后（无论是否异常）</span></span><br><span class="line">    <span class="meta">@After(&quot;execution(* com.example.service.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">(JoinPoint jp)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;After: &quot;</span> + jp.getSignature().getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回通知：方法正常返回后</span></span><br><span class="line">    <span class="meta">@AfterReturning(pointcut = &quot;execution(* com.example.service.*.*(..))&quot;, returning = &quot;result&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">(Object result)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Return: &quot;</span> + result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 异常通知：方法抛出异常后</span></span><br><span class="line">    <span class="meta">@AfterThrowing(pointcut = &quot;execution(* com.example.service.*.*(..))&quot;, throwing = &quot;ex&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterThrowing</span><span class="params">(Exception ex)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Exception: &quot;</span> + ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 环绕通知：最强大，可控制是否执行原方法</span></span><br><span class="line">    <span class="meta">@Around(&quot;execution(* com.example.service.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        <span class="type">long</span> <span class="variable">cost</span> <span class="operator">=</span> System.currentTimeMillis() - start;</span><br><span class="line">        System.out.println(pjp.getSignature().getName() + <span class="string">&quot; cost: &quot;</span> + cost + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="切入点表达式"><a href="#切入点表达式" class="headerlink" title="切入点表达式"></a>切入点表达式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// execution 表达式</span></span><br><span class="line">execution(* com.example.service.*.*(..))</span><br><span class="line"><span class="comment">//  ↑     ↑              ↑   ↑  ↑</span></span><br><span class="line"><span class="comment">// 返回值  包名           类  方法 参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 其他指示符</span></span><br><span class="line"><span class="meta">@annotation(com.example.annotation.Log)</span>  <span class="comment">// 注解匹配</span></span><br><span class="line">within(com.example.service.*)            <span class="comment">// 类匹配</span></span><br><span class="line">bean(userService)                        <span class="comment">// Bean 名称匹配</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 组合</span></span><br><span class="line"><span class="meta">@Around(&quot;@annotation(log)&quot;)</span></span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">aroundLog</span><span class="params">(ProceedingJoinPoint pjp, Log log)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">    <span class="comment">// 同时匹配注解和获取注解参数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义注解-AOP"><a href="#自定义注解-AOP" class="headerlink" title="自定义注解 + AOP"></a>自定义注解 + AOP</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义注解</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> OperationLog &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 切面处理</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OperationLogAspect</span> &#123;</span><br><span class="line">    <span class="meta">@Around(&quot;@annotation(opLog)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">log</span><span class="params">(ProceedingJoinPoint pjp, OperationLog opLog)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;操作: &quot;</span> + opLog.value());</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        <span class="comment">// 保存操作日志到数据库</span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、事务管理"><a href="#五、事务管理" class="headerlink" title="五、事务管理"></a>五、事务管理</h2><h3 id="声明式事务"><a href="#声明式事务" class="headerlink" title="声明式事务"></a>声明式事务</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AccountService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transfer</span><span class="params">(Long fromId, Long toId, BigDecimal amount)</span> &#123;</span><br><span class="line">        accountRepository.debit(fromId, amount);</span><br><span class="line">        <span class="comment">// 如果这里抛出异常，debit 操作会回滚</span></span><br><span class="line">        accountRepository.credit(toId, amount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务传播行为"><a href="#事务传播行为" class="headerlink" title="事务传播行为"></a>事务传播行为</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span>    <span class="comment">// 默认，加入当前事务</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRES_NEW)</span> <span class="comment">// 新建事务，挂起当前事务</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NESTED)</span>       <span class="comment">// 嵌套事务</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.SUPPORTS)</span>     <span class="comment">// 有事务就加入，没有就非事务执行</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NOT_SUPPORTED)</span> <span class="comment">// 非事务执行，挂起当前事务</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.MANDATORY)</span>    <span class="comment">// 必须在事务中，否则抛异常</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NEVER)</span>        <span class="comment">// 必须非事务，否则抛异常</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(isolation = Isolation.READ_COMMITTED)</span>   <span class="comment">// 读已提交（推荐）</span></span><br><span class="line"><span class="meta">@Transactional(isolation = Isolation.REPEATABLE_READ)</span>  <span class="comment">// 可重复读</span></span><br><span class="line"><span class="meta">@Transactional(isolation = Isolation.SERIALIZABLE)</span>     <span class="comment">// 串行化</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ_UNCOMMITTED</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>READ_COMMITTED</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>REPEATABLE_READ</td>
+<td>无</td>
+<td>无</td>
+<td>有</td>
+</tr>
+<tr>
+<td>SERIALIZABLE</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<h3 id="回滚规则"><a href="#回滚规则" class="headerlink" title="回滚规则"></a>回滚规则</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认：只对 RuntimeException 和 Error 回滚</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定回滚异常</span></span><br><span class="line"><span class="meta">@Transactional(rollbackFor = Exception.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定不回滚的异常</span></span><br><span class="line"><span class="meta">@Transactional(noRollbackFor = BusinessException.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务失效的常见场景"><a href="#事务失效的常见场景" class="headerlink" title="事务失效的常见场景"></a>事务失效的常见场景</h3><ol>
+<li><strong>方法不是 public</strong>：Spring AOP 代理限制</li>
+<li><strong>自调用</strong>：同类中方法调用不走代理</li>
+<li><strong>异常被 catch 吞掉</strong>：事务感知不到异常</li>
+<li><strong>rollbackFor 配置不当</strong>：默认只回滚 RuntimeException</li>
+<li><strong>数据库引擎不支持</strong>：如 MyISAM 不支持事务</li>
+</ol>
+<hr>
+<h2 id="六、Spring-MVC-请求处理流程"><a href="#六、Spring-MVC-请求处理流程" class="headerlink" title="六、Spring MVC 请求处理流程"></a>六、Spring MVC 请求处理流程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 客户端发送请求</span><br><span class="line">2. DispatcherServlet 接收</span><br><span class="line">3. HandlerMapping 查找 Handler</span><br><span class="line">4. HandlerAdapter 执行 Handler</span><br><span class="line">5. Controller 处理业务逻辑</span><br><span class="line">6. 返回 ModelAndView</span><br><span class="line">7. ViewResolver 解析视图</span><br><span class="line">8. 渲染视图并返回响应</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用注解-1"><a href="#常用注解-1" class="headerlink" title="常用注解"></a>常用注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span>         <span class="comment">// = @Controller + @ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api&quot;)</span>  <span class="comment">// 路径映射</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/users&quot;)</span>    <span class="comment">// GET 请求</span></span><br><span class="line"><span class="meta">@PostMapping(&quot;/users&quot;)</span>   <span class="comment">// POST 请求</span></span><br><span class="line"><span class="meta">@PutMapping(&quot;/&#123;id&#125;&quot;)</span>     <span class="comment">// PUT 请求</span></span><br><span class="line"><span class="meta">@DeleteMapping(&quot;/&#123;id&#125;&quot;)</span>  <span class="comment">// DELETE 请求</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@PathVariable</span>            <span class="comment">// 路径参数</span></span><br><span class="line"><span class="meta">@RequestParam</span>            <span class="comment">// 查询参数</span></span><br><span class="line"><span class="meta">@RequestBody</span>             <span class="comment">// 请求体（JSON）</span></span><br><span class="line"><span class="meta">@RequestHeader</span>           <span class="comment">// 请求头</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ExceptionHandler</span>        <span class="comment">// 异常处理</span></span><br><span class="line"><span class="meta">@ControllerAdvice</span>        <span class="comment">// 全局异常处理</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler(BusinessException.class)</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;?&gt; handleBusiness(BusinessException e) &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.fail(e.getCode(), e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler(Exception.class)</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;?&gt; handleException(Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;系统异常&quot;</span>, e);</span><br><span class="line">        <span class="keyword">return</span> Result.fail(<span class="number">500</span>, <span class="string">&quot;系统异常&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、常用扩展点"><a href="#七、常用扩展点" class="headerlink" title="七、常用扩展点"></a>七、常用扩展点</h2><h3 id="BeanPostProcessor"><a href="#BeanPostProcessor" class="headerlink" title="BeanPostProcessor"></a>BeanPostProcessor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyBeanPostProcessor</span> <span class="keyword">implements</span> <span class="title class_">BeanPostProcessor</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">postProcessBeforeInitialization</span><span class="params">(Object bean, String name)</span> &#123;</span><br><span class="line">        <span class="comment">// 在 Bean 初始化前执行</span></span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">postProcessAfterInitialization</span><span class="params">(Object bean, String name)</span> &#123;</span><br><span class="line">        <span class="comment">// 在 Bean 初始化后执行（AOP 代理在此创建）</span></span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ApplicationListener"><a href="#ApplicationListener" class="headerlink" title="ApplicationListener"></a>ApplicationListener</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StartupListener</span> <span class="keyword">implements</span> <span class="title class_">ApplicationListener</span>&lt;ContextRefreshedEvent&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onApplicationEvent</span><span class="params">(ContextRefreshedEvent event)</span> &#123;</span><br><span class="line">        <span class="comment">// 容器初始化完成后执行</span></span><br><span class="line">        System.out.println(<span class="string">&quot;Spring 容器初始化完成&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="EventListener"><a href="#EventListener" class="headerlink" title="@EventListener"></a>@EventListener</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderEventHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@EventListener</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onOrderCreated</span><span class="params">(OrderCreatedEvent event)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;订单创建: &quot;</span> + event.getOrderId());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spring 的核心是 IoC 容器和 AOP。理解 Bean 的生命周期、依赖注入方式、事务传播行为和 AOP 的工作原理，是掌握 Spring 的关键。这些知识不仅帮助正确使用 Spring，也是排查复杂问题的基础。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/spring-core/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;spring-core&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;spring-core&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF/" rel="tag">后端</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/java-basics/"><i class="iconfont iconleft"></i>Java 基础知识全面梳理：从语法到核心机制</a>
+    <a href="/2026/05/28/spring-boot-guide/">Spring Boot 实战指南：快速开发与最佳实践<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Spring-%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0"><span class="toc-text">一、Spring 框架概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-%E7%94%9F%E6%80%81"><span class="toc-text">Spring 生态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97"><span class="toc-text">核心模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81IoC-%E5%AE%B9%E5%99%A8"><span class="toc-text">二、IoC 容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-IoC"><span class="toc-text">什么是 IoC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bean-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">Bean 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-text">常用注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bean-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-text">Bean 的作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Bean 的生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89"><span class="toc-text">三、依赖注入（DI）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8%E6%B3%A8%E5%85%A5%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-text">构造器注入（推荐）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setter-%E6%B3%A8%E5%85%A5"><span class="toc-text">Setter 注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%8D%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-text">字段注入（不推荐）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8E%A8%E8%8D%90%E6%9E%84%E9%80%A0%E5%99%A8%E6%B3%A8%E5%85%A5"><span class="toc-text">为什么推荐构造器注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81AOP%EF%BC%88%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B%EF%BC%89"><span class="toc-text">四、AOP（面向切面编程）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-text">核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-text">通知类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">切入点表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3-AOP"><span class="toc-text">自定义注解 + AOP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-text">五、事务管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">声明式事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E8%A1%8C%E4%B8%BA"><span class="toc-text">事务传播行为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">事务隔离级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A%E8%A7%84%E5%88%99"><span class="toc-text">回滚规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E5%A4%B1%E6%95%88%E7%9A%84%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-text">事务失效的常见场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Spring-MVC-%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-text">六、Spring MVC 请求处理流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3-1"><span class="toc-text">常用注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">全局异常处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E7%94%A8%E6%89%A9%E5%B1%95%E7%82%B9"><span class="toc-text">七、常用扩展点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanPostProcessor"><span class="toc-text">BeanPostProcessor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApplicationListener"><span class="toc-text">ApplicationListener</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EventListener"><span class="toc-text">@EventListener</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

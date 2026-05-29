@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AI 项目实战：从零搭建 RAG 知识库问答系统 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="前言学了 AI 概念之后，最重要的是动手做项目。本文带...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">AI 项目实战：从零搭建 RAG 知识库问答系统</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">AI 项目实战：从零搭建 RAG 知识库问答系统</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>五月 28, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>16133</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学了 AI 概念之后，最重要的是<strong>动手做项目</strong>。本文带你从零搭建一个完整的 <strong>RAG 知识库问答系统</strong>——用户上传文档，AI 基于文档内容回答问题。</p>
+<p>这是一个真实可用的项目，可以应用于：</p>
+<ul>
+<li>企业内部知识问答</li>
+<li>产品文档智能客服</li>
+<li>技术文档助手</li>
+<li>学习笔记问答</li>
+</ul>
+<hr>
+<h2 id="一、项目概览"><a href="#一、项目概览" class="headerlink" title="一、项目概览"></a>一、项目概览</h2><h3 id="1-1-最终效果"><a href="#1-1-最终效果" class="headerlink" title="1.1 最终效果"></a>1.1 最终效果</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">用户：公司的年假政策是什么？</span><br><span class="line">AI：  根据《员工手册》第 3.2 节，公司年假政策如下：</span><br><span class="line">      - 入职满 1 年：5 天年假</span><br><span class="line">      - 入职满 3 年：10 天年假</span><br><span class="line">      - 入职满 10 年：15 天年假</span><br><span class="line">      年假需提前 3 天申请，部门经理审批。</span><br><span class="line"></span><br><span class="line">用户：年假可以累积到下一年吗？</span><br><span class="line">AI：  根据《员工手册》第 3.2.1 条，年假不可跨年累积，</span><br><span class="line">      未使用的年假将在每年 12 月 31 日清零。</span><br><span class="line">      特殊情况需总经理特批。</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-技术架构"><a href="#1-2-技术架构" class="headerlink" title="1.2 技术架构"></a>1.2 技术架构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│                    前端界面                       │</span><br><span class="line">│              Streamlit Web UI                    │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│                  应用层                          │</span><br><span class="line">│          Python + LangChain                      │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│               RAG 核心引擎                       │</span><br><span class="line">│  文档加载 → 文本切分 → 向量化 → 检索 → 生成       │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│                存储层                            │</span><br><span class="line">│  ChromaDB（向量数据库）                          │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│                模型层                            │</span><br><span class="line">│  OpenAI API / 本地模型                           │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-技术栈"><a href="#1-3-技术栈" class="headerlink" title="1.3 技术栈"></a>1.3 技术栈</h3><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术选型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编程语言</td>
+<td>Python 3.10+</td>
+<td>AI 开发首选</td>
+</tr>
+<tr>
+<td>AI 框架</td>
+<td>LangChain</td>
+<td>最流行的 AI 应用框架</td>
+</tr>
+<tr>
+<td>向量数据库</td>
+<td>ChromaDB</td>
+<td>轻量级，适合入门</td>
+</tr>
+<tr>
+<td>大模型</td>
+<td>OpenAI API</td>
+<td>也可替换为其他模型</td>
+</tr>
+<tr>
+<td>前端</td>
+<td>Streamlit</td>
+<td>快速搭建 Web UI</td>
+</tr>
+<tr>
+<td>文档解析</td>
+<td>Unstructured</td>
+<td>支持多种文档格式</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、环境搭建"><a href="#二、环境搭建" class="headerlink" title="二、环境搭建"></a>二、环境搭建</h2><h3 id="2-1-创建项目"><a href="#2-1-创建项目" class="headerlink" title="2.1 创建项目"></a>2.1 创建项目</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> rag-knowledge-base</span><br><span class="line"><span class="built_in">cd</span> rag-knowledge-base</span><br><span class="line">python -m venv venv</span><br><span class="line"><span class="built_in">source</span> venv/bin/activate  <span class="comment"># Mac/Linux</span></span><br><span class="line"><span class="comment"># venv\Scripts\activate   # Windows</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-安装依赖"><a href="#2-2-安装依赖" class="headerlink" title="2.2 安装依赖"></a>2.2 安装依赖</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pip install langchain langchain-openai langchain-community</span><br><span class="line">pip install chromadb</span><br><span class="line">pip install unstructured</span><br><span class="line">pip install streamlit</span><br><span class="line">pip install python-dotenv</span><br><span class="line">pip install tiktoken</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-配置环境变量"><a href="#2-3-配置环境变量" class="headerlink" title="2.3 配置环境变量"></a>2.3 配置环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env</span></span><br><span class="line">OPENAI_API_KEY=sk-your-api-key-here</span><br><span class="line">OPENAI_BASE_URL=https://api.openai.com/v1</span><br><span class="line"><span class="comment"># 如果用国内代理：</span></span><br><span class="line"><span class="comment"># OPENAI_BASE_URL=https://api.openai-proxy.com/v1</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、核心代码实现"><a href="#三、核心代码实现" class="headerlink" title="三、核心代码实现"></a>三、核心代码实现</h2><h3 id="3-1-项目结构"><a href="#3-1-项目结构" class="headerlink" title="3.1 项目结构"></a>3.1 项目结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rag-knowledge-base/</span><br><span class="line">├── app.py                  # Streamlit 主界面</span><br><span class="line">├── rag_engine.py           # RAG 核心引擎</span><br><span class="line">├── document_loader.py      # 文档加载器</span><br><span class="line">├── config.py               # 配置管理</span><br><span class="line">├── .env                    # 环境变量</span><br><span class="line">├── documents/              # 上传的文档存放目录</span><br><span class="line">└── requirements.txt        # 依赖列表</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-配置管理（config-py）"><a href="#3-2-配置管理（config-py）" class="headerlink" title="3.2 配置管理（config.py）"></a>3.2 配置管理（config.py）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line">load_dotenv()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型配置</span></span><br><span class="line">LLM_MODEL = <span class="string">&quot;gpt-4o-mini&quot;</span>           <span class="comment"># 可替换为其他模型</span></span><br><span class="line">LLM_TEMPERATURE = <span class="number">0.3</span>                <span class="comment"># 低温度，回答更稳定</span></span><br><span class="line">EMBEDDING_MODEL = <span class="string">&quot;text-embedding-3-small&quot;</span>  <span class="comment"># 向量化模型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文档处理配置</span></span><br><span class="line">CHUNK_SIZE = <span class="number">500</span>                     <span class="comment"># 每个文本块的大小（字符数）</span></span><br><span class="line">CHUNK_OVERLAP = <span class="number">50</span>                   <span class="comment"># 文本块之间的重叠字符数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检索配置</span></span><br><span class="line">RETRIEVAL_TOP_K = <span class="number">4</span>                  <span class="comment"># 检索最相关的 4 个文本块</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 存储配置</span></span><br><span class="line">CHROMA_PERSIST_DIR = <span class="string">&quot;./chroma_db&quot;</span>   <span class="comment"># 向量数据库持久化目录</span></span><br><span class="line">DOCUMENT_DIR = <span class="string">&quot;./documents&quot;</span>         <span class="comment"># 文档存放目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># API 配置</span></span><br><span class="line">OPENAI_API_KEY = os.getenv(<span class="string">&quot;OPENAI_API_KEY&quot;</span>)</span><br><span class="line">OPENAI_BASE_URL = os.getenv(<span class="string">&quot;OPENAI_BASE_URL&quot;</span>, <span class="string">&quot;https://api.openai.com/v1&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-文档加载器（document-loader-py）"><a href="#3-3-文档加载器（document-loader-py）" class="headerlink" title="3.3 文档加载器（document_loader.py）"></a>3.3 文档加载器（document_loader.py）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> (</span><br><span class="line">    TextLoader,</span><br><span class="line">    PyPDFLoader,</span><br><span class="line">    Docx2txtLoader,</span><br><span class="line">    CSVLoader,</span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> CHUNK_SIZE, CHUNK_OVERLAP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_document</span>(<span class="params">file_path: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;根据文件类型加载文档&quot;&quot;&quot;</span></span><br><span class="line">    ext = os.path.splitext(file_path)[<span class="number">1</span>].lower()</span><br><span class="line"></span><br><span class="line">    loaders = &#123;</span><br><span class="line">        <span class="string">&quot;.txt&quot;</span>: <span class="keyword">lambda</span> p: TextLoader(p, encoding=<span class="string">&quot;utf-8&quot;</span>),</span><br><span class="line">        <span class="string">&quot;.pdf&quot;</span>: <span class="keyword">lambda</span> p: PyPDFLoader(p),</span><br><span class="line">        <span class="string">&quot;.docx&quot;</span>: <span class="keyword">lambda</span> p: Docx2txtLoader(p),</span><br><span class="line">        <span class="string">&quot;.csv&quot;</span>: <span class="keyword">lambda</span> p: CSVLoader(p),</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    loader_fn = loaders.get(ext)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> loader_fn:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;不支持的文件格式: <span class="subst">&#123;ext&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    loader = loader_fn(file_path)</span><br><span class="line">    <span class="keyword">return</span> loader.load()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">split_documents</span>(<span class="params">docs, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将文档切分成小块&quot;&quot;&quot;</span></span><br><span class="line">    splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">        chunk_size=chunk_size,</span><br><span class="line">        chunk_overlap=chunk_overlap,</span><br><span class="line">        separators=[<span class="string">&quot;\n\n&quot;</span>, <span class="string">&quot;\n&quot;</span>, <span class="string">&quot;。&quot;</span>, <span class="string">&quot;！&quot;</span>, <span class="string">&quot;？&quot;</span>, <span class="string">&quot;.&quot;</span>, <span class="string">&quot;!&quot;</span>, <span class="string">&quot;?&quot;</span>, <span class="string">&quot; &quot;</span>],</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> splitter.split_documents(docs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_document</span>(<span class="params">file_path: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;完整流程：加载 → 切分&quot;&quot;&quot;</span></span><br><span class="line">    docs = load_document(file_path)</span><br><span class="line">    chunks = split_documents(docs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为每个 chunk 添加来源信息</span></span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> chunks:</span><br><span class="line">        chunk.metadata[<span class="string">&quot;source&quot;</span>] = os.path.basename(file_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chunks</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-RAG-核心引擎（rag-engine-py）"><a href="#3-4-RAG-核心引擎（rag-engine-py）" class="headerlink" title="3.4 RAG 核心引擎（rag_engine.py）"></a>3.4 RAG 核心引擎（rag_engine.py）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI, OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> (</span><br><span class="line">    LLM_MODEL, LLM_TEMPERATURE, EMBEDDING_MODEL,</span><br><span class="line">    RETRIEVAL_TOP_K, CHROMA_PERSIST_DIR,</span><br><span class="line">    OPENAI_API_KEY, OPENAI_BASE_URL,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RAGEngine</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;RAG 知识库问答引擎&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 初始化 Embedding 模型</span></span><br><span class="line">        self.embeddings = OpenAIEmbeddings(</span><br><span class="line">            model=EMBEDDING_MODEL,</span><br><span class="line">            openai_api_key=OPENAI_API_KEY,</span><br><span class="line">            openai_api_base=OPENAI_BASE_URL,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化 LLM</span></span><br><span class="line">        self.llm = ChatOpenAI(</span><br><span class="line">            model=LLM_MODEL,</span><br><span class="line">            temperature=LLM_TEMPERATURE,</span><br><span class="line">            openai_api_key=OPENAI_API_KEY,</span><br><span class="line">            openai_api_base=OPENAI_BASE_URL,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化向量数据库</span></span><br><span class="line">        self.vectorstore = Chroma(</span><br><span class="line">            persist_directory=CHROMA_PERSIST_DIR,</span><br><span class="line">            embedding_function=self.embeddings,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 自定义提示词模板</span></span><br><span class="line">        self.prompt = PromptTemplate(</span><br><span class="line">            template=<span class="string">&quot;&quot;&quot;你是一个专业的知识库助手。请根据以下参考资料回答用户的问题。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">规则：</span></span><br><span class="line"><span class="string">1. 只根据提供的参考资料回答，不要编造信息</span></span><br><span class="line"><span class="string">2. 如果参考资料中没有相关信息，请明确说&quot;根据现有资料，我无法回答这个问题&quot;</span></span><br><span class="line"><span class="string">3. 回答时请引用信息来源（文档名）</span></span><br><span class="line"><span class="string">4. 回答要简洁、准确、有条理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">参考资料：</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">用户问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答：&quot;&quot;&quot;</span>,</span><br><span class="line">            input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>],</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 构建 QA 链</span></span><br><span class="line">        self.qa_chain = RetrievalQA.from_chain_type(</span><br><span class="line">            llm=self.llm,</span><br><span class="line">            chain_type=<span class="string">&quot;stuff&quot;</span>,</span><br><span class="line">            retriever=self.vectorstore.as_retriever(</span><br><span class="line">                search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: RETRIEVAL_TOP_K&#125;</span><br><span class="line">            ),</span><br><span class="line">            chain_type_kwargs=&#123;<span class="string">&quot;prompt&quot;</span>: self.prompt&#125;,</span><br><span class="line">            return_source_documents=<span class="literal">True</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_documents</span>(<span class="params">self, chunks</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;将文档块添加到向量数据库&quot;&quot;&quot;</span></span><br><span class="line">        self.vectorstore.add_documents(chunks)</span><br><span class="line">        self.vectorstore.persist()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, question: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;查询并返回答案和来源&quot;&quot;&quot;</span></span><br><span class="line">        result = self.qa_chain.invoke(&#123;<span class="string">&quot;query&quot;</span>: question&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 提取来源信息</span></span><br><span class="line">        sources = []</span><br><span class="line">        <span class="keyword">for</span> doc <span class="keyword">in</span> result[<span class="string">&quot;source_documents&quot;</span>]:</span><br><span class="line">            source = doc.metadata.get(<span class="string">&quot;source&quot;</span>, <span class="string">&quot;未知&quot;</span>)</span><br><span class="line">            page = doc.metadata.get(<span class="string">&quot;page&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> source <span class="keyword">not</span> <span class="keyword">in</span> sources:</span><br><span class="line">                sources.append(source)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;answer&quot;</span>: result[<span class="string">&quot;result&quot;</span>],</span><br><span class="line">            <span class="string">&quot;sources&quot;</span>: sources,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_document_count</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取知识库中的文档块数量&quot;&quot;&quot;</span></span><br><span class="line">        collection = self.vectorstore._collection</span><br><span class="line">        <span class="keyword">return</span> collection.count()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clear</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;清空知识库&quot;&quot;&quot;</span></span><br><span class="line">        self.vectorstore._collection.delete(</span><br><span class="line">            ids=self.vectorstore._collection.get()[<span class="string">&quot;ids&quot;</span>]</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-Streamlit-前端界面（app-py）"><a href="#3-5-Streamlit-前端界面（app-py）" class="headerlink" title="3.5 Streamlit 前端界面（app.py）"></a>3.5 Streamlit 前端界面（app.py）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">from</span> rag_engine <span class="keyword">import</span> RAGEngine</span><br><span class="line"><span class="keyword">from</span> document_loader <span class="keyword">import</span> process_document</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> DOCUMENT_DIR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 页面配置</span></span><br><span class="line">st.set_page_config(</span><br><span class="line">    page_title=<span class="string">&quot;RAG 知识库问答系统&quot;</span>,</span><br><span class="line">    page_icon=<span class="string">&quot;📚&quot;</span>,</span><br><span class="line">    layout=<span class="string">&quot;wide&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">st.title(<span class="string">&quot;📚 RAG 知识库问答系统&quot;</span>)</span><br><span class="line">st.caption(<span class="string">&quot;上传文档，AI 基于文档内容回答问题&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 RAG 引擎（缓存）</span></span><br><span class="line"><span class="meta">@st.cache_resource</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_rag</span>():</span><br><span class="line">    os.makedirs(DOCUMENT_DIR, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> RAGEngine()</span><br><span class="line"></span><br><span class="line">rag = init_rag()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 侧边栏：文档管理</span></span><br><span class="line"><span class="keyword">with</span> st.sidebar:</span><br><span class="line">    st.header(<span class="string">&quot;📁 文档管理&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 文件上传</span></span><br><span class="line">    uploaded_files = st.file_uploader(</span><br><span class="line">        <span class="string">&quot;上传文档&quot;</span>,</span><br><span class="line">        <span class="built_in">type</span>=[<span class="string">&quot;txt&quot;</span>, <span class="string">&quot;pdf&quot;</span>, <span class="string">&quot;docx&quot;</span>, <span class="string">&quot;csv&quot;</span>],</span><br><span class="line">        accept_multiple_files=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> uploaded_files:</span><br><span class="line">        <span class="keyword">if</span> st.button(<span class="string">&quot;📥 导入文档&quot;</span>):</span><br><span class="line">            progress = st.progress(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">for</span> i, file <span class="keyword">in</span> <span class="built_in">enumerate</span>(uploaded_files):</span><br><span class="line">                <span class="comment"># 保存文件</span></span><br><span class="line">                file_path = os.path.join(DOCUMENT_DIR, file.name)</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(file.getvalue())</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 处理文档</span></span><br><span class="line">                <span class="keyword">with</span> st.spinner(<span class="string">f&quot;处理 <span class="subst">&#123;file.name&#125;</span>...&quot;</span>):</span><br><span class="line">                    chunks = process_document(file_path)</span><br><span class="line">                    rag.add_documents(chunks)</span><br><span class="line">                    st.success(<span class="string">f&quot;✅ <span class="subst">&#123;file.name&#125;</span>：<span class="subst">&#123;<span class="built_in">len</span>(chunks)&#125;</span> 个文本块已导入&quot;</span>)</span><br><span class="line"></span><br><span class="line">                progress.progress((i + <span class="number">1</span>) / <span class="built_in">len</span>(uploaded_files))</span><br><span class="line"></span><br><span class="line">            st.balloons()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 知识库状态</span></span><br><span class="line">    st.divider()</span><br><span class="line">    doc_count = rag.get_document_count()</span><br><span class="line">    st.metric(<span class="string">&quot;知识库文本块数&quot;</span>, doc_count)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 清空知识库</span></span><br><span class="line">    <span class="keyword">if</span> st.button(<span class="string">&quot;🗑️ 清空知识库&quot;</span>, <span class="built_in">type</span>=<span class="string">&quot;secondary&quot;</span>):</span><br><span class="line">        rag.clear()</span><br><span class="line">        st.success(<span class="string">&quot;知识库已清空&quot;</span>)</span><br><span class="line">        st.rerun()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用说明</span></span><br><span class="line">    st.divider()</span><br><span class="line">    st.markdown(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    ### 使用说明</span></span><br><span class="line"><span class="string">    1. 上传文档（支持 txt/pdf/docx/csv）</span></span><br><span class="line"><span class="string">    2. 点击&quot;导入文档&quot;</span></span><br><span class="line"><span class="string">    3. 在右侧输入问题</span></span><br><span class="line"><span class="string">    4. AI 会基于文档内容回答</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ### 支持的文档格式</span></span><br><span class="line"><span class="string">    - `.txt` 纯文本</span></span><br><span class="line"><span class="string">    - `.pdf` PDF 文档</span></span><br><span class="line"><span class="string">    - `.docx` Word 文档</span></span><br><span class="line"><span class="string">    - `.csv` 表格数据</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主界面：对话</span></span><br><span class="line">st.header(<span class="string">&quot;💬 知识问答&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化对话历史</span></span><br><span class="line"><span class="keyword">if</span> <span class="string">&quot;messages&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> st.session_state:</span><br><span class="line">    st.session_state.messages = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示历史消息</span></span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> st.session_state.messages:</span><br><span class="line">    <span class="keyword">with</span> st.chat_message(msg[<span class="string">&quot;role&quot;</span>]):</span><br><span class="line">        st.markdown(msg[<span class="string">&quot;content&quot;</span>])</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;sources&quot;</span> <span class="keyword">in</span> msg <span class="keyword">and</span> msg[<span class="string">&quot;sources&quot;</span>]:</span><br><span class="line">            <span class="keyword">with</span> st.expander(<span class="string">&quot;📎 信息来源&quot;</span>):</span><br><span class="line">                <span class="keyword">for</span> src <span class="keyword">in</span> msg[<span class="string">&quot;sources&quot;</span>]:</span><br><span class="line">                    st.write(<span class="string">f&quot;- <span class="subst">&#123;src&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户输入</span></span><br><span class="line"><span class="keyword">if</span> question := st.chat_input(<span class="string">&quot;请输入你的问题...&quot;</span>):</span><br><span class="line">    <span class="comment"># 显示用户消息</span></span><br><span class="line">    st.session_state.messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: question&#125;)</span><br><span class="line">    <span class="keyword">with</span> st.chat_message(<span class="string">&quot;user&quot;</span>):</span><br><span class="line">        st.markdown(question)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># AI 回答</span></span><br><span class="line">    <span class="keyword">with</span> st.chat_message(<span class="string">&quot;assistant&quot;</span>):</span><br><span class="line">        <span class="keyword">with</span> st.spinner(<span class="string">&quot;思考中...&quot;</span>):</span><br><span class="line">            <span class="keyword">if</span> rag.get_document_count() == <span class="number">0</span>:</span><br><span class="line">                answer = <span class="string">&quot;⚠️ 知识库为空，请先上传文档。&quot;</span></span><br><span class="line">                sources = []</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = rag.query(question)</span><br><span class="line">                answer = result[<span class="string">&quot;answer&quot;</span>]</span><br><span class="line">                sources = result[<span class="string">&quot;sources&quot;</span>]</span><br><span class="line"></span><br><span class="line">            st.markdown(answer)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> sources:</span><br><span class="line">                <span class="keyword">with</span> st.expander(<span class="string">&quot;📎 信息来源&quot;</span>):</span><br><span class="line">                    <span class="keyword">for</span> src <span class="keyword">in</span> sources:</span><br><span class="line">                        st.write(<span class="string">f&quot;- <span class="subst">&#123;src&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存到历史</span></span><br><span class="line">    st.session_state.messages.append(&#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: answer,</span><br><span class="line">        <span class="string">&quot;sources&quot;</span>: sources,</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、运行与测试"><a href="#四、运行与测试" class="headerlink" title="四、运行与测试"></a>四、运行与测试</h2><h3 id="4-1-启动应用"><a href="#4-1-启动应用" class="headerlink" title="4.1 启动应用"></a>4.1 启动应用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">streamlit run app.py</span><br></pre></td></tr></table></figure>
+
+<p>浏览器自动打开 <code>http://localhost:8501</code>。</p>
+<h3 id="4-2-测试流程"><a href="#4-2-测试流程" class="headerlink" title="4.2 测试流程"></a>4.2 测试流程</h3><p><strong>Step 1：准备测试文档</strong></p>
+<p>创建一个 <code>test-doc.txt</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">公司员工手册</span><br><span class="line"></span><br><span class="line">第一章 入职与离职</span><br><span class="line">1.1 入职流程</span><br><span class="line">新员工入职需携带身份证、学历证书原件，到人力资源部办理入职手续。</span><br><span class="line">入职当天领取工牌、办公用品，并参加新员工培训。</span><br><span class="line"></span><br><span class="line">1.2 离职流程</span><br><span class="line">员工离职需提前 30 天提交书面申请，经部门经理和人力资源部审批后办理交接。</span><br><span class="line">离职当天归还工牌、办公设备，并完成工作交接。</span><br><span class="line"></span><br><span class="line">第二章 考勤制度</span><br><span class="line">2.1 工作时间</span><br><span class="line">公司实行标准工时制，工作时间为周一至周五 9:00-18:00，午休 12:00-13:00。</span><br><span class="line"></span><br><span class="line">2.2 打卡规定</span><br><span class="line">员工需通过企业微信打卡，每日上下班各打卡一次。</span><br><span class="line">迟到 30 分钟以内扣 50 元，超过 30 分钟按旷工半天处理。</span><br><span class="line"></span><br><span class="line">第三章 假期制度</span><br><span class="line">3.1 法定节假日</span><br><span class="line">按照国家规定执行，包括元旦、春节、清明、劳动节、端午、中秋、国庆。</span><br><span class="line"></span><br><span class="line">3.2 年假</span><br><span class="line">- 入职满 1 年：5 天年假</span><br><span class="line">- 入职满 3 年：10 天年假</span><br><span class="line">- 入职满 10 年：15 天年假</span><br><span class="line">年假需提前 3 天申请，部门经理审批。年假不可跨年累积。</span><br><span class="line"></span><br><span class="line">3.3 病假</span><br><span class="line">病假需提供医院证明，3 天以内部门经理审批，3 天以上需人力资源部审批。</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 2：上传文档</strong></p>
+<p>在左侧边栏上传 <code>test-doc.txt</code>，点击”导入文档”。</p>
+<p><strong>Step 3：提问测试</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">你：公司的年假政策是什么？</span><br><span class="line">AI：根据《test-doc.txt》，公司年假政策如下：</span><br><span class="line">    - 入职满 1 年：5 天年假</span><br><span class="line">    - 入职满 3 年：10 天年假</span><br><span class="line">    - 入职满 10 年：15 天年假</span><br><span class="line">    年假需提前 3 天申请，部门经理审批。年假不可跨年累积。</span><br><span class="line"></span><br><span class="line">你：迟到了怎么处理？</span><br><span class="line">AI：根据《test-doc.txt》考勤制度，迟到处理规定如下：</span><br><span class="line">    迟到 30 分钟以内扣 50 元，超过 30 分钟按旷工半天处理。</span><br><span class="line"></span><br><span class="line">你：怎么请假？</span><br><span class="line">AI：根据现有资料，关于请假流程的信息有限。《test-doc.txt》中仅提到：</span><br><span class="line">    年假需提前 3 天申请，部门经理审批。</span><br><span class="line">    病假需提供医院证明，3 天以内部门经理审批，3 天以上需人力资源部审批。</span><br><span class="line">    其他类型假期的申请流程未在文档中提及。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、进阶优化"><a href="#五、进阶优化" class="headerlink" title="五、进阶优化"></a>五、进阶优化</h2><h3 id="5-1-支持更多文档格式"><a href="#5-1-支持更多文档格式" class="headerlink" title="5.1 支持更多文档格式"></a>5.1 支持更多文档格式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># document_loader.py 新增支持</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Markdown 文件</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> UnstructuredMarkdownLoader</span><br><span class="line"></span><br><span class="line"><span class="comment"># Excel 文件</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> UnstructuredExcelLoader</span><br><span class="line"></span><br><span class="line"><span class="comment"># 网页内容</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> WebBaseLoader</span><br><span class="line"></span><br><span class="line"><span class="comment"># JSON 文件</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> JSONLoader</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-使用本地模型（省钱）"><a href="#5-2-使用本地模型（省钱）" class="headerlink" title="5.2 使用本地模型（省钱）"></a>5.2 使用本地模型（省钱）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 Ollama 本地模型</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> Ollama</span><br><span class="line"><span class="keyword">from</span> langchain_community.embeddings <span class="keyword">import</span> OllamaEmbeddings</span><br><span class="line"></span><br><span class="line"><span class="comment"># LLM</span></span><br><span class="line">llm = Ollama(model=<span class="string">&quot;qwen2.5:7b&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Embedding</span></span><br><span class="line">embeddings = OllamaEmbeddings(model=<span class="string">&quot;nomic-embed-text&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Ollama</span></span><br><span class="line">curl -fsSL https://ollama.ai/install.sh | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载模型</span></span><br><span class="line">ollama pull qwen2.5:7b</span><br><span class="line">ollama pull nomic-embed-text</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-使用其他向量数据库"><a href="#5-3-使用其他向量数据库" class="headerlink" title="5.3 使用其他向量数据库"></a>5.3 使用其他向量数据库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># FAISS（本地文件存储，轻量）</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> FAISS</span><br><span class="line">vectorstore = FAISS.from_documents(chunks, embeddings)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Milvus（分布式，适合生产环境）</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Milvus</span><br><span class="line">vectorstore = Milvus.from_documents(chunks, embeddings, connection_args=&#123;<span class="string">&quot;host&quot;</span>: <span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;port&quot;</span>: <span class="number">19530</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weaviate</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Weaviate</span><br><span class="line">vectorstore = Weaviate.from_documents(chunks, embeddings, weaviate_url=<span class="string">&quot;http://localhost:8080&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-多轮对话支持"><a href="#5-4-多轮对话支持" class="headerlink" title="5.4 多轮对话支持"></a>5.4 多轮对话支持</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.memory <span class="keyword">import</span> ConversationBufferWindowMemory</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> ConversationalRetrievalChain</span><br><span class="line"></span><br><span class="line">memory = ConversationBufferWindowMemory(</span><br><span class="line">    k=<span class="number">5</span>,  <span class="comment"># 保留最近 5 轮对话</span></span><br><span class="line">    memory_key=<span class="string">&quot;chat_history&quot;</span>,</span><br><span class="line">    return_messages=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">qa_chain = ConversationalRetrievalChain.from_llm(</span><br><span class="line">    llm=llm,</span><br><span class="line">    retriever=vectorstore.as_retriever(),</span><br><span class="line">    memory=memory,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-混合检索（关键词-语义）"><a href="#5-5-混合检索（关键词-语义）" class="headerlink" title="5.5 混合检索（关键词 + 语义）"></a>5.5 混合检索（关键词 + 语义）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> EnsembleRetriever</span><br><span class="line"><span class="keyword">from</span> langchain_community.retrievers <span class="keyword">import</span> BM25Retriever</span><br><span class="line"></span><br><span class="line"><span class="comment"># BM25 关键词检索</span></span><br><span class="line">bm25_retriever = BM25Retriever.from_documents(chunks)</span><br><span class="line">bm25_retriever.k = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向量语义检索</span></span><br><span class="line">vector_retriever = vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 混合检索（各占 50% 权重）</span></span><br><span class="line">ensemble_retriever = EnsembleRetriever(</span><br><span class="line">    retrievers=[bm25_retriever, vector_retriever],</span><br><span class="line">    weights=[<span class="number">0.4</span>, <span class="number">0.6</span>],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、部署方案"><a href="#六、部署方案" class="headerlink" title="六、部署方案"></a>六、部署方案</h2><h3 id="6-1-Docker-部署"><a href="#6-1-Docker-部署" class="headerlink" title="6.1 Docker 部署"></a>6.1 Docker 部署</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.11</span>-slim</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> requirements.txt .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install --no-cache-dir -r requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8501</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;streamlit&quot;</span>, <span class="string">&quot;run&quot;</span>, <span class="string">&quot;app.py&quot;</span>, <span class="string">&quot;--server.port=8501&quot;</span>, <span class="string">&quot;--server.address=0.0.0.0&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t rag-kb .</span><br><span class="line">docker run -p 8501:8501 -v ./documents:/app/documents -v ./chroma_db:/app/chroma_db rag-kb</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-docker-compose-部署"><a href="#6-2-docker-compose-部署" class="headerlink" title="6.2 docker-compose 部署"></a>6.2 docker-compose 部署</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">rag-app:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8501:8501&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./documents:/app/documents</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./chroma_db:/app/chroma_db</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">.env</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、常见问题"><a href="#七、常见问题" class="headerlink" title="七、常见问题"></a>七、常见问题</h2><h3 id="Q1：回答不准确怎么办？"><a href="#Q1：回答不准确怎么办？" class="headerlink" title="Q1：回答不准确怎么办？"></a>Q1：回答不准确怎么办？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优化方向：</span><br><span class="line">1. 调整 chunk_size（太大丢失细节，太小缺乏上下文）</span><br><span class="line">2. 增加 RETRIEVAL_TOP_K（检索更多相关文档）</span><br><span class="line">3. 优化提示词模板</span><br><span class="line">4. 使用更强的模型（gpt-4o 而非 gpt-4o-mini）</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q2：文档导入太慢？"><a href="#Q2：文档导入太慢？" class="headerlink" title="Q2：文档导入太慢？"></a>Q2：文档导入太慢？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优化方案：</span><br><span class="line">1. 使用异步处理</span><br><span class="line">2. 分批导入（每次 100 个 chunk）</span><br><span class="line">3. 使用更快的 Embedding 模型</span><br><span class="line">4. 考虑使用 GPU 加速向量化</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q3：如何处理扫描版-PDF？"><a href="#Q3：如何处理扫描版-PDF？" class="headerlink" title="Q3：如何处理扫描版 PDF？"></a>Q3：如何处理扫描版 PDF？</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要 OCR 支持</span></span><br><span class="line">pip install pytesseract</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Unstructured 的 OCR 模式</span></span><br><span class="line"><span class="keyword">from</span> unstructured.partition.pdf <span class="keyword">import</span> partition_pdf</span><br><span class="line">elements = partition_pdf(filename=<span class="string">&quot;scan.pdf&quot;</span>, strategy=<span class="string">&quot;ocr_only&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文带你从零搭建了一个完整的 RAG 知识库问答系统。核心流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">文档 → 加载 → 切分 → 向量化 → 存储</span><br><span class="line">                              ↓</span><br><span class="line">用户提问 → 向量检索 → 找到相关文档 → AI 生成回答</span><br></pre></td></tr></table></figure>
+
+<p>项目代码结构清晰，可以在此基础上扩展：</p>
+<ul>
+<li>接入更多文档格式</li>
+<li>使用本地模型降低成本</li>
+<li>添加多轮对话能力</li>
+<li>部署到生产环境</li>
+</ul>
+<p>动手做是最好的学习方式。把这个项目跑起来，你就真正理解了 RAG 的原理和实现。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/05/28/ai-project-practice/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;ai-project-practice&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;05&#x2F;28&#x2F;ai-project-practice&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAG/" rel="tag">RAG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E6%88%98/" rel="tag">实战</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag">项目</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2026/05/28/workflow-orchestration/"><i class="iconfont iconleft"></i>工作流编排让多个 AI 协同工作：架构与实战</a>
+    <a href="/2026/05/28/ai-large-model-agent-skill/">AI 大模型、Agent 与 Skill：从原理到实践的全面解读<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%A7%88"><span class="toc-text">一、项目概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-text">1.1 最终效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84"><span class="toc-text">1.2 技术架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">1.3 技术栈</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">二、环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">2.1 创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-text">2.2 安装依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">2.3 配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">三、核心代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">3.1 项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86%EF%BC%88config-py%EF%BC%89"><span class="toc-text">3.2 配置管理（config.py）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%96%87%E6%A1%A3%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88document-loader-py%EF%BC%89"><span class="toc-text">3.3 文档加载器（document_loader.py）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-RAG-%E6%A0%B8%E5%BF%83%E5%BC%95%E6%93%8E%EF%BC%88rag-engine-py%EF%BC%89"><span class="toc-text">3.4 RAG 核心引擎（rag_engine.py）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-Streamlit-%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%EF%BC%88app-py%EF%BC%89"><span class="toc-text">3.5 Streamlit 前端界面（app.py）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%BF%90%E8%A1%8C%E4%B8%8E%E6%B5%8B%E8%AF%95"><span class="toc-text">四、运行与测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8"><span class="toc-text">4.1 启动应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-text">4.2 测试流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%BF%9B%E9%98%B6%E4%BC%98%E5%8C%96"><span class="toc-text">五、进阶优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%94%AF%E6%8C%81%E6%9B%B4%E5%A4%9A%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F"><span class="toc-text">5.1 支持更多文档格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B%EF%BC%88%E7%9C%81%E9%92%B1%EF%BC%89"><span class="toc-text">5.2 使用本地模型（省钱）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">5.3 使用其他向量数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D%E6%94%AF%E6%8C%81"><span class="toc-text">5.4 多轮对话支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%EF%BC%88%E5%85%B3%E9%94%AE%E8%AF%8D-%E8%AF%AD%E4%B9%89%EF%BC%89"><span class="toc-text">5.5 混合检索（关键词 + 语义）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88"><span class="toc-text">六、部署方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Docker-%E9%83%A8%E7%BD%B2"><span class="toc-text">6.1 Docker 部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-docker-compose-%E9%83%A8%E7%BD%B2"><span class="toc-text">6.2 docker-compose 部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">七、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q1%EF%BC%9A%E5%9B%9E%E7%AD%94%E4%B8%8D%E5%87%86%E7%A1%AE%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-text">Q1：回答不准确怎么办？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q2%EF%BC%9A%E6%96%87%E6%A1%A3%E5%AF%BC%E5%85%A5%E5%A4%AA%E6%85%A2%EF%BC%9F"><span class="toc-text">Q2：文档导入太慢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q3%EF%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%89%AB%E6%8F%8F%E7%89%88-PDF%EF%BC%9F"><span class="toc-text">Q3：如何处理扫描版 PDF？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
