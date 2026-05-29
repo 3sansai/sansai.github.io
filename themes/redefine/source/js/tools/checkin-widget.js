@@ -116,7 +116,7 @@
     });
     html += '</select>';
     html += '</div>';
-    // 第四行：核心训练 + 吸烟
+    // 第四行：核心训练
     html += '<div class="checkin-form-row">';
     html += '<label style="font-size:13px;color:#888">核心训练</label>';
     html += '<select class="checkin-input sm" id="ci-w-core" style="width:110px">';
@@ -125,7 +125,6 @@
       html += '<option value="' + opt + '"' + sel + '>' + opt + '</option>';
     });
     html += '</select>';
-    html += '<label style="font-size:13px;color:#888">吸烟</label><input type="number" class="checkin-input" style="width:60px" id="ci-w-cig" placeholder="0" min="0" max="100" value="' + (tr.cigarettes != null ? tr.cigarettes : '') + '">';
     html += '</div>';
     // 第五行：饮食热量 + 备注
     html += '<div class="checkin-form-row">';
@@ -244,7 +243,6 @@
       if (r.protein) detail.push('蛋白' + r.protein + 'g');
       if (r.exercise && r.exercise !== '无') detail.push(r.exercise);
       if (r.core && r.core !== '未做') detail.push(r.core);
-      if (r.cigarettes != null && r.cigarettes > 0) detail.push('烟' + r.cigarettes + '支');
       if (r.calories) detail.push(r.calories + 'kcal');
       const detailStr = detail.length ? '<div style="font-size:11px;color:#999;margin-top:2px">' + detail.join(' | ') + '</div>' : '';
       return '<div class="checkin-record" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:200px"><span class="rec-date">' + r.date + '</span><span class="rec-val">' + r.weight.toFixed(1) + 'kg ' + diff + '</span></div><span class="rec-del" onclick="CI.delWeight(\'' + r.date + '\')">删除</span>' + detailStr + '</div>';
@@ -549,7 +547,6 @@
         protein: parseInt(document.getElementById('ci-w-prot').value) || 0,
         exercise: document.getElementById('ci-w-exer').value || '无',
         core: document.getElementById('ci-w-core').value || '未做',
-        cigarettes: parseInt(document.getElementById('ci-w-cig').value) || 0,
         calories: parseInt(document.getElementById('ci-w-cal').value) || 0,
         note: document.getElementById('ci-w-note').value || ''
       };
@@ -579,8 +576,8 @@
     exportWeight: function () {
       const data = getW();
       if (!data.length) { alert('暂无数据'); return; }
-      const header = '日期,体重(kg),起床,睡觉,蛋白质(g),运动,核心训练,吸烟(支),热量(kcal),备注';
-      const rows = data.map(r => [r.date, r.weight, r.wake||'', r.sleep||'', r.protein||'', r.exercise||'', r.core||'', r.cigarettes||0, r.calories||'', '"'+(r.note||'')+'"'].join(','));
+      const header = '日期,体重(kg),起床,睡觉,蛋白质(g),运动,核心训练,热量(kcal),备注';
+      const rows = data.map(r => [r.date, r.weight, r.wake||'', r.sleep||'', r.protein||'', r.exercise||'', r.core||'', r.calories||'', '"'+(r.note||'')+'"'].join(','));
       const csv = header + '\n' + rows.join('\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
