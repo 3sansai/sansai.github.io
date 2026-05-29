@@ -8,3 +8,9 @@ public/
 _multiconfig.yml
 .idea/
 .git_backup/
+
+# Unused themes
+themes/redefine/
+themes/tranquility/
+themes/valaxy/
+themes/yilia/
