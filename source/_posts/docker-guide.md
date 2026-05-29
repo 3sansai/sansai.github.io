@@ -6,7 +6,7 @@ tags:
   - 容器
   - DevOps
 categories:
-  - 技术
+  - 运维
 ---
 
 ## 一、Docker 概述

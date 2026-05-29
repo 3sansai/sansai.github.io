@@ -6,7 +6,7 @@ tags:
   - 数据库
   - SQL
 categories:
-  - 技术
+  - 后端
 ---
 
 ## 一、MySQL 概述

@@ -8,7 +8,7 @@ tags:
   - Python
   - 项目
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

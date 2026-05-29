@@ -6,7 +6,7 @@ tags:
   - 服务器
   - 运维
 categories:
-  - 技术
+  - 运维
 ---
 
 ## 一、Nginx 简介

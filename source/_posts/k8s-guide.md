@@ -7,7 +7,7 @@ tags:
   - 容器编排
   - DevOps
 categories:
-  - 技术
+  - 运维
 ---
 
 ## 一、Kubernetes 概述

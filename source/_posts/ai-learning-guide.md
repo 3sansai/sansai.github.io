@@ -8,7 +8,7 @@ tags:
   - RAG
   - 入门
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

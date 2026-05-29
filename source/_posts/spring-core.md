@@ -6,7 +6,7 @@ tags:
   - Java
   - 后端
 categories:
-  - 技术
+  - 后端
 ---
 
 ## 一、Spring 框架概述

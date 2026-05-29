@@ -6,7 +6,7 @@ tags:
   - AI
   - 智能体
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

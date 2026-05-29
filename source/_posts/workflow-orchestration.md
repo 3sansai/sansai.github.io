@@ -7,7 +7,7 @@ tags:
   - 编排
   - 多Agent
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

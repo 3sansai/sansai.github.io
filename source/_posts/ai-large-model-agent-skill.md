@@ -7,7 +7,7 @@ tags:
   - Agent
   - LLM
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

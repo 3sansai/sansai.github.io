@@ -7,7 +7,7 @@ tags:
   - AI
   - 原理
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言

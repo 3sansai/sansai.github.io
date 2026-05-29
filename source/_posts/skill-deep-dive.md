@@ -7,7 +7,7 @@ tags:
   - AI
   - 设计模式
 categories:
-  - 技术
+  - AI
 ---
 
 ## 前言
