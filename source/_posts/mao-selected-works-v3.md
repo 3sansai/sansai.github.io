@@ -2,6 +2,7 @@
 title: 毛泽东选集·第3卷
 date: 2026-05-30 03:00:00
 sticky: 97
+image: /images/mao-selected-works/volume3.svg
 tags:
   - 毛选
   - 哲学

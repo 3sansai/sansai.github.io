@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c62828"/>
+      <stop offset="100%" style="stop-color:#b71c1c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg1)"/>
+  <rect x="50" y="50" width="700" height="300" fill="none" stroke="#ffd54f" stroke-width="3"/>
+  <rect x="60" y="60" width="680" height="280" fill="none" stroke="#ffd54f" stroke-width="1"/>
+  <text x="400" y="160" font-family="Noto Serif SC, SimSun, serif" font-size="72" fill="#ffd54f" text-anchor="middle" font-weight="bold">毛泽东选集</text>
+  <text x="400" y="220" font-family="Noto Serif SC, SimSun, serif" font-size="48" fill="#ffffff" text-anchor="middle">第 一 卷</text>
+  <text x="400" y="280" font-family="Noto Sans SC, SimHei, sans-serif" font-size="20" fill="#ffcdd2" text-anchor="middle">1925-1937 · 第一次国内革命战争时期</text>
+  <line x1="200" y1="300" x2="600" y2="300" stroke="#ffd54f" stroke-width="2"/>
+  <text x="400" y="330" font-family="Noto Sans SC, SimHei, sans-serif" font-size="16" fill="#ffcdd2" text-anchor="middle">人民出版社</text>
+</svg>

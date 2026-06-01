@@ -2,6 +2,7 @@
 title: 毛泽东选集·第4卷
 date: 2026-05-30 04:00:00
 sticky: 96
+image: /images/mao-selected-works/volume4.svg
 tags:
   - 毛选
   - 哲学

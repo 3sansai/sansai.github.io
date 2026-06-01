@@ -2,6 +2,7 @@
 title: 毛泽东选集·第1卷
 date: 2026-05-30 01:00:00
 sticky: 99
+image: /images/mao-selected-works/volume1.svg
 tags:
   - 毛选
   - 哲学

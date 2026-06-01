@@ -2,6 +2,7 @@
 title: 毛泽东选集·第2卷
 date: 2026-05-30 02:00:00
 sticky: 98
+image: /images/mao-selected-works/volume2.svg
 tags:
   - 毛选
   - 哲学
