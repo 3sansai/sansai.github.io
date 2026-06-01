@@ -1,6 +1,7 @@
 ---
 title: 大模型是 AI 的大脑：深入理解 LLM 的原理与应用
 date: 2026-05-28 16:00:00
+image: /images/covers/llm-deep-dive.svg
 tags:
   - LLM
   - 大模型

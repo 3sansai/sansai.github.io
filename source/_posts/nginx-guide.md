@@ -1,6 +1,7 @@
 ---
 title: Nginx 从入门到实战：核心概念与配置指南
 date: 2026-05-28 08:00:00
+image: /images/covers/nginx-guide.svg
 tags:
   - Nginx
   - 服务器

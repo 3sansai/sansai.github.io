@@ -1,6 +1,7 @@
 ---
 title: AI 学习路线图：从大模型到 Agent 的完整入门指南
 date: 2026-05-28 17:00:00
+image: /images/covers/ai-learning-guide.svg
 tags:
   - AI
   - 大模型

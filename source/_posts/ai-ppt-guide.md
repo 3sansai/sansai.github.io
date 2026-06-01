@@ -1,6 +1,7 @@
 ---
 title: 用 AI 写出专业级项目汇报 PPT：从零到高手的完整指南
 date: 2026-05-29 09:00:00
+image: /images/covers/ai-ppt-guide.svg
 tags:
   - AI
   - PPT

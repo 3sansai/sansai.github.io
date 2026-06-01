@@ -1,6 +1,7 @@
 ---
 title: RAG 让 AI 能"查资料"：检索增强生成完全指南
 date: 2026-05-28 13:00:00
+image: /images/covers/rag-deep-dive.svg
 tags:
   - RAG
   - AI

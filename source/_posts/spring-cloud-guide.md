@@ -1,6 +1,7 @@
 ---
 title: Spring Cloud 微服务架构实战：核心组件与实践
 date: 2026-05-28 03:00:00
+image: /images/covers/spring-cloud-guide.svg
 tags:
   - Spring Cloud
   - 微服务

@@ -1,6 +1,7 @@
 ---
 title: Agent 让 AI 能"做"事情：智能体架构与实战
 date: 2026-05-28 15:00:00
+image: /images/covers/agent-deep-dive.svg
 tags:
   - Agent
   - AI

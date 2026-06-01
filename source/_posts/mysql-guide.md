@@ -1,6 +1,7 @@
 ---
 title: MySQL 数据库开发实战指南：从设计到优化
 date: 2026-05-28 07:00:00
+image: /images/covers/mysql-guide.svg
 tags:
   - MySQL
   - 数据库

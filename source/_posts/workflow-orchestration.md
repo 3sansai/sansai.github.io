@@ -1,6 +1,7 @@
 ---
 title: 工作流编排让多个 AI 协同工作：架构与实战
 date: 2026-05-28 12:00:00
+image: /images/covers/workflow-orchestration.svg
 tags:
   - 工作流
   - AI

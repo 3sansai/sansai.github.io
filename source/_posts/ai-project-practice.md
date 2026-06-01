@@ -1,6 +1,7 @@
 ---
 title: AI 项目实战：从零搭建 RAG 知识库问答系统
 date: 2026-05-28 11:00:00
+image: /images/covers/ai-project-practice.svg
 tags:
   - AI
   - RAG
