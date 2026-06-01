@@ -101,7 +101,7 @@ search:
 
 # QR Code
 qrcode:
-  enable: true
+  enable: false
   type: url # url | image
   image: https://pic.izhaoo.com/weapp-code.jpg
 
@@ -158,7 +158,7 @@ post_copyright:
 
 # Carrier（copy article with one click）
 carrier:
-  enable: true
+  enable: false
   type: html # html | markdown | text
 
 # --------------------------------------------------
@@ -167,7 +167,7 @@ carrier:
 
 # Galleries
 galleries:
-  enable: true
+  enable: false
   title: 摄影
   subtitle: Photography
   type: waterfall # waterfall | grid
