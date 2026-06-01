@@ -11,7 +11,7 @@ categories:
   - 思想
 ---
 
-> **在线阅读：** [毛泽东选集·第2卷（完整版·PDF）](/downloads/mao-selected-works/毛泽东选集-第2卷-1967-人民出版社.pdf) | [Google 预览（秒开）](https://docs.google.com/gview?url=https://cdn.jsdelivr.net/gh/3sansai/sansai.github.io@master/downloads/mao-selected-works/%E6%AF%9B%E6%B3%BD%E4%B8%9C%E9%80%89%E9%9B%86-%E7%AC%AC2%E5%8D%B7-1967-%E4%BA%BA%E6%B0%91%E5%87%BA%E7%89%88%E7%A4%BE.pdf&embedded=true)
+> **在线阅读：** [浏览器预览（推荐）](/downloads/mao-selected-works/v2.html) | [下载 PDF](/downloads/mao-selected-works/毛泽东选集-第2卷-1967-人民出版社.pdf)
 
 ---
 
