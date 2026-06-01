@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <rect x="250" y="80" width="300" height="160" rx="12" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <text x="400" y="140" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">$ python app.py</text>
+  <text x="400" y="170" font-family="monospace" font-size="18" fill="#4ade80" text-anchor="middle">✓ RAG 系统启动成功</text>
+  <text x="400" y="200" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.5)" text-anchor="middle">✓ 知识库加载完成</text>
+  <text x="400" y="300" font-family="system-ui, sans-serif" font-size="52" fill="#fff" text-anchor="middle" font-weight="bold">AI 项目实战</text>
+  <text x="400" y="340" font-family="system-ui, sans-serif" font-size="22" fill="rgba(255,255,255,0.8)" text-anchor="middle">从零搭建 RAG 知识库问答系统</text>
+</svg>

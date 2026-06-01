@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0369a1"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <ellipse cx="400" cy="120" rx="120" ry="40" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+  <ellipse cx="400" cy="160" rx="120" ry="40" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <ellipse cx="400" cy="200" rx="120" ry="40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+  <text x="400" y="290" font-family="system-ui, sans-serif" font-size="52" fill="#fff" text-anchor="middle" font-weight="bold">MySQL 数据库</text>
+  <text x="400" y="330" font-family="system-ui, sans-serif" font-size="22" fill="rgba(255,255,255,0.8)" text-anchor="middle">从设计到优化的开发指南</text>
+</svg>
