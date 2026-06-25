@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0f3460"/>
+      <stop offset="100%" style="stop-color:#e94560"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <!-- Grid pattern -->
+  <g opacity="0.1" stroke="#4a9eff" stroke-width="0.5">
+    <line x1="0" y1="50" x2="800" y2="50"/>
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="250" x2="800" y2="250"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="350" x2="800" y2="350"/>
+    <line x1="100" y1="0" x2="100" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="300" y1="0" x2="300" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="500" y1="0" x2="500" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+    <line x1="700" y1="0" x2="700" y2="400"/>
+  </g>
+  <!-- Lock icon (HTTPS) -->
+  <g transform="translate(340, 80)">
+    <rect x="0" y="30" width="80" height="60" rx="8" fill="#e94560" opacity="0.9"/>
+    <path d="M20,30 V20 A20,20 0 0,1 60,20 V30" fill="none" stroke="#e94560" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="40" cy="55" r="6" fill="#1a1a2e"/>
+    <rect x="37" y="55" width="6" height="12" fill="#1a1a2e"/>
+  </g>
+  <!-- Data flow lines -->
+  <g stroke="#4a9eff" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M100,200 Q200,160 300,200 T500,200" stroke-dasharray="8,4"/>
+    <path d="M300,200 Q400,240 500,200 T700,200" stroke-dasharray="8,4"/>
+  </g>
+  <!-- Nodes -->
+  <circle cx="150" cy="200" r="20" fill="#0f3460" stroke="#4a9eff" stroke-width="2"/>
+  <text x="150" y="205" text-anchor="middle" fill="#4a9eff" font-size="12" font-family="monospace">C</text>
+  <circle cx="400" cy="200" r="24" fill="#0f3460" stroke="#e94560" stroke-width="2"/>
+  <text x="400" y="205" text-anchor="middle" fill="#e94560" font-size="14" font-family="monospace">S</text>
+  <circle cx="650" cy="200" r="20" fill="#0f3460" stroke="#4a9eff" stroke-width="2"/>
+  <text x="650" y="205" text-anchor="middle" fill="#4a9eff" font-size="12" font-family="monospace">DB</text>
+  <!-- Cookie icon -->
+  <g transform="translate(580, 100)">
+    <circle cx="30" cy="30" r="28" fill="#f0a500" opacity="0.85"/>
+    <circle cx="22" cy="22" r="4" fill="#1a1a2e" opacity="0.6"/>
+    <circle cx="38" cy="28" r="3" fill="#1a1a2e" opacity="0.6"/>
+    <circle cx="28" cy="40" r="3.5" fill="#1a1a2e" opacity="0.6"/>
+    <circle cx="42" cy="18" r="2.5" fill="#1a1a2e" opacity="0.6"/>
+  </g>
+  <!-- Title -->
+  <text x="400" y="320" text-anchor="middle" fill="#ffffff" font-size="28" font-family="sans-serif" font-weight="bold">HTTP / HTTPS / Cookie</text>
+  <text x="400" y="355" text-anchor="middle" fill="#8892b0" font-size="14" font-family="sans-serif">Web 通信的安全基石</text>
+  <!-- Accent line -->
+  <rect x="300" y="370" width="200" height="2" fill="url(#accent)" rx="1"/>
+</svg>

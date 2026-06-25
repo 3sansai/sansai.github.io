@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>HTTP/HTTPS 与 Cookie 深入解析：Web 通信的安全基石 - Hexo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="每次你在浏览器输入网址、点击登录、浏览商品时，背后都有...">
+  <meta name="author" content="John Doe">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: false
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: false
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: false,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">HTTP/HTTPS 与 Cookie 深入解析：Web 通信的安全基石</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/covers/http-https-cookie.svg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">HTTP/HTTPS 与 Cookie 深入解析：Web 通信的安全基石</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>六月 25, 2026</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>8539</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <p>每次你在浏览器输入网址、点击登录、浏览商品时，背后都有一套精密的通信机制在运作。HTTP 负责传输数据，HTTPS 保证数据安全，Cookie 则帮你”记住身份”。本文将深入解析这三者的原理与协作方式。</p>
+<hr>
+<h2 id="一、HTTP-基础"><a href="#一、HTTP-基础" class="headerlink" title="一、HTTP 基础"></a>一、HTTP 基础</h2><h3 id="1-1-什么是-HTTP"><a href="#1-1-什么是-HTTP" class="headerlink" title="1.1 什么是 HTTP"></a>1.1 什么是 HTTP</h3><p>HTTP（HyperText Transfer Protocol，超文本传输协议）是浏览器与服务器之间的通信语言。可以把 HTTP 想象成<strong>明信片</strong>——内容任何人都能看到，没有加密。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">客户端（浏览器）                         服务器</span><br><span class="line">     |                                    |</span><br><span class="line">     |  --- 请求（Request）------------&gt;  |</span><br><span class="line">     |                                    |</span><br><span class="line">     |  &lt;--- 响应（Response）-----------  |</span><br><span class="line">     |                                    |</span><br></pre></td></tr></table></figure>
+
+<p>HTTP 的特点：</p>
+<ul>
+<li><strong>无状态</strong>：每次请求都是独立的，服务器不记得上一次请求</li>
+<li><strong>基于请求-响应模型</strong>：客户端发起请求，服务器返回响应</li>
+<li><strong>灵活可扩展</strong>：通过 Header 可以传输任意类型的数据</li>
+</ul>
+<h3 id="1-2-请求方法"><a href="#1-2-请求方法" class="headerlink" title="1.2 请求方法"></a>1.2 请求方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>用途</th>
+<th>是否幂等</th>
+<th>请求体</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>获取资源</td>
+<td>是</td>
+<td>无</td>
+<td>查看文章列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>创建资源</td>
+<td>否</td>
+<td>有</td>
+<td>提交表单、登录</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>更新资源（全量）</td>
+<td>是</td>
+<td>有</td>
+<td>修改用户信息</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除资源</td>
+<td>是</td>
+<td>无</td>
+<td>删除一篇文章</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>更新资源（部分）</td>
+<td>否</td>
+<td>有</td>
+<td>修改密码</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>查询支持的方法</td>
+<td>是</td>
+<td>无</td>
+<td>CORS 预检请求</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-状态码"><a href="#1-3-状态码" class="headerlink" title="1.3 状态码"></a>1.3 状态码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1xx  信息性     请求已接收，继续处理</span><br><span class="line">2xx  成功       请求已成功处理</span><br><span class="line">3xx  重定向     需要进一步操作</span><br><span class="line">4xx  客户端错误  请求有误</span><br><span class="line">5xx  服务器错误  服务器处理失败</span><br></pre></td></tr></table></figure>
+
+<p>常见状态码详解：</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>含义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200 OK</td>
+<td>成功</td>
+<td>请求正常返回</td>
+</tr>
+<tr>
+<td>201 Created</td>
+<td>已创建</td>
+<td>POST 成功创建资源</td>
+</tr>
+<tr>
+<td>301 Moved Permanently</td>
+<td>永久重定向</td>
+<td>URL 已永久更改（SEO 友好）</td>
+</tr>
+<tr>
+<td>302 Found</td>
+<td>临时重定向</td>
+<td>临时跳转</td>
+</tr>
+<tr>
+<td>304 Not Modified</td>
+<td>未修改</td>
+<td>使用缓存</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>请求错误</td>
+<td>参数有误</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>未认证</td>
+<td>需要登录</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>禁止访问</td>
+<td>权限不足</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>未找到</td>
+<td>资源不存在</td>
+</tr>
+<tr>
+<td>500 Internal Server Error</td>
+<td>服务器错误</td>
+<td>服务端异常</td>
+</tr>
+<tr>
+<td>502 Bad Gateway</td>
+<td>网关错误</td>
+<td>上游服务异常</td>
+</tr>
+<tr>
+<td>503 Service Unavailable</td>
+<td>服务不可用</td>
+<td>服务过载或维护</td>
+</tr>
+</tbody></table>
+<h3 id="1-4-请求头与响应头"><a href="#1-4-请求头与响应头" class="headerlink" title="1.4 请求头与响应头"></a>1.4 请求头与响应头</h3><p><strong>关键请求头：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Host: example.com              # 目标主机</span><br><span class="line">User-Agent: Mozilla/5.0        # 客户端类型</span><br><span class="line">Accept: text/html              # 接受的响应格式</span><br><span class="line">Accept-Language: zh-CN         # 偏好语言</span><br><span class="line">Accept-Encoding: gzip          # 支持的压缩格式</span><br><span class="line">Cookie: session=abc123         # 携带的 Cookie</span><br><span class="line">Content-Type: application/json # 请求体格式</span><br><span class="line">Authorization: Bearer token    # 认证令牌</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键响应头：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: text/html        # 响应体格式</span><br><span class="line">Content-Length: 1234           # 响应体大小</span><br><span class="line">Set-Cookie: session=abc123     # 设置 Cookie</span><br><span class="line">Cache-Control: max-age=3600    # 缓存策略</span><br><span class="line">Location: /new-url             # 重定向目标</span><br><span class="line">Access-Control-Allow-Origin: * # CORS 跨域允许</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、HTTPS-原理"><a href="#二、HTTPS-原理" class="headerlink" title="二、HTTPS 原理"></a>二、HTTPS 原理</h2><h3 id="2-1-为什么需要-HTTPS"><a href="#2-1-为什么需要-HTTPS" class="headerlink" title="2.1 为什么需要 HTTPS"></a>2.1 为什么需要 HTTPS</h3><p>HTTP 的问题在于<strong>明文传输</strong>，存在三大风险：</p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>窃听</td>
+<td>第三方可读取传输内容</td>
+<td>公共 WiFi 下账号被盗</td>
+</tr>
+<tr>
+<td>篡改</td>
+<td>第三方可修改传输内容</td>
+<td>运营商插入广告</td>
+</tr>
+<tr>
+<td>伪造</td>
+<td>无法验证服务器身份</td>
+<td>钓鱼网站冒充银行</td>
+</tr>
+</tbody></table>
+<p>HTTPS &#x3D; HTTP + TLS&#x2F;SSL，可以理解为<strong>加密信封</strong>——内容被加密，只有收件人能看。</p>
+<h3 id="2-2-对称加密-vs-非对称加密"><a href="#2-2-对称加密-vs-非对称加密" class="headerlink" title="2.2 对称加密 vs 非对称加密"></a>2.2 对称加密 vs 非对称加密</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>对称加密</th>
+<th>非对称加密</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>密钥</td>
+<td>加密和解密用同一把密钥</td>
+<td>公钥加密，私钥解密</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>快（适合大量数据）</td>
+<td>慢（约慢 1000 倍）</td>
+</tr>
+<tr>
+<td>密钥分发</td>
+<td>困难（如何安全传递密钥？）</td>
+<td>容易（公钥可以公开）</td>
+</tr>
+<tr>
+<td>典型算法</td>
+<td>AES、DES、ChaCha20</td>
+<td>RSA、ECC、Ed25519</td>
+</tr>
+<tr>
+<td>类比</td>
+<td>保险箱 + 同一把钥匙</td>
+<td>邮箱投递口（公钥）+ 钥匙（私钥）</td>
+</tr>
+</tbody></table>
+<p>HTTPS 的巧妙之处：<strong>结合两者优点</strong>——用非对称加密交换密钥，再用对称加密传输数据。</p>
+<h3 id="2-3-TLS-握手过程"><a href="#2-3-TLS-握手过程" class="headerlink" title="2.3 TLS 握手过程"></a>2.3 TLS 握手过程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">客户端                                          服务器</span><br><span class="line">  |                                               |</span><br><span class="line">  |  --- 1. ClientHello ----------------------&gt;  |</span><br><span class="line">  |      支持的 TLS 版本、加密套件、随机数         |</span><br><span class="line">  |                                               |</span><br><span class="line">  |  &lt;--- 2. ServerHello ----------------------  |</span><br><span class="line">  |      选定的加密套件、随机数、证书              |</span><br><span class="line">  |                                               |</span><br><span class="line">  |  --- 3. 验证证书 --------------------------&gt;  |</span><br><span class="line">  |      验证证书是否由可信 CA 签发               |</span><br><span class="line">  |                                               |</span><br><span class="line">  |  --- 4. Key Exchange ----------------------&gt;  |</span><br><span class="line">  |      用服务器公钥加密的预主密钥               |</span><br><span class="line">  |                                               |</span><br><span class="line">  |  &lt;--- 5. Finished -------------------------  |</span><br><span class="line">  |      双方根据三个随机数生成会话密钥           |</span><br><span class="line">  |                                               |</span><br><span class="line">  |  &lt;=== 6. 加密通信开始 ====================&gt;  |</span><br><span class="line">  |      所有数据用会话密钥加密传输               |</span><br></pre></td></tr></table></figure>
+
+<p>关键点：</p>
+<ul>
+<li><strong>三个随机数</strong>：客户端随机数 + 服务器随机数 + 预主密钥 &#x3D; 会话密钥</li>
+<li><strong>前向保密</strong>：即使服务器私钥泄露，历史通信也无法被解密（因为每次握手生成新密钥）</li>
+</ul>
+<h3 id="2-4-证书验证"><a href="#2-4-证书验证" class="headerlink" title="2.4 证书验证"></a>2.4 证书验证</h3><p>数字证书由 CA（Certificate Authority，证书颁发机构）签发，包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">证书内容：</span><br><span class="line">  - 域名（example.com）</span><br><span class="line">  - 公钥</span><br><span class="line">  - 颁发者（如 Let&#x27;s Encrypt）</span><br><span class="line">  - 有效期</span><br><span class="line">  - 证书指纹（SHA-256）</span><br><span class="line">  - 数字签名（CA 的私钥签名）</span><br></pre></td></tr></table></figure>
+
+<p>浏览器验证流程：</p>
+<ol>
+<li>检查证书是否在有效期内</li>
+<li>检查证书域名是否匹配</li>
+<li>检查证书链是否由可信 CA 签发</li>
+<li>检查证书是否已被吊销（CRL&#x2F;OCSP）</li>
+</ol>
+<h3 id="2-5-性能开销与优化"><a href="#2-5-性能开销与优化" class="headerlink" title="2.5 性能开销与优化"></a>2.5 性能开销与优化</h3><p>HTTPS 的额外开销主要在 TLS 握手阶段：</p>
+<table>
+<thead>
+<tr>
+<th>优化手段</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TLS 1.3</td>
+<td>握手从 2-RTT 降至 1-RTT</td>
+</tr>
+<tr>
+<td>Session Resume</td>
+<td>复用之前的会话，跳过完整握手</td>
+</tr>
+<tr>
+<td>OCSP Stapling</td>
+<td>服务器预取证书状态，减少客户端查询</td>
+</tr>
+<tr>
+<td>HTTP&#x2F;2</td>
+<td>基于 HTTPS，多路复用提升性能</td>
+</tr>
+<tr>
+<td>CDN</td>
+<td>边缘节点终止 TLS，减少延迟</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、Cookie-详解"><a href="#三、Cookie-详解" class="headerlink" title="三、Cookie 详解"></a>三、Cookie 详解</h2><h3 id="3-1-什么是-Cookie"><a href="#3-1-什么是-Cookie" class="headerlink" title="3.1 什么是 Cookie"></a>3.1 什么是 Cookie</h3><p>Cookie 是服务器发送到浏览器并保存的一小段数据。可以把 Cookie 想象成<strong>身份证</strong>或<strong>会员卡</strong>——浏览器每次请求时自动携带，让服务器”认出你”。</p>
+<p>为什么需要 Cookie？因为 HTTP 是无状态的——服务器不记得你。Cookie 帮服务器建立”记忆”。</p>
+<h3 id="3-2-工作流程"><a href="#3-2-工作流程" class="headerlink" title="3.2 工作流程"></a>3.2 工作流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">客户端                                         服务器</span><br><span class="line">  |                                              |</span><br><span class="line">  |  --- 1. 登录请求 -------------------------&gt; |</span><br><span class="line">  |      POST /login &#123;user, password&#125;            |</span><br><span class="line">  |                                              |</span><br><span class="line">  |  &lt;--- 2. 响应 + Set-Cookie ---------------- |</span><br><span class="line">  |      Set-Cookie: session=abc123; HttpOnly    |</span><br><span class="line">  |                                              |</span><br><span class="line">  |  --- 3. 后续请求 --------------------------&gt; |</span><br><span class="line">  |      Cookie: session=abc123                  |</span><br><span class="line">  |                                              |</span><br><span class="line">  |  &lt;--- 4. 服务器识别身份 ------------------- |</span><br><span class="line">  |      根据 session=abc123 查找用户信息         |</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-Cookie-属性详解"><a href="#3-3-Cookie-属性详解" class="headerlink" title="3.3 Cookie 属性详解"></a>3.3 Cookie 属性详解</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name</td>
+<td>Cookie 名称</td>
+<td><code>session_id</code></td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Cookie 值</td>
+<td><code>abc123xyz</code></td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>适用的域名</td>
+<td><code>.example.com</code>（包含子域）</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>适用的路径</td>
+<td><code>/api</code>（仅 <code>/api</code> 下的请求携带）</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>过期时间</td>
+<td><code>Thu, 01 Dec 2026 16:00:00 GMT</code></td>
+</tr>
+<tr>
+<td>Max-Age</td>
+<td>有效期（秒）</td>
+<td><code>86400</code>（24 小时）</td>
+</tr>
+<tr>
+<td>HttpOnly</td>
+<td>禁止 JS 访问</td>
+<td><code>true</code>（防 XSS 窃取）</td>
+</tr>
+<tr>
+<td>Secure</td>
+<td>仅 HTTPS 传输</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>SameSite</td>
+<td>跨站限制</td>
+<td><code>Strict</code> &#x2F; <code>Lax</code> &#x2F; <code>None</code></td>
+</tr>
+</tbody></table>
+<p><strong>SameSite 详解：</strong></p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>行为</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strict</td>
+<td>跨站完全不发送 Cookie</td>
+<td>银行、支付等高安全场景</td>
+</tr>
+<tr>
+<td>Lax</td>
+<td>顶级导航（GET）允许发送</td>
+<td>大多数场景的默认值</td>
+</tr>
+<tr>
+<td>None</td>
+<td>始终发送（需配合 Secure）</td>
+<td>第三方 Cookie（如嵌入内容）</td>
+</tr>
+</tbody></table>
+<h3 id="3-4-Session-vs-Token-vs-Cookie"><a href="#3-4-Session-vs-Token-vs-Cookie" class="headerlink" title="3.4 Session vs Token vs Cookie"></a>3.4 Session vs Token vs Cookie</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Cookie + Session</th>
+<th>Token（如 JWT）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储位置</td>
+<td>服务端存 Session，客户端存 Cookie</td>
+<td>客户端存 Token</td>
+</tr>
+<tr>
+<td>服务器压力</td>
+<td>每个 Session 占用服务器内存</td>
+<td>无状态，无需存储</td>
+</tr>
+<tr>
+<td>扩展性</td>
+<td>多服务器需共享 Session</td>
+<td>天然支持分布式</td>
+</tr>
+<tr>
+<td>跨域支持</td>
+<td>受 Cookie 同源策略限制</td>
+<td>更灵活</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>HttpOnly 防 XSS</td>
+<td>需防 Token 泄露</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>传统 Web 应用</td>
+<td>前后端分离、移动端</td>
+</tr>
+</tbody></table>
+<p><strong>选择建议：</strong></p>
+<ul>
+<li>传统服务端渲染项目 → Cookie + Session</li>
+<li>前后端分离 &#x2F; 移动端 → Token（JWT）</li>
+<li>需要撤销机制 → Cookie + Session 或短有效期 Token + Refresh Token</li>
+</ul>
+<h3 id="3-5-Cookie-安全实践"><a href="#3-5-Cookie-安全实践" class="headerlink" title="3.5 Cookie 安全实践"></a>3.5 Cookie 安全实践</h3><p><strong>1. 防止 XSS 攻击窃取 Cookie</strong></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>session=abc123; HttpOnly; Secure; SameSite=Lax</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>HttpOnly</code>：JavaScript 无法通过 <code>document.cookie</code> 访问</li>
+<li><code>Secure</code>：只在 HTTPS 下传输</li>
+<li><code>SameSite=Lax</code>：限制跨站请求携带</li>
+</ul>
+<p><strong>2. 防止 CSRF 攻击</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SameSite=Strict    → 完全禁止跨站携带（最安全，但用户从外部链接点击进来不会带 Cookie）</span><br><span class="line">SameSite=Lax       → 允许顶级导航 GET 请求携带（推荐）</span><br><span class="line">CSRF Token         → 表单中嵌入随机 Token，服务器验证</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. Cookie 大小与数量限制</strong></p>
+<table>
+<thead>
+<tr>
+<th>限制项</th>
+<th>典型值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单个 Cookie 大小</td>
+<td>4KB</td>
+</tr>
+<tr>
+<td>每个域名 Cookie 数量</td>
+<td>50-150 个（浏览器不同）</td>
+</tr>
+<tr>
+<td>总 Cookie 大小</td>
+<td>4MB 左右</td>
+</tr>
+</tbody></table>
+<p>超出限制时的替代方案：</p>
+<ul>
+<li><strong>localStorage</strong>：5MB，不过期，但不随请求自动发送</li>
+<li><strong>sessionStorage</strong>：同 localStorage，但标签页关闭即清除</li>
+<li><strong>IndexedDB</strong>：大量结构化数据存储</li>
+</ul>
+<hr>
+<h2 id="四、实战配置"><a href="#四、实战配置" class="headerlink" title="四、实战配置"></a>四、实战配置</h2><h3 id="4-1-Nginx-配置-HTTPS"><a href="#4-1-Nginx-配置-HTTPS" class="headerlink" title="4.1 Nginx 配置 HTTPS"></a>4.1 Nginx 配置 HTTPS</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span>     /etc/nginx/ssl/example.com.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl/example.com.key;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># TLS 配置</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span> ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># HSTS（强制浏览器使用 HTTPS）</span></span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=63072000&quot;</span> always;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># OCSP Stapling</span></span><br><span class="line">    <span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># HTTP 重定向到 HTTPS</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-JavaScript-Cookie-操作"><a href="#4-2-JavaScript-Cookie-操作" class="headerlink" title="4.2 JavaScript Cookie 操作"></a>4.2 JavaScript Cookie 操作</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置 Cookie</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">cookie</span> = <span class="string">&quot;theme=dark; path=/; max-age=86400; SameSite=Lax&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取所有 Cookie</span></span><br><span class="line"><span class="keyword">const</span> cookies = <span class="variable language_">document</span>.<span class="property">cookie</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cookies); <span class="comment">// &quot;theme=dark; session=abc123&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除 Cookie（设置过期时间为过去）</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">cookie</span> = <span class="string">&quot;theme=; path=/; max-age=0&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-Set-Cookie-响应头示例"><a href="#4-3-Set-Cookie-响应头示例" class="headerlink" title="4.3 Set-Cookie 响应头示例"></a>4.3 Set-Cookie 响应头示例</h3><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 登录成功后设置 Session Cookie</span><br><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>session_id=abc123def456; Path=/; HttpOnly; Secure; SameSite=Lax</span><br><span class="line"></span><br><span class="line"><span class="language-routeros"><span class="comment"># 记住我功能（持久 Cookie）</span></span></span><br><span class="line"><span class="language-routeros">HTTP/1.1 200 OK</span></span><br><span class="line"><span class="language-routeros">Set-Cookie: <span class="attribute">remember_token</span>=xyz789; <span class="attribute">Path</span>=/; <span class="attribute">Max-Age</span>=2592000; HttpOnly; Secure</span></span><br><span class="line"><span class="language-routeros"></span></span><br><span class="line"><span class="language-routeros"><span class="comment"># 清除 Cookie</span></span></span><br><span class="line"><span class="language-routeros">HTTP/1.1 200 OK</span></span><br><span class="line"><span class="language-routeros">Set-Cookie: <span class="attribute">session_id</span>=; <span class="attribute">Path</span>=/; <span class="attribute">Max-Age</span>=0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、常见问题与最佳实践"><a href="#五、常见问题与最佳实践" class="headerlink" title="五、常见问题与最佳实践"></a>五、常见问题与最佳实践</h2><h3 id="5-1-跨域-Cookie-问题"><a href="#5-1-跨域-Cookie-问题" class="headerlink" title="5.1 跨域 Cookie 问题"></a>5.1 跨域 Cookie 问题</h3><p>当前后端分离时，前端 <code>localhost:3000</code> 请求后端 <code>api.example.com</code>，Cookie 默认不会发送。</p>
+<p><strong>解决方案：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前端请求配置（Axios）</span></span><br><span class="line">axios.<span class="property">defaults</span>.<span class="property">withCredentials</span> = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 后端 CORS 配置</span></span><br><span class="line"><span class="title class_">Access</span>-<span class="title class_">Control</span>-<span class="title class_">Allow</span>-<span class="title class_">Origin</span>: <span class="attr">https</span>:<span class="comment">//frontend.com</span></span><br><span class="line"><span class="title class_">Access</span>-<span class="title class_">Control</span>-<span class="title class_">Allow</span>-<span class="title class_">Credentials</span>: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>Access-Control-Allow-Origin</code> 不能设为 <code>*</code>，必须指定具体域名。</p>
+<h3 id="5-2-SameSite-与-CSRF-防护"><a href="#5-2-SameSite-与-CSRF-防护" class="headerlink" title="5.2 SameSite 与 CSRF 防护"></a>5.2 SameSite 与 CSRF 防护</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">场景：用户在 bank.com 已登录，访问恶意网站 evil.com</span><br><span class="line"></span><br><span class="line">SameSite=None    → evil.com 的请求会携带 bank.com 的 Cookie → CSRF 攻击</span><br><span class="line">SameSite=Lax     → evil.com 的 POST 请求不携带 Cookie → 防住大部分 CSRF</span><br><span class="line">SameSite=Strict  → 从 evil.com 点击链接到 bank.com 也不携带 → 最安全但体验差</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-HTTPS-混合内容"><a href="#5-3-HTTPS-混合内容" class="headerlink" title="5.3 HTTPS 混合内容"></a>5.3 HTTPS 混合内容</h3><p>页面通过 HTTPS 加载，但其中引用了 HTTP 资源（图片、脚本等），浏览器会阻止或警告。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 错误：混合内容 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://example.com/lib.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://example.com/photo.jpg&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 正确：使用相对协议或 HTTPS --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;//example.com/lib.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://example.com/photo.jpg&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>HTTP 是 Web 通信的基础语言，HTTPS 在其上加了一层加密保护，Cookie 则解决了 HTTP 无状态的问题。三者共同构成了现代 Web 应用的通信基石。</p>
+<p>核心要点：</p>
+<ul>
+<li><strong>HTTP</strong>：明文传输，无状态，请求-响应模型</li>
+<li><strong>HTTPS</strong>：TLS 握手交换密钥，对称加密传输数据，证书验证身份</li>
+<li><strong>Cookie</strong>：通过 <code>HttpOnly</code> + <code>Secure</code> + <code>SameSite</code> 三重防护保障安全</li>
+<li><strong>Session vs Token</strong>：传统项目用 Session，前后端分离用 JWT</li>
+</ul>
+<p>在实际项目中，始终使用 HTTPS，合理配置 Cookie 安全属性，根据架构选择合适的会话管理方案。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>John Doe</li>
+    <li><strong>本文链接：</strong><a href="https://3sansai.github.io/2026/06/25/http-https-cookie/index.html" title="https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;06&#x2F;25&#x2F;http-https-cookie&#x2F;index.html">https:&#x2F;&#x2F;3sansai.github.io&#x2F;2026&#x2F;06&#x2F;25&#x2F;http-https-cookie&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" rel="tag">网络协议</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2026/05/30/mao-selected-works-v4/">毛泽东选集·第4卷<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81HTTP-%E5%9F%BA%E7%A1%80"><span class="toc-text">一、HTTP 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF-HTTP"><span class="toc-text">1.1 什么是 HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 请求方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-text">1.3 状态码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%B8%8E%E5%93%8D%E5%BA%94%E5%A4%B4"><span class="toc-text">1.4 请求头与响应头</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81HTTPS-%E5%8E%9F%E7%90%86"><span class="toc-text">二、HTTPS 原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-HTTPS"><span class="toc-text">2.1 为什么需要 HTTPS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-vs-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="toc-text">2.2 对称加密 vs 非对称加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-TLS-%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="toc-text">2.3 TLS 握手过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81"><span class="toc-text">2.4 证书验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%80%A7%E8%83%BD%E5%BC%80%E9%94%80%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-text">2.5 性能开销与优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Cookie-%E8%AF%A6%E8%A7%A3"><span class="toc-text">三、Cookie 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF-Cookie"><span class="toc-text">3.1 什么是 Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">3.2 工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Cookie-%E5%B1%9E%E6%80%A7%E8%AF%A6%E8%A7%A3"><span class="toc-text">3.3 Cookie 属性详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Session-vs-Token-vs-Cookie"><span class="toc-text">3.4 Session vs Token vs Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-Cookie-%E5%AE%89%E5%85%A8%E5%AE%9E%E8%B7%B5"><span class="toc-text">3.5 Cookie 安全实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E6%88%98%E9%85%8D%E7%BD%AE"><span class="toc-text">四、实战配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Nginx-%E9%85%8D%E7%BD%AE-HTTPS"><span class="toc-text">4.1 Nginx 配置 HTTPS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-JavaScript-Cookie-%E6%93%8D%E4%BD%9C"><span class="toc-text">4.2 JavaScript Cookie 操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Set-Cookie-%E5%93%8D%E5%BA%94%E5%A4%B4%E7%A4%BA%E4%BE%8B"><span class="toc-text">4.3 Set-Cookie 响应头示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">五、常见问题与最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E8%B7%A8%E5%9F%9F-Cookie-%E9%97%AE%E9%A2%98"><span class="toc-text">5.1 跨域 Cookie 问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-SameSite-%E4%B8%8E-CSRF-%E9%98%B2%E6%8A%A4"><span class="toc-text">5.2 SameSite 与 CSRF 防护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-HTTPS-%E6%B7%B7%E5%90%88%E5%86%85%E5%AE%B9"><span class="toc-text">5.3 HTTPS 混合内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  <div class="checkin-float">
+  <div class="checkin-badge" id="ci-badge" onclick="CI.open()">
+    <span class="badge-icon">&#128293;</span>
+    <span class="badge-days">0</span>
+    <span class="badge-label">打卡天</span>
+  </div>
+</div>
+<div class="checkin-modal-mask" id="ci-mask">
+  <div class="checkin-modal">
+    <div class="checkin-header">
+      <div class="checkin-tabs">
+        <button class="checkin-tab active" data-tab="weight" onclick="CI.tab('weight')">减肥打卡</button>
+        <button class="checkin-tab" data-tab="smoke" onclick="CI.tab('smoke')">戒烟打卡</button>
+      </div>
+      <button class="checkin-close" onclick="CI.close()">&times;</button>
+    </div>
+    <div class="checkin-body" id="ci-body"></div>
+  </div>
+</div>
+
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/checkin.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
